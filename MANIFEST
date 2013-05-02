@@ -9,6 +9,6 @@ tfpipe/__init__.py
 tfpipe/base.py
 tfpipe/modules/__init__.py
 tfpipe/modules/galaxy/__init__.py
-tfpipe/modules/galaxy/convert.py
+tfpipe/modules/galaxy/manipulation.py
 tfpipe/pipeline/__init__.py
 tfpipe/test/__init__.py

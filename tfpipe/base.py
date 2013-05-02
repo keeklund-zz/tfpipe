@@ -44,5 +44,8 @@ class CommandLine(object):
         """
         self.args[arg] = True and value or ''
 
-    def run(self):
+    def show(self):
         print str(self)
+
+    def get_command(self):
+        return str(self)

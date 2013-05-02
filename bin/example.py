@@ -2,14 +2,14 @@
 
 import tfpipe.modules.galaxy as galaxy
 
-fq2a = galaxy.FastqToFasta()
-fq2a.add_argument('-i', 'myfile.fq')
-fq2a.add_argument('-o', 'myoutfile.fa')
-fq2a.run()
+job1 = galaxy.FastqToFasta()
+job1.add_argument('-i', 'myfile.fq')
+job1.add_argument('-o', 'myoutfile.fa')
+job1.show()
 
-fxc = galaxy.FastxClipper()
-fxc.add_argument('-i', 'someinfile.fq')
-fxc.add_argument('-o', 'someoutfile.fq')
-fxc.add_argument('-c')
-fxc.run()
+job2 = galaxy.FastxClipper()
+job2.add_argument('-i', 'someinfile.fq')
+job2.add_argument('-o', 'someoutfile.fq')
+job2.add_argument('-c')
+job2.show()
 
