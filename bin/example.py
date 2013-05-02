@@ -7,8 +7,9 @@ fq2a.add_argument('-i', 'myfile.fq')
 fq2a.add_argument('-o', 'myoutfile.fa')
 fq2a.run()
 
-fq2a = galaxy.FastqToFasta(cmd='fastqToFasta.1')
-fq2a.add_argument('-i', 'myfile.fq')
-fq2a.add_argument('-o', 'myoutfile.fa')
-fq2a.run()
+fxc = galaxy.FastxClipper()
+fxc.add_argument('-i', 'someinfile.fq')
+fxc.add_argument('-o', 'someoutfile.fq')
+fxc.add_argument('-c')
+fxc.run()
 

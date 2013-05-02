@@ -14,12 +14,14 @@ class FastqToFasta(CommandLine):
     """
 
     _cmd = 'fastq_to_fasta'
-    
-    def __init__(self, **inputs):
-        """
 
-        """
-        super(FastqToFasta, self).__init__(**inputs)
-        if self.cmd is None:
-            self.cmd = self._cmd
+    # will need to add methods
+
+
+class FastxClipper(CommandLine):
+    """Use FastxClipper to remove or clip reads. 
+
+    """
+
+    _cmd = 'fastx_clipper'
 

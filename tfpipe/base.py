@@ -10,10 +10,13 @@ class CommandLine(object):
         """ 
 
         """
+        super(CommandLine, self).__init__(**inputs)
         self.cmd = self._init_arg(inputs, 'cmd')
         self.input_file = self._init_arg(inputs, 'input')
         self.output_file = self._init_arg(inputs, 'output')
-        self.args = {}#self._init_arg(inputs, 'args')
+        self.args = {} # self._init_arg(inputs, 'args')
+        if self.cmd is None:
+            self.cmd = self._cmd
 
     def _init_arg(self, inputs, arg_key):
         """Initialize arguments passed to class.
@@ -36,7 +39,10 @@ class CommandLine(object):
         return " ".join((self.cmd, tmp))
 
     def add_argument(self, arg, value=None):
-        self.args[arg] = value
+        """Method adds command line arguments to object.
+
+        """
+        self.args[arg] = True and value or ''
 
     def run(self):
         print str(self)

@@ -1,2 +1,2 @@
 """ """
-from manipulation import FastqToFasta
+from manipulation import FastqToFasta, FastxClipper
