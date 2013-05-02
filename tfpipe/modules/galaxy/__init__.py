@@ -1,2 +1,2 @@
 """ """
-from convert import FastqToFasta
+from manipulation import FastqToFasta
