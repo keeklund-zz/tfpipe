@@ -3,12 +3,17 @@
 """
 from tfpipe.utils.log import logger
 
+# check how arguments are passed to object
 class CommandLine(object):
     """Generic Comand Line Interace functionality. 
 
     """
     def __init__(self, **inputs):
-        """ 
+        """Initialize CommandLine.
+
+        Objects that inherit this class receive CommandLine 
+        methods and attributes.  Those parent objects can 
+        also override the cmd attribute.
 
         """
         super(CommandLine, self).__init__(**inputs)
@@ -18,6 +23,8 @@ class CommandLine(object):
         self.args = {} # self._init_arg(inputs, 'args')
         if self.cmd is None:
             self.cmd = self._cmd
+        logger.info("%s initialized with '%s' input, '%s' output" % 
+                    (self.cmd, self.input_file, self.output_file))
 
     def _init_arg(self, inputs, arg_key):
         """Initialize arguments passed to class.
@@ -44,10 +51,12 @@ class CommandLine(object):
 
         """
         self.args[arg] = True and value or ''
-        logger.info("add arg")
+        logger.info("argument: '%s' with value: '%s' added to %s" % 
+                    (arg, self.args[arg], self.cmd))
 
     def show(self):
         print str(self)
 
     def get_command(self):
         return str(self)
+
