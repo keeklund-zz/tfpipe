@@ -24,21 +24,14 @@ class CommandLine(object):
         """
         super(CommandLine, self).__init__()
         self.cmd = inputs.get('cmd', None)
-        self.args = self._init_arg(inputs, 'args')
-        
+        self.args = inputs.get('args', {})
         if self.cmd is None:
             self.cmd = self._cmd
-#        logger.info("%s initialized with '%s' input, '%s' output" % 
-#                    (self.cmd, self.input_file, self.output_file))
+        logger.info("%s initialized with '%s' arguments" % 
+                    (self.cmd, self._parse_args()))
 
-    def _init_arg(self, inputs, arg_key):
-        """Initialize arguments passed to class.
-
-        """
-        try:
-            return inputs[arg_key]
-        except KeyError:
-            return {}
+    def _parse_args(self):
+        return " ".join([" ".join((k, v)) for k, v in self.args.iteritems()])
 
     def __repr__(self):
         """Command Line representation."""
@@ -48,8 +41,7 @@ class CommandLine(object):
     # imagine there is a better way 
     def __str__(self):
         """Represent object as string."""
-        tmp = " ".join([" ".join((k, v)) for k, v in self.args.iteritems()])
-        return " ".join((self.cmd, tmp))
+        return " ".join((self.cmd, self._parse_args()))
 
     def add_argument(self, arg, value=None):
         """Method adds command line arguments to object.
