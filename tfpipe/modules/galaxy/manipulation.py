@@ -15,7 +15,7 @@ class FastqToFasta(CommandLine):
 
     _cmd = 'fastq_to_fasta'
 
-    # will need to add methods
+    # will need to add methods as necessary
 
 
 class FastxClipper(CommandLine):
