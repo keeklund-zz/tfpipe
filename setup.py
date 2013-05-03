@@ -11,6 +11,7 @@ setup(
               'tfpipe.modules', 
               'tfpipe.modules.galaxy',
               'tfpipe.pipeline', 
+              'tfpipe.utils',
               'tfpipe.test'],
     scripts=['bin/example.py',],
     url='http://fureylab.web.unc.edu',
