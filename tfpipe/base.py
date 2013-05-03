@@ -1,7 +1,13 @@
 """Base.py holds common functionality for future classes.
 
 """
-from tfpipe.utils.log import logger
+from os import path
+import logging
+import logging.config
+
+conffile = path.join(path.dirname(path.abspath(__file__)), 'log.conf')
+logging.config.fileConfig(conffile)
+logger = logging
 
 # check how arguments are passed to object
 class CommandLine(object):
@@ -51,7 +57,7 @@ class CommandLine(object):
 
         """
         self.args[arg] = True and value or ''
-        logger.info("argument: '%s' with value: '%s' added to %s" % 
+        logger.info("argument '%s %s' added to %s" % 
                     (arg, self.args[arg], self.cmd))
 
     def show(self):
