@@ -2,7 +2,8 @@
 
 """
 import tfpipe.modules.galaxy
-from utils.logger import Log
+from tfpipe.utils.log import logger
+
 
 
 

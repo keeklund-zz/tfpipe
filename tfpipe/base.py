@@ -1,7 +1,7 @@
 """Base.py holds common functionality for future classes.
 
 """
-from tfpipe.utils import log 
+from tfpipe.utils.log import logger
 
 class CommandLine(object):
     """Generic Comand Line Interace functionality. 
@@ -44,7 +44,7 @@ class CommandLine(object):
 
         """
         self.args[arg] = True and value or ''
-        log.info("add arg")
+        logger.info("add arg")
 
     def show(self):
         print str(self)
