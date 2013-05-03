@@ -2,7 +2,7 @@
 
 import tfpipe.modules.galaxy as galaxy
 
-job1 = galaxy.FastqToFasta()
+job1 = galaxy.FastqToFasta(cmd='new')
 job1.add_argument('-i', 'myfile.fq')
 job1.add_argument('-o', 'myoutfile.fa')
 job1.show()

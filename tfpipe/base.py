@@ -22,15 +22,14 @@ class CommandLine(object):
         also override the cmd attribute.
 
         """
-        super(CommandLine, self).__init__(**inputs)
-        self.cmd = self._init_arg(inputs, 'cmd')
-        self.input_file = self._init_arg(inputs, 'input')
-        self.output_file = self._init_arg(inputs, 'output')
-        self.args = {} # self._init_arg(inputs, 'args')
+        super(CommandLine, self).__init__()
+        self.cmd = inputs.get('cmd', None)
+        self.args = self._init_arg(inputs, 'args')
+        
         if self.cmd is None:
             self.cmd = self._cmd
-        logger.info("%s initialized with '%s' input, '%s' output" % 
-                    (self.cmd, self.input_file, self.output_file))
+#        logger.info("%s initialized with '%s' input, '%s' output" % 
+#                    (self.cmd, self.input_file, self.output_file))
 
     def _init_arg(self, inputs, arg_key):
         """Initialize arguments passed to class.
@@ -39,7 +38,7 @@ class CommandLine(object):
         try:
             return inputs[arg_key]
         except KeyError:
-            return None
+            return {}
 
     def __repr__(self):
         """Command Line representation."""
