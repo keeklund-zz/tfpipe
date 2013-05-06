@@ -10,6 +10,7 @@ logging.config.fileConfig(conffile)
 logger = logging
 
 # check how arguments are passed to object
+# how will they know what arguments can be passed?
 class CommandLine(object):
     """Generic Comand Line Interace functionality. 
 
@@ -25,10 +26,11 @@ class CommandLine(object):
         super(CommandLine, self).__init__()
         self.cmd = inputs.get('cmd', None)
         self.args = inputs.get('args', {})
+        self.name = inputs.get('name', None)
         if self.cmd is None:
             self.cmd = self._cmd
-        logger.info("%s initialized with '%s' arguments" % 
-                    (self.cmd, self._parse_args()))
+        logger.info("%s initialized with '%s' arguments and name: %s " % 
+                    (self.cmd, self._parse_args(), self.name))
 
     def _parse_args(self):
         return " ".join([" ".join((k, v)) for k, v in self.args.iteritems()])
@@ -50,6 +52,14 @@ class CommandLine(object):
         self.args[arg] = True and value or ''
         logger.info("argument '%s %s' added to %s" % 
                     (arg, self.args[arg], self.cmd))
+
+    def add_jobname(self, jobname):
+        """Add name to current job.
+
+        """
+        self.name = str(jobname)
+        logger.info("jobname '%s' added to self.cmd" %
+                    (self.name, self.cmd))
 
     def show(self):
         print str(self)
