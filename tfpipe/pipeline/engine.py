@@ -25,7 +25,8 @@ class WorkFlow(object):
         tmp = "&&".join([d.name for d in job.dep])
         bsub += "-w done(%s) " % tmp if job.dep else '' 
         return bsub + str(job)
-# possible to add attributes to job from within workflow?
+
+
 # need ability to specify how dependency should work, whether 
 # it's done, exited, ended, etc.
 
