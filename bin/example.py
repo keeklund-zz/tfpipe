@@ -15,6 +15,6 @@ fxc.add_argument('-i', 'someinfile.fq')
 fxc.add_argument('-o', 'someoutfile.fq')
 fxc.add_argument('-c')
 fxc.add_jobname("mySecondJob")
-#fxc.add_dependency(fq2a)
+fxc.add_dependency([fq2a, fq2a])
 fxc.show()
 

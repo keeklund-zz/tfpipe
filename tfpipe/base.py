@@ -19,11 +19,15 @@ class Job(object):
         methods and attributes.  Those parent objects can 
         also override the cmd attribute.
 
+        Parameters:
+        cmd, args, name, dep
+
         """
         super(Job, self).__init__()
         self.cmd = inputs.get('cmd', None)
         self.args = inputs.get('args', {})
         self.name = inputs.get('name', self._make_jobname())
+        self.dep = inputs.get('dep', [])
         if self.cmd is None:
             self.cmd = self._cmd
         logger.info("%s: initialized with '%s' arguments and command: %s " % 
@@ -68,3 +72,21 @@ class Job(object):
     def _make_jobname(self, size=8, chars=string.ascii_letters):
         """Return random string."""
         return "".join(random.choice(chars) for x in range(size))
+
+    def add_dependency(self, dep):
+        """Add dependencies to object.
+
+        Use by passing either a single object or list of objects.
+
+        """
+        # check if variable dep is initialized?
+        if isinstance(dep, list):
+            self.dep += dep
+        else:
+            self.dep.append(dep)
+
+        # sloppy way, lists all dependencies when one is added
+        # might be useful
+        for d in self.dep:
+            logger.info("%s: has %s as dependency" % 
+                        (self.name, repr(d.__class__.__name__)))
