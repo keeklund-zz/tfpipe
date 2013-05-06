@@ -1,7 +1,7 @@
 """ """
-from tfpipe.base import CommandLine
+from tfpipe.base import Job
 
-class FastqToFasta(CommandLine):
+class FastqToFasta(Job):
     """Use FastqToFasta to convert fastq to fasta file.
 
     Examples:
@@ -18,7 +18,7 @@ class FastqToFasta(CommandLine):
     # will need to add methods as necessary
 
 
-class FastxClipper(CommandLine):
+class FastxClipper(Job):
     """Use FastxClipper to remove or clip reads. 
 
     """

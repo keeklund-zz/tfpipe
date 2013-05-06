@@ -25,5 +25,5 @@ formatter=simpleFormatter
 args=("/tmp/tfpipe.log",)
 
 [formatter_simpleFormatter]
-format=%(asctime)s - %(name)s - %(module)s - %(levelname)s - %(message)s
+format=%(asctime)s - %(name)s - %(levelname)s - %(message)s
 datefmt=

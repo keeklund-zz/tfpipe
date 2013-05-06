@@ -8,19 +8,19 @@ from tfpipe.utils import logger
 
 # check how arguments are passed to object
 # how will they know what arguments can be passed?
-class CommandLine(object):
-    """Generic Comand Line Interace functionality. 
+class Job(object):
+    """Generic Job Interace functionality. 
 
     """
     def __init__(self, **inputs):
         """Initialize CommandLine.
 
-        Objects that inherit this class receive CommandLine 
+        Objects that inherit this class receive Job
         methods and attributes.  Those parent objects can 
         also override the cmd attribute.
 
         """
-        super(CommandLine, self).__init__()
+        super(Job, self).__init__()
         self.cmd = inputs.get('cmd', None)
         self.args = inputs.get('args', {})
         self.name = inputs.get('name', self._make_jobname())
