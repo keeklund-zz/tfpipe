@@ -2,7 +2,7 @@
 
 """
 
-import tfpipe.jobs.galaxy as galaxy
+import tfpipe.modules.galaxy as galaxy
 
 job1 = galaxy.FastqToFasta(cmd='new', 
                            args={'-i':'otherinputfile.fastq'}, 

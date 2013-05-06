@@ -1,7 +1,7 @@
 """
 
 """
-import tfpipe.jobs.galaxy
+import tfpipe.modules.galaxy
 
 
 
