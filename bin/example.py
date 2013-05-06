@@ -2,7 +2,7 @@
 
 """
 
-import tfpipe.modules.galaxy as galaxy
+import tfpipe.jobs.galaxy as galaxy
 
 job1 = galaxy.FastqToFasta(cmd='new', 
                            args={'-i':'otherinputfile.fastq'}, 
@@ -15,6 +15,6 @@ job2.add_argument('-i', 'someinfile.fq')
 job2.add_argument('-o', 'someoutfile.fq')
 job2.add_argument('-c')
 job2.add_jobname("mySecondJob")
-job2.add_dependency([fq2a, fq2a])
+job2.add_dependency([job1, job1])
 job2.show()
 
