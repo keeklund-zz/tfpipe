@@ -21,7 +21,7 @@ class WorkFlow(object):
             print self._create_submit_str(job)
     
     def _create_submit_str(self, job):
-        bsub = "bsub -J %s " % job.name
+        bsub = "bsub -J %s -o ~/%s.out " % (job.name, job.name)
         tmp = "&&".join([d.name for d in job.dep])
         bsub += "-w done(%s) " % tmp if job.dep else '' 
         return bsub + str(job)
