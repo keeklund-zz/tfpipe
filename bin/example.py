@@ -14,6 +14,6 @@ job2 = galaxy.FastxClipper()
 job2.add_argument('-i', 'someinfile.fq')
 job2.add_argument('-o', 'someoutfile.fq')
 job2.add_argument('-c')
-job2.add_jobname('mySecondJob')
+job2.add_jobname("mySecondJob")
 job2.show()
 
