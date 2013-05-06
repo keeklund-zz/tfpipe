@@ -1,5 +1,7 @@
 
-tfpipe
+==================
+TerryFureyPipeLine
+==================
 
     tfpipe is short for Terry Furey Pipeline.  It is a simple framework for 
     initializing and running workflows.  It generates pipeline workflows 
@@ -7,6 +9,7 @@ tfpipe
 
 
 Typical usage:
+==============
 
     #!/usr/bin/env python
     
@@ -17,15 +20,15 @@ Typical usage:
 
 
 Installation:
-    
+=============    
     Initial install:
-        
+    ----------------
+
 	sudo pip install /path/to/dist/tfpipe-X.X.X.tar.gz
 
     Upgrade:
-
+    --------
+    
 	?? need to double check this
 	sudo pip install -U /path/to/dist/tfpipe-X.X.X.tar.gz
-
-
 
