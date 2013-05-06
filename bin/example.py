@@ -4,17 +4,17 @@
 
 import tfpipe.modules.galaxy as galaxy
 
-fq2a = galaxy.FastqToFasta(cmd='new', 
+job1 = galaxy.FastqToFasta(cmd='new', 
                            args={'-i':'otherinputfile.fastq'}, 
                            name='myfastq2a')
-fq2a.add_argument('-o', 'myoutfile.fa')
-fq2a.show()
+job1.add_argument('-o', 'myoutfile.fa')
+job1.show()
 
-fxc = galaxy.FastxClipper()
-fxc.add_argument('-i', 'someinfile.fq')
-fxc.add_argument('-o', 'someoutfile.fq')
-fxc.add_argument('-c')
-fxc.add_jobname("mySecondJob")
-fxc.add_dependency([fq2a, fq2a])
-fxc.show()
+job2 = galaxy.FastxClipper()
+job2.add_argument('-i', 'someinfile.fq')
+job2.add_argument('-o', 'someoutfile.fq')
+job2.add_argument('-c')
+job2.add_jobname("mySecondJob")
+job2.add_dependency([fq2a, fq2a])
+job2.show()
 
