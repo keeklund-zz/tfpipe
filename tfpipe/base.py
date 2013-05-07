@@ -13,7 +13,7 @@ class Job(object):
 
     """
     def __init__(self, **inputs):
-        """Initialize CommandLine.
+        """Initialize Job.
 
         Objects that inherit this class receive Job
         methods and attributes.  Those parent objects can 
@@ -90,3 +90,7 @@ class Job(object):
         for d in self.dep:
             logger.info("%s: has %s as dependency" % 
                         (self.name, repr(d.__class__.__name__)))
+
+    def make_list(self):
+        l = [self.cmd, ]
+        return l + list(reduce(lambda x, y: x + y, self.args.items()))
