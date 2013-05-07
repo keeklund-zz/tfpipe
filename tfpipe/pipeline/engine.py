@@ -1,7 +1,7 @@
 """Defines functionality for pipeline.
 
 """
-from subprocess import Popen
+from subprocess import Popen, PIPE, STDOUT
 from tfpipe.utils import logger
 
 class WorkFlow(object):
@@ -65,7 +65,7 @@ class WorkFlow(object):
         """
         for job in self.jobs:
             p = Popen(self._create_submit_list(job))
-            print p
+            retval = p.wait()
 
 
 # need ability to specify how dependency should work, whether 
