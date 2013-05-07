@@ -10,7 +10,6 @@ job1 = galaxy.FastqToFasta(cmd='new',
                            args={'-i':'inputfile.fastq',
                                  '-o': 'outfile.fa'}, 
                            name='myfastq2a')
-print job1.make_list()
 
 # build second job
 job2 = galaxy.FastxClipper()

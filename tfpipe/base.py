@@ -91,6 +91,11 @@ class Job(object):
             logger.info("%s: has %s as dependency" % 
                         (self.name, repr(d.__class__.__name__)))
 
-    def make_list(self):
+    def show_as_list(self):
+        """Output command as list.
+
+        """
         l = [self.cmd, ]
         return l + list(reduce(lambda x, y: x + y, self.args.items()))
+
+
