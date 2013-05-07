@@ -57,8 +57,10 @@ class WorkFlow(object):
         """
         for job in self.jobs:
             print self._create_submit_str(job)
-            print self._create_submit_list(job)
-
+#            print self._create_submit_list(job)
+            logger.info("WorkFlow SHOW: %s" % 
+                        self._create_submit_str(job))
+            
     def run(self):
         """Method submits command string or list to shell.
 
@@ -66,8 +68,11 @@ class WorkFlow(object):
         for job in self.jobs:
             p = Popen(self._create_submit_list(job))
             retval = p.wait()
+            logger.info("WorkFlow SUBMIT: %s" % 
+                        self._create_submit_str(job))
 
 
 # need ability to specify how dependency should work, whether 
 # it's done, exited, ended, etc.
+
 
