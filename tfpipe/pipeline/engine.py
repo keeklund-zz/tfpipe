@@ -7,15 +7,16 @@ class WorkFlow(object):
     """
 
     """
-    def __init__(self, job_list=[]):
+    def __init__(self, job_list=[], lsf=True):
         self.jobs = job_list
+        self.lsf = lsf
         logger.info("WorkFlow created")
 
     def _create_submit_str(self, job):
-        return self._build_bsub(job) + str(job)
+        return (self._build_bsub(job) if self.lsf else '') + str(job)
 
     def _create_submit_list(self, job):
-        bsub = self._build_bsub(job).split()
+        bsub = self._build_bsub(job).split() if self.lsf else []
         return bsub + job.show_as_list()
         
     def _dep_str(self, job):
@@ -30,11 +31,14 @@ class WorkFlow(object):
         """ """
         pass
 
-    # check order of jobs
     def show(self):
         for job in self.jobs:
             print self._create_submit_str(job)
             print self._create_submit_list(job)
+
+    def run(self):
+        pass
+
 
 # need ability to specify how dependency should work, whether 
 # it's done, exited, ended, etc.

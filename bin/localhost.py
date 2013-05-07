@@ -1,4 +1,6 @@
-"""FastqToFasta example script.
+"""Example for pipeline on localhost.
+
+Assumes jobs will run serially.
 
 """
 # import modules needed to construct jobs
@@ -6,8 +8,7 @@ import tfpipe.modules.galaxy as galaxy
 from tfpipe.pipeline import WorkFlow
 
 # build first job
-job1 = galaxy.FastqToFasta(cmd='new', 
-                           args={'-i':'inputfile.fastq',
+job1 = galaxy.FastqToFasta(args={'-i':'inputfile.fastq',
                                  '-o': 'outfile.fa'}, 
                            name='myfastq2a')
 
@@ -20,12 +21,6 @@ job2.add_jobname("mySecondJob")
 job2.add_dependency([job1,])
 
 # add jobs to workflow
-wf = WorkFlow([job1, job2])
-wf.show()
+wf = WorkFlow([job1, job2], lsf=False)
+wf.run()
 
-"""
-wf = WorkFlow()
-wf.add_job(job1)
-wf.add_job(job2, dep=job1)
-"""
-# will need to add dependencies to job once inside workflow
