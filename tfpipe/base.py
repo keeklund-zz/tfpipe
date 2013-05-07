@@ -33,9 +33,6 @@ class Job(object):
         logger.info("%s: initialized with '%s' arguments and command: %s " % 
                     (self.name, self._parse_args(), self.cmd))
 
-    def _parse_args(self):
-        return " ".join([" ".join((k, v)) for k, v in self.args.iteritems()])
-
     def __repr__(self):
         """Command Line representation."""
         return "%s(%r)" % (self.__class__, self.args)
@@ -45,6 +42,13 @@ class Job(object):
     def __str__(self):
         """Represent object as string."""
         return " ".join((self.cmd, self._parse_args()))
+
+    def _parse_args(self):
+        return " ".join([" ".join((k, v)) for k, v in self.args.iteritems()])
+
+    def _make_jobname(self, size=8, chars=string.ascii_letters):
+        """Return random string."""
+        return "".join(random.choice(chars) for x in range(size))
 
     def add_argument(self, arg, value=None):
         """Method adds command line arguments to object.
@@ -68,10 +72,6 @@ class Job(object):
 
     def get_command(self):
         return str(self)
-
-    def _make_jobname(self, size=8, chars=string.ascii_letters):
-        """Return random string."""
-        return "".join(random.choice(chars) for x in range(size))
 
     def add_dependency(self, dep):
         """Add dependencies to object.
