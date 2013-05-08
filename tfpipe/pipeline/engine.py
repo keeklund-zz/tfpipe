@@ -1,6 +1,7 @@
 """Defines functionality for pipeline.
 
 """
+from sys import exit
 from subprocess import Popen, PIPE, STDOUT
 from tfpipe.utils import logger
 
@@ -14,7 +15,21 @@ class WorkFlow(object):
         """
         self.jobs = job_list
         self.lsf = lsf
+        self._check_jobnames()
         logger.info("WorkFlow created")
+
+    def _check_jobnames(self):
+        """Method to check job names for duplicates.
+
+        WorkFlow terminates if duplicate is found in LSF mode.
+
+        """
+        job_names = [job.name for job in self.jobs]
+        if (len(set(job_names)) == len(job_names)) and self.lsf:
+            logger.info("WorkFlow job names are unique.")
+        elif self.lsf:
+            logger.warn("WorkFlow job names are NOT unique.")
+            exit("WARNING: WorkFlow job names are NOT unique.")
 
     def _create_submit_str(self, job):
         """Build submission string.
