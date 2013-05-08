@@ -15,17 +15,16 @@ job1 = galaxy.FastqToFasta(cmd='new',
 job2 = galaxy.FastxClipper()
 job2.add_argument('-i', 'outfile.fa')
 job2.add_argument('-o', 'newoutfile.fa')
-job2.add_argument('-c')
+job2.add_argument('-C')
 job2.add_jobname("mySecondJob")
 job2.add_dependency(done=job1)
 
+# build third job
+job3 = galaxy.FastxClipper()
+job3.add_argument('-c')
+job3.add_dependency(done=job1, exit=job2, dep_str="done||exit")
+
 # add jobs to workflow
-wf = WorkFlow([job1, job2])
+wf = WorkFlow([job1, job2, job3])
 wf.show()
 
-"""
-wf = WorkFlow()
-wf.add_job(job1)
-wf.add_job(job2, dep=job1)
-"""
-# will need to add dependencies to job once inside workflow

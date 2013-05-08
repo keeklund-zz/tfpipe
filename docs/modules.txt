@@ -5,5 +5,5 @@ Modules
 Overview
 ========
 
-Modules inherit the Job class and are used to create 
-jobs/nodes/processes in the pipeline.  
+Modules inherit the Job class and are used to create jobs/nodes/processes in the 
+pipeline.  

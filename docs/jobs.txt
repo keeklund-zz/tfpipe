@@ -1,0 +1,31 @@
+""""
+JOBS
+""""
+
+Overview
+========
+
+Dependencies
+============
+
+Pipelines, by definition, require dependencies at some point in the workflow. 
+This means that the output of a job may be the input to another.  In this 
+scenario, the second job cannot start until the first has completed.  LSF 
+doesn't know how to handle this without the '-w' argument.  Depending on your 
+workflow, you may want the second job to start only after successful completion 
+of the first job, or you may want your second job to start once the first has 
+exited with any code.  To specify the behavior of your pipeline, reference the 
+'Dependency Conditions' section below.
+
+
+Dependency Conditions
+---------------------
+
+1. done(job_ID | "job_name")
+2. ended(job_ID | "job_name")
+3. exit(job_ID [,[op] exit_code])
+4. exit("job_name"[,[op] exit_code])
+5. external(job_ID | "job_name", "status_text")
+6. post_done(job_ID | "job_name")
+7. post_err(job_ID | "job_name")
+8. started(job_ID | "job_name")
