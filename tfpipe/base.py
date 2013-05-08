@@ -73,10 +73,10 @@ class Job(object):
     def get_command(self):
         return str(self)
 
+    # dependency can be string for complicated ones like: 'done(312) && (started(Job2)||exit("99Job"))'
+    # dependency can be objects passed
     def add_dependency(self, dep):
         """Add dependencies to object.
-
-        Use by passing either a single object or list of objects.
 
         """
         # check if variable dep is initialized?

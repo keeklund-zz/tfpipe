@@ -5,12 +5,16 @@ from sys import exit
 from subprocess import Popen, PIPE, STDOUT
 from tfpipe.utils import logger
 
+# add more checks and validation
 class WorkFlow(object):
-    """
+    """WorkFlow creates and executes job submission statements.
 
     """
     def __init__(self, job_list=[], lsf=True):
         """Initialize WorkFlow.
+
+        Method sets job lists and environment.  Depending on the
+        environment, job names are checked before submission.
 
         """
         self.jobs = job_list
