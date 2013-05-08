@@ -24,7 +24,7 @@ job2 = galaxy.FastxClipper()
 job2.add_argument('-i', data_dir + 'rep2.fasta')
 job2.add_argument('-o', data_dir + 'newoutfile.fa')
 job2.add_argument('-C')
-job2.add_jobname("myfastq2a")
+job2.add_jobname("myFastxClipper")
 job2.add_dependency([job1,])
 
 # add jobs to workflow

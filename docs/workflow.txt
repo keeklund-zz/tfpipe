@@ -1,0 +1,10 @@
+========
+WorkFlow
+========
+
+Overview
+========
+
+WorkFlow class takes a list of jobs as input and
+generates appropriate submission commands based 
+on environment.  
