@@ -17,7 +17,7 @@ job2.add_argument('-i', 'outfile.fa')
 job2.add_argument('-o', 'newoutfile.fa')
 job2.add_argument('-c')
 job2.add_jobname("mySecondJob")
-job2.add_dependency([job1,])
+job2.add_dependency(done=job1)
 
 # add jobs to workflow
 wf = WorkFlow([job1, job2])

@@ -1,6 +1,7 @@
 """Defines functionality for pipeline.
 
 """
+from re import findall
 from sys import exit
 from subprocess import Popen, PIPE, STDOUT
 from tfpipe.utils import logger
@@ -10,6 +11,8 @@ class WorkFlow(object):
     """WorkFlow creates and executes job submission statements.
 
     """
+    dep_options = ('done', 'ended', 'exit', 'external',
+                   'post_done', 'post_err', 'started')
     def __init__(self, job_list=[], lsf=True):
         """Initialize WorkFlow.
 
@@ -52,10 +55,13 @@ class WorkFlow(object):
         bsub = self._build_bsub(job).split() if self.lsf else []
         return bsub + job.show_as_list()
         
-    def _dep_str(self, job):
-        """Creates lsf dependency string.
+    def _update_dep_str(self, job):
+        """Updates lsf dependency string.
 
         """
+        dep_options = findall(r"[\w']+", job.dep_str)
+        for depopt in dep_options:
+            job.dep_str.replace(depopt, depopt + job.dep[depopt].pop(0))
         return "&&".join([d.name for d in job.dep])
 
     def _build_bsub(self, job):
@@ -63,7 +69,8 @@ class WorkFlow(object):
 
         """
         bsub = "bsub -J %s -o ~/%s.out " % (job.name, job.name)
-        bsub += "-w done(%s) " % self._dep_str(job) if job.dep else '' 
+        bsub += "-w done(%s) " % self._update_dep_str(job) if job.dep else '' 
+        
         return bsub
 
     def add_job(self, newjob):
@@ -81,7 +88,7 @@ class WorkFlow(object):
                         self._create_submit_str(job))
             
     def run(self):
-        """Method submits command string or list to shell.
+        """Method submits command list to shell.
 
         """
         for job in self.jobs:

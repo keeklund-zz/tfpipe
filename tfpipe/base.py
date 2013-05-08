@@ -12,6 +12,8 @@ class Job(object):
     """Generic Job Interace functionality. 
 
     """
+    dep_options = ('done', 'ended', 'exit', 'external',
+                   'post_done', 'post_err', 'started')
     def __init__(self, **inputs):
         """Initialize Job.
 
@@ -25,13 +27,22 @@ class Job(object):
         """
         super(Job, self).__init__()
         self.cmd = inputs.get('cmd', None)
-        self.args = inputs.get('args', {})
+        self.args = inputs.get('args', {}) # needs to be dictionary of lists
         self.name = inputs.get('name', self._make_jobname())
-        self.dep = inputs.get('dep', [])
+        self.dep_str = ''
+        self.dep = self._initialize_dependencies(inputs)
         if self.cmd is None:
             self.cmd = self._cmd
         logger.info("%s: initialized with '%s' arguments and command: %s " % 
                     (self.name, self._parse_args(), self.cmd))
+
+    def _initialize_dependencies(self, inputs):
+        tmp = {}
+        for depopt in self.dep_options:
+            tmp[depopt] = []
+        for key, value in inputs.get('dep', ''):
+            tmp[key].append(value)
+        return tmp
 
     def __repr__(self):
         """Command Line representation."""
@@ -75,10 +86,9 @@ class Job(object):
 
     # dependency can be string for complicated ones like: 'done(312) && (started(Job2)||exit("99Job"))'
     # dependency can be objects passed
-    def add_dependency(self, dep):
+    def add_dependency(self, **kwargs):
         """Add dependencies to object.
 
-        """
         # check if variable dep is initialized?
         if isinstance(dep, list):
             self.dep += dep
@@ -90,6 +100,21 @@ class Job(object):
         for d in self.dep:
             logger.info("%s: has %s as dependency" % 
                         (self.name, repr(d.__class__.__name__)))
+        """
+        # need way to check string matches keys?
+        self.dep_str = kwargs.pop('dep_str', 'done')
+        for key, value in kwargs.iteritems():
+            if isinstance(value, list):
+                try:
+                    self.dep[key] += list(value)
+                except KeyError:
+                    self.dep[key] = list(value)
+            elif isinstance(value, (dict, str, int, float)):
+                # assert instead?
+                exit("Operand of key word argument must be type list.")
+                logger.warn("Operand of key word argument must be type list.")
+
+        self.dep = kwargs
 
     def show_as_list(self):
         """Output command as list.
