@@ -14,8 +14,8 @@ class WorkFlow(object):
     def __init__(self, job_list=[], lsf=True):
         """Initialize WorkFlow.
 
-        Method sets job lists and environment.  Depending on the
-        environment, job names are checked before submission.
+        Method sets job lists and environment.  Depending on the environment, 
+        job names are checked before submission.
 
         """
         self.jobs = job_list

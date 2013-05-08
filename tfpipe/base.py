@@ -17,9 +17,8 @@ class Job(object):
     def __init__(self, **inputs):
         """Initialize Job.
 
-        Objects that inherit this class receive Job
-        methods and attributes.  Those parent objects can 
-        also override the cmd attribute.
+        Objects that inherit this class receive Job methods and attributes.  
+        Those parent objects can also override the cmd attribute.
 
         Parameters:
         cmd, args, name, dep
@@ -37,6 +36,12 @@ class Job(object):
                     (self.name, self._parse_args(), self.cmd))
 
     def _initialize_dependencies(self, inputs):
+        """Method to initialize job dependencies.
+
+        Initializes dictionary of LSF Dependency Condition keys with empty list
+        values.
+
+        """
         tmp = {depopt:[] for depopt in self.dep_options}
         for key, value in inputs.get('dep', ''):
             tmp[key].append(value)
@@ -87,17 +92,6 @@ class Job(object):
     def add_dependency(self, **kwargs):
         """Add dependencies to object.
 
-        # check if variable dep is initialized?
-        if isinstance(dep, list):
-            self.dep += dep
-        else:
-            self.dep.append(dep)
-
-        # sloppy way, lists all dependencies when one is added
-        # might be useful
-        for d in self.dep:
-            logger.info("%s: has %s as dependency" % 
-                        (self.name, repr(d.__class__.__name__)))
         """
         # need way to check string matches keys?
         self.dep_str = kwargs.pop('dep_str', 'done')
