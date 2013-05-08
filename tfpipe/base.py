@@ -29,7 +29,7 @@ class Job(object):
         self.cmd = inputs.get('cmd', None)
         self.args = inputs.get('args', {}) # needs to be dictionary of lists
         self.name = inputs.get('name', self._make_jobname())
-        self.dep_str = ''
+        self.dep_str = inputs.get('dep_str', '')
         self.dep = self._initialize_dependencies(inputs)
         if self.cmd is None:
             self.cmd = self._cmd
@@ -37,9 +37,7 @@ class Job(object):
                     (self.name, self._parse_args(), self.cmd))
 
     def _initialize_dependencies(self, inputs):
-        tmp = {}
-        for depopt in self.dep_options:
-            tmp[depopt] = []
+        tmp = {depopt:[] for depopt in self.dep_options}
         for key, value in inputs.get('dep', ''):
             tmp[key].append(value)
         return tmp

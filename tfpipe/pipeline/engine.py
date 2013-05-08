@@ -11,8 +11,6 @@ class WorkFlow(object):
     """WorkFlow creates and executes job submission statements.
 
     """
-    dep_options = ('done', 'ended', 'exit', 'external',
-                   'post_done', 'post_err', 'started')
     def __init__(self, job_list=[], lsf=True):
         """Initialize WorkFlow.
 
