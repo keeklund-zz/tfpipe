@@ -60,19 +60,17 @@ class WorkFlow(object):
 
         """
         job_dep_options = findall(r"[\w']+", job.dep_str)
-        print job.dep_str
         for depopt in job_dep_options:
-            job.dep_str.replace(depopt, depopt + job.dep[depopt].pop(0))
-        print job.dep_str
-        return "&&".join([d.name for d in job.dep])
+            job.dep_str = job.dep_str.replace(depopt, depopt + "(%s)" % 
+                                              job.dep.get(depopt).name)
+        return "-w %s " % job.dep_str 
 
     def _build_bsub(self, job):
         """Create bsub command submission string.
 
         """
         bsub = "bsub -J %s -o ~/%s.out " % (job.name, job.name)
-        bsub += "-w done(%s) " % self._update_dep_str(job) if job.dep else '' 
-        
+        bsub += self._update_dep_str(job)
         return bsub
 
     def add_job(self, newjob):
@@ -86,8 +84,7 @@ class WorkFlow(object):
         for job in self.jobs:
             print self._create_submit_str(job)
 #            print self._create_submit_list(job)
-            logger.info("WorkFlow SHOW: %s" % 
-                        self._create_submit_str(job))
+            logger.info("WorkFlow SHOW: %s" % job.dep_str)
             
     def run(self):
         """Method submits command list to shell.
@@ -96,8 +93,7 @@ class WorkFlow(object):
         for job in self.jobs:
             p = Popen(self._create_submit_list(job))
             retval = p.wait()
-            logger.info("WorkFlow SUBMIT: %s" % 
-                        self._create_submit_str(job))
+            logger.info("WorkFlow SUBMIT: %s" % job.dep_str)
 
 
 # need ability to specify how dependency should work, whether 
