@@ -59,9 +59,11 @@ class WorkFlow(object):
         """Updates lsf dependency string.
 
         """
-        dep_options = findall(r"[\w']+", job.dep_str)
-        for depopt in dep_options:
+        job_dep_options = findall(r"[\w']+", job.dep_str)
+        print job.dep_str
+        for depopt in job_dep_options:
             job.dep_str.replace(depopt, depopt + job.dep[depopt].pop(0))
+        print job.dep_str
         return "&&".join([d.name for d in job.dep])
 
     def _build_bsub(self, job):
