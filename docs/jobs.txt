@@ -65,11 +65,11 @@ Now, assume you forgot to specify a dep_str and you entered something like:
 Tfpipe assumes '&&' by default. Your dep_str will be 'done&&exited'. If you need 
 '||', you will have to specify that explicitly.
 
-Finally, the 'dep_str' can be specified during job initialization:
+Finally, the 'dep_str' can be specified during job initialization, like so:
 
     >>> job2 = FastxClipper(dep_str='exited(myFirstJob)')
 
-This means using the job1's name, NOT the job1's variable name (job1.name = 
-'myFirstJob').
-
+The user MUST use job1's name, NOT the job1's variable name (job1.name => 
+'myFirstJob' NOT job1).  This has to be done explicitly and must be exactly what 
+LSF expects to see.  You can consider this an override option.
 

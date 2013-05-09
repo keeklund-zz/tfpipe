@@ -21,7 +21,7 @@ class Job(object):
         Those parent objects can also override the cmd attribute.
 
         Parameters:
-        cmd, args, name, dep
+        cmd, args, name, dep, dep_str
 
         """
         super(Job, self).__init__()
