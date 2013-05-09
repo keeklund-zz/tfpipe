@@ -6,7 +6,6 @@ from sys import exit
 from subprocess import Popen, PIPE, STDOUT
 from tfpipe.utils import logger
 
-# add more checks and validation
 class WorkFlow(object):
     """WorkFlow creates and executes job submission statements.
 
@@ -94,8 +93,5 @@ class WorkFlow(object):
             logger.info("WorkFlow SUBMIT: %s" % 
                         self._create_submit_str(job))
 
-
-# need ability to specify how dependency should work, whether 
-# it's done, exited, ended, etc.
 
 

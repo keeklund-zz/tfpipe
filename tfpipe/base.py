@@ -17,7 +17,7 @@ class Job(object):
     def __init__(self, **inputs):
         """Initialize Job.
 
-        Objects that inherit this class receive Job methods and attributes.  
+        Objects that inherit this class receive Job methods and attributes. 
         Those parent objects can also override the cmd attribute.
 
         Parameters:
@@ -51,8 +51,6 @@ class Job(object):
         """Command Line representation."""
         return "%s(%r)" % (self.__class__, self.args)
 
-    # should this be used in this way?
-    # imagine there is a better way 
     def __str__(self):
         """Represent object as string."""
         return " ".join((self.cmd, self._parse_args()))
@@ -81,19 +79,16 @@ class Job(object):
         logger.info("%s: replacing jobname with '%s'" %
                     (tmp, self.name))
 
-    def show(self):
-        print str(self)
-
-    def get_command(self):
-        return str(self)
-
-    # dependency can be string for complicated ones like: 'done(312) && (started(Job2)||exit("99Job"))'
-    # dependency can be objects passed
+    # make it so list does not have to be specified
     def add_dependency(self, **kwargs):
         """Add dependencies to object.
 
+        Method allows user to add dependency arguments to current job.  User 
+        specifies under what dependency condition each job is located, and has 
+        ability to specify the dependency string.  Dependency conditions must be
+        of type list.
+
         """
-        # need way to check string matches keys?
         self.dep_str = kwargs.pop('dep_str', 'done')
         for key, value in kwargs.iteritems():
             if isinstance(value, list):
@@ -102,7 +97,6 @@ class Job(object):
                 except KeyError:
                     self.dep[key] = list(value)
             else:
-                # assert instead?
                 exit("Operand of dependency must be of type list.")
                 logger.warn("Operand of dependency must be of type list.")
 
@@ -114,5 +108,11 @@ class Job(object):
         """
         l = [self.cmd, ]
         return l + list(reduce(lambda x, y: x + y, self.args.items()))
+
+    def show(self):
+        print str(self)
+
+    def get_command(self):
+        return str(self)
 
 
