@@ -29,5 +29,5 @@ job2.add_dependency(done=job1)
 
 # add jobs to workflow
 wf = WorkFlow([job1, job2], lsf=False)
-wf.show()
+wf.run()
 

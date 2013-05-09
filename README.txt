@@ -3,8 +3,8 @@ TerryFureyPipeLine
 ==================
 
 tfpipe is short for Terry Furey Pipeline.  It is a simple framework for 
-initializing and running workflows.  It generates pipeline workflows 
-using the LSF scheduler on Kure.
+initializing and running workflows.  It generates pipeline workflows using the 
+LSF scheduler on Kure.
 
 
 Typical usage:
@@ -13,7 +13,7 @@ Typical usage:
 #!/usr/bin/env python
     
 from tfpipe.modules.galaxy import FastqToFasta
-from tfpipe.pipeline import engine
+from tfpipe.pipeline import WorkFlow
 
 extend example....
 

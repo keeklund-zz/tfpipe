@@ -57,11 +57,11 @@ class WorkFlow(object):
         """Updates lsf dependency string.
 
         """
-        job_dep_options = findall(r"[\w']+", job.dep_str)
-        for depopt in job_dep_options:
-            job.dep_str = job.dep_str.replace(depopt, depopt + "(%s)" % 
-                                              job.dep.get(depopt).name)
-        return "-w %s " % job.dep_str 
+        dep_options = findall(r"[\w']+", job.dep_str) 
+        for depopt in set(dep_options):
+            job.dep_str = job.dep_str.replace(depopt, depopt + "(%s)")
+        job_deps = tuple([job.dep.get(jdo).pop(0).name for jdo in dep_options])
+        return "-w %s " % (job.dep_str % job_deps)
 
     def _build_bsub(self, job):
         """Create bsub command submission string.

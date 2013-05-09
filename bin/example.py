@@ -22,7 +22,7 @@ job2.add_dependency(done=job1)
 # build third job
 job3 = galaxy.FastxClipper()
 job3.add_argument('-c')
-job3.add_dependency(done=job1, exit=job2, dep_str="done||exit")
+job3.add_dependency(done=[job1, job2], dep_str="done||done")
 
 # add jobs to workflow
 wf = WorkFlow([job1, job2, job3])

@@ -5,6 +5,9 @@ README.txt
 setup.py
 bin/example.py
 docs/FAQ.txt
+docs/jobs.txt
+docs/modules.txt
+docs/workflow.txt
 tfpipe/__init__.py
 tfpipe/base.py
 tfpipe/modules/__init__.py
