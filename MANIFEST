@@ -16,5 +16,6 @@ tfpipe/modules/galaxy/manipulation.py
 tfpipe/pipeline/__init__.py
 tfpipe/pipeline/engine.py
 tfpipe/utils/__init__.py
+tfpipe/utils/exceptions.py
 tfpipe/utils/logconf.py
 tfpipe/utils/logger.py

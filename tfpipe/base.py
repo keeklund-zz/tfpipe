@@ -4,7 +4,7 @@
 import string
 import random
 
-from tfpipe.utils import logger
+from tfpipe.utils import logger, InvalidInput
 
 # check how arguments are passed to object
 # how will they know what arguments can be passed?
@@ -12,8 +12,10 @@ class Job(object):
     """Generic Job Interace functionality. 
 
     """
+    # best place to put these?
     dep_options = ('done', 'ended', 'exit', 'external',
                    'post_done', 'post_err', 'started')
+    init_options = ('cmd', 'args', 'name', 'dep_str')
     def __init__(self, **inputs):
         """Initialize Job.
 
@@ -24,6 +26,9 @@ class Job(object):
         cmd, args, name, dep, dep_str
 
         """
+        # find way to check if trying to submit JOB and Raise Error
+        if sum([args not in self.init_options for args in inputs.keys()]):
+            raise InvalidInput, "Job contains an illegal input argument."
         super(Job, self).__init__()
         self.cmd = inputs.get('cmd', self._cmd)
         self.args = inputs.get('args', {}) # needs to be dictionary of lists
