@@ -25,14 +25,12 @@ class Job(object):
 
         """
         super(Job, self).__init__()
-        self.cmd = inputs.get('cmd', None)
+        self.cmd = inputs.get('cmd', self._cmd)
         self.args = inputs.get('args', {}) # needs to be dictionary of lists
         self.name = inputs.get('name', self._make_jobname())
         self.dep_str = inputs.get('dep_str', '')
         self.dep_str_at_init = bool(inputs.get('dep_str', ''))
         self.dep = self._initialize_dependencies(inputs)
-        if self.cmd is None:
-            self.cmd = self._cmd
         logger.info("%s: initialized with '%s' arguments and command: %s " % 
                     (self.name, self._parse_args(), self.cmd))
 

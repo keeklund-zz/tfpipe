@@ -28,6 +28,6 @@ job3.add_dependency(done=[job1, job2], dep_str="done||done")
 job4 = galaxy.FastxClipper(dep_str='done(mySecondJob)')
 
 # add jobs to workflow
-wf = WorkFlow([job1, job2, job3, job4, job5, job6])
+wf = WorkFlow([job1, job2, job3, job4])
 wf.show()
 
