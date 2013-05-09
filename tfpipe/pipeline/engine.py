@@ -52,10 +52,19 @@ class WorkFlow(object):
         bsub = self._build_bsub(job).split() if self.lsf else []
         return bsub + job.show_as_list()
         
+    # need to check # of individual dep conds in dep_options equals number 
+    # of jobs passed to each dep condition
     def _update_dep_str(self, job):
         """Updates lsf dependency string.
 
+        If dependency string was set explicitly during initialization, return 
+        the dependency specified at initialization.  Otherwise, build dependency
+        string using dep_str heuristic and the dependency condition variables 
+        specified in the add_dependency method.
+
         """
+        if job.dep_str_at_init:
+            return "-w %s " % job.dep_str
         dep_options = findall(r"[\w']+", job.dep_str) 
         for depopt in set(dep_options):
             job.dep_str = job.dep_str.replace(depopt, depopt + "(%s)")
@@ -67,8 +76,7 @@ class WorkFlow(object):
 
         """
         bsub = "bsub -J %s -o %s.out " % (job.name, job.name)
-        has_values = sum([True for val in job.dep.values() if len(val) > 0])
-        bsub += self._update_dep_str(job) if has_values else ''
+        bsub += self._update_dep_str(job) if job.dep_str else ''
         return bsub
 
     def add_job(self, newjob):

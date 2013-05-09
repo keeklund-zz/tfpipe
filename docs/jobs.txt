@@ -1,6 +1,6 @@
-""""
+====
 JOBS
-""""
+====
 
 Overview
 ========
@@ -29,3 +29,47 @@ Dependency Conditions
 6. post_done(job_ID | "job_name")
 7. post_err(job_ID | "job_name")
 8. started(job_ID | "job_name")
+
+****Currently, you can only specify job_name.  [op] and exit_code will be 
+available soon.****
+
+
+Specifying Dependency
+---------------------
+
+The easiest way to specify a job dependency is to use the 'add_dependency' 
+method.  Using this method, you specify a dependency string and any dependency 
+conditions needed to satisfy your string.  Unlike the following method, you do 
+not have to specify job names.  Tfpipe will do that for you.  Here is an 
+example:
+
+    >>> job3 = FastxClipper()
+    >>> job3.add_dependency(dep_str='done||exited', 
+                            done=[job1,], 
+                            exited=[job2,])
+
+You do not have to specify job names, but you have to specify the dependency 
+condition. The above commands will initialize job3 and update the 'dep_str' to 
+'done(SomeJobNameforJob1)||exited(JobNameForJob2)'.  
+
+If you have a more complicated dep_str, like 'done||(done&&exited)', you will 
+have to have the number of jobs in your done list equal to the number of dones 
+in your dep_str. For example:
+
+    >>> job4.add_dependency(done=[job1, job2], exited=[job3])
+
+Now, assume you forgot to specify a dep_str and you entered something like:
+
+    >>> job3.add_dependency(done=[jo1,], exited=[job3,])
+
+Tfpipe assumes '&&' by default. Your dep_str will be 'done&&exited'. If you need 
+'||', you will have to specify that explicitly.
+
+Finally, the 'dep_str' can be specified during job initialization:
+
+    >>> job2 = FastxClipper(dep_str='exited(myFirstJob)')
+
+This means using the job1's name, NOT the job1's variable name (job1.name = 
+'myFirstJob').
+
+
