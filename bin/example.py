@@ -25,17 +25,7 @@ job3.add_argument('-c')
 job3.add_dependency(done=[job1, job2], dep_str="done||done")
 
 # build fourth job
-job4 = galaxy.FastxClipper()
-job4.add_argument('','')
-job4.add_dependency(exited=[job1,])
-
-# build fifth job
-job5 = galaxy.FastxClipper()
-job5.add_argument('','')
-job5.add_dependency(exited=[job1,], done=[job3,])
-
-# build sixth job
-job6 = galaxy.FastxClipper(dep_str='done(mySecondJob)')
+job4 = galaxy.FastxClipper(dep_str='done(mySecondJob)')
 
 # add jobs to workflow
 wf = WorkFlow([job1, job2, job3, job4, job5, job6])

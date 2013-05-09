@@ -25,7 +25,7 @@ job2.add_argument('-i', data_dir + 'rep2.fasta')
 job2.add_argument('-o', data_dir + 'newoutfile.fa')
 job2.add_argument('-C')
 job2.add_jobname("myFastxClipper")
-job2.add_dependency(done=job1)
+job2.add_dependency(done=[job1,])
 
 # add jobs to workflow
 wf = WorkFlow([job1, job2], lsf=False)
