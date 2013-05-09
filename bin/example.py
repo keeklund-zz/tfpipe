@@ -17,8 +17,7 @@ job2.add_argument('-i', 'outfile.fa')
 job2.add_argument('-o', 'newoutfile.fa')
 job2.add_argument('-C')
 job2.add_jobname("mySecondJob")
-print type(job2.dep)
-job2.add_dependency(done=job1)
+job2.add_dependency(done=[job1,])
 
 # build third job
 job3 = galaxy.FastxClipper()

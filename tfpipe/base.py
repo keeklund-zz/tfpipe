@@ -101,10 +101,10 @@ class Job(object):
                     self.dep[key] += list(value)
                 except KeyError:
                     self.dep[key] = list(value)
-            elif isinstance(value, (dict, str, int, float)):
+            else:
                 # assert instead?
-                exit("Operand of key word argument must be type list.")
-                logger.warn("Operand of key word argument must be type list.")
+                exit("Operand of dependency must be of type list.")
+                logger.warn("Operand of dependency must be of type list.")
 
         self.dep = kwargs
 
