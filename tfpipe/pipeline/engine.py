@@ -66,8 +66,9 @@ class WorkFlow(object):
         """Create bsub command submission string.
 
         """
-        bsub = "bsub -J %s -o ~/%s.out " % (job.name, job.name)
-        bsub += self._update_dep_str(job)
+        bsub = "bsub -J %s -o %s.out " % (job.name, job.name)
+        has_values = [1 for val in job.dep.values() if len(val) > 0]
+        bsub += self._update_dep_str(job) if has_values else ''
         return bsub
 
     def add_job(self, newjob):
