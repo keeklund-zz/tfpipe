@@ -88,8 +88,13 @@ class Job(object):
         ability to specify the dependency string.  Dependency conditions must be
         of type list.
 
+        If user does not specify a dependency string, tfpipe will make a best 
+        guess based on keys from the dependency dictionary.  
+
         """
-        self.dep_str = kwargs.pop('dep_str', 'done')
+        self.dep_str = kwargs.pop('dep_str', self.dep_str)
+        if len(self.dep_str) == 0:
+            self.dep_str = "&&".join(kwargs.keys())
         for key, value in kwargs.iteritems():
             if isinstance(value, list):
                 try:

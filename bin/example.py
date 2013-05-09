@@ -6,7 +6,7 @@ import tfpipe.modules.galaxy as galaxy
 from tfpipe.pipeline import WorkFlow
 
 # build first job
-job1 = galaxy.FastqToFasta(cmd='new', 
+job1 = galaxy.FastqToFasta(cmd='/path/to/diff/fastq_to_fasta', 
                            args={'-i':'inputfile.fastq',
                                  '-o': 'outfile.fa'}, 
                            name='myfastq2a')
@@ -27,9 +27,14 @@ job3.add_dependency(done=[job1, job2], dep_str="done||done")
 # build fourth job
 job4 = galaxy.FastxClipper()
 job4.add_argument('','')
-job4.add_dependency(done=[job1,])
+job4.add_dependency(exited=[job1,])
+
+# build fifth job
+job5 = galaxy.FastxClipper()
+job5.add_argument('','')
+job5.add_dependency(exited=[job1,], done=[job3,])
 
 # add jobs to workflow
-wf = WorkFlow([job1, job2, job3, job4])
+wf = WorkFlow([job1, job2, job3, job4, job5])
 wf.show()
 

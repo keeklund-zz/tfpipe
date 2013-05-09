@@ -67,7 +67,7 @@ class WorkFlow(object):
 
         """
         bsub = "bsub -J %s -o %s.out " % (job.name, job.name)
-        has_values = [1 for val in job.dep.values() if len(val) > 0]
+        has_values = sum([True for val in job.dep.values() if len(val) > 0])
         bsub += self._update_dep_str(job) if has_values else ''
         return bsub
 
