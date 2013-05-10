@@ -59,3 +59,35 @@ class ModuleEmptyInit(unittest.TestCase):
             self.assertIsInstance(self.fq2a_job.dep[k], list)
             self.assertEqual(self.fq2a_job.dep[k], [])
 
+    def test_job_as_string(self):
+        """__str__ method returns a command line execution representation."""
+        self.assertEqual(str(self.fq2a_job), "fastq_to_fasta ")
+
+    def test_add_argument(self):
+        """Method to add arguments to job."""
+        self.fq2a_job.add_argument('-i', 'inputfile.fq')
+        self.assertDictEqual(self.fq2a_job.args, {'-i': 'inputfile.fq'})
+        self.assertEqual(str(self.fq2a_job), 'fastq_to_fasta -i inputfile.fq')
+
+    def test_add_jobname(self):
+        """Replace 8 char random string with human readable option."""
+        self.fq2a_job.add_jobname("ThisIsMyTestJob")
+        self.assertEqual(self.fq2a_job.name, "ThisIsMyTestJob")
+
+    def test_add_dependency_invalid_arg(self):
+        """Test dependency condition passed is a valid LSF option."""
+        # problem here with assertRaises
+        self.assertRaises(InvalidInput, 
+                          self.fq2a_job.add_dependency,
+                          typo=['somejob',])
+
+    def test_add_dependency_no_dep_str(self):
+        """Add dependency, create LSF dependency string."""
+        self.fq2a_job.add_dependency(done=['job1', 'job2'],
+                                     exit=['job3'])
+        self.assertEqual(self.fq2a_job.dep_str, "exit&&done&&done")
+
+# add dependency conditions, estimate dep_str
+# add dependency condition, specify dep_str
+# need way to validate dep_str
+# test job as string again after? way to automate/randomize?

@@ -25,9 +25,9 @@ class Job(object):
         cmd, args, name, dep, dep_str
 
         """
-        if sum([args not in self.init_options for args in inputs.keys()]):
-            raise InvalidInput, "Illegal input argument. Valid Args: %s." % \
-                self.init_options
+        self._check_inputs(self.init_options, 
+                           inputs.keys(),
+                           "Illegal input argument pass during init.")
         if not hasattr(self, '_cmd'):
             raise InvalidObjectCall, "This object cannot be called directly."
         super(Job, self).__init__()
@@ -39,6 +39,14 @@ class Job(object):
         self.dep = self._initialize_dependencies(inputs)
         logger.info("%s: initialized with '%s' arguments and command: %s " % 
                     (self.name, self._parse_args(), self.cmd))
+
+    def __repr__(self):
+        """Command Line representation."""
+        return "%s(%r)" % (self.__class__, self.args)
+
+    def __str__(self):
+        """Represent object as string."""
+        return " ".join((self.cmd, self._parse_args()))
 
     def _initialize_dependencies(self, inputs):
         """Method to initialize job dependencies.
@@ -52,13 +60,10 @@ class Job(object):
             tmp[key].append(value)
         return tmp
 
-    def __repr__(self):
-        """Command Line representation."""
-        return "%s(%r)" % (self.__class__, self.args)
-
-    def __str__(self):
-        """Represent object as string."""
-        return " ".join((self.cmd, self._parse_args()))
+    def _check_inputs(self, options, input_keys, message):
+        """Hidden method checks input values."""
+        if sum([args not in options for args in input_keys]):
+            raise InvalidInput, message
 
     def _parse_args(self):
         return " ".join([" ".join((k, v)) for k, v in self.args.iteritems()])
@@ -85,8 +90,8 @@ class Job(object):
                     (tmp, self.name))
 
     # make it so list does not have to be specified
-    def add_dependency(self, **kwargs):
-        """Add dependencies to object.
+    def add_dependencies(self, **kwargs):
+        """Add job dependencies to object.
 
         Method allows user to add dependency arguments to current job.  User 
         specifies under what dependency condition each job is located, and has 
@@ -98,8 +103,12 @@ class Job(object):
 
         """
         self.dep_str = kwargs.pop('dep_str', self.dep_str)
+        self._check_inputs(self,dep_options, 
+                           kwargs.keys(), 
+                           "Illegal input argument in add_dependency.")
         if len(self.dep_str) == 0:
-            self.dep_str = "&&".join(kwargs.keys())
+            str_tmp = " ".join([(k + " ") * len(v) for k, v in kwargs.items()])
+            self.dep_str = "&&".join(str_tmp.split())
         for key, value in kwargs.iteritems():
             if isinstance(value, list):
                 try:
@@ -107,10 +116,7 @@ class Job(object):
                 except KeyError:
                     self.dep[key] = list(value)
             else:
-                exit("Operand of dependency must be of type list.")
-                logger.warn("Operand of dependency must be of type list.")
-
-        self.dep = kwargs
+                raise InvalidInput, "Operand of dependency must be of type list."
 
     def show_as_list(self):
         """Output command as list.
