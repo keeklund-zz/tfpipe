@@ -103,8 +103,52 @@ class ModuleEmptyInit(unittest.TestCase):
                               'post_err': [], 
                               'started': []})
 
-# need to test job that doesn't have any dependencies
-# add dependency conditions, estimate dep_str
-# add dependency condition, specify dep_str
+    def test_add_dependency_with_dep_str(self):
+        """Add dependency, build LSF dependency string."""
+        self.fq2a_job.add_dependencies(done=['job1', 'job2'],
+                                       exit=['job3'])
+        self.assertDictEqual(self.fq2a_job.dep, 
+                             {'done':['job1','job2'],
+                              'exit':['job3',],
+                              'ended': [], 
+                              'external': [],
+                              'post_done': [], 
+                              'post_err': [], 
+                              'started': []})
+        self.fq2a_job.add_dependencies(ended=['job4',], 
+                                       dep_str="done||done||ended||exit")
+        self.assertDictEqual(self.fq2a_job.dep,
+                             {'done':['job1','job2'],
+                              'exit':['job3',],
+                              'ended': ['job4',], 
+                              'external': [],
+                              'post_done': [], 
+                              'post_err': [], 
+                              'started': []})
+
+    def test_show_as_list(self):
+        """Method returns cmd and arguments as list to submit to shell.
+
+        Note: list not in order because arguements are stored as a dictionary.
+
+        """
+        self.fq2a_job.add_argument('-i', 'input_file.fq')
+        self.fq2a_job.add_argument('-o', 'output_file.fa')
+        self.assertListEqual(self.fq2a_job.show_as_list(),
+                             ['fastq_to_fasta', 
+                              '-o', 'output_file.fa',
+                              '-i', 'input_file.fq'])
+
+    def test_get_command(self):
+        """Method returns cmd and argument as string to submit to shell."""
+        self.fq2a_job.add_argument('-i', 'input_file.fq')
+        self.fq2a_job.add_argument('-o', 'output_file.fa')
+        self.assertEqual(self.fq2a_job.get_command(),
+                         "fastq_to_fasta -o output_file.fa -i input_file.fq")
+
+
+
 # need way to validate dep_str
 # test job as string again after? way to automate/randomize?
+
+# add check for num dep matches dep_str
