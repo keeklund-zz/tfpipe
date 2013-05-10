@@ -86,7 +86,9 @@ class ModuleEmptyInit(unittest.TestCase):
         self.fq2a_job.add_dependency(done=['job1', 'job2'],
                                      exit=['job3'])
         self.assertEqual(self.fq2a_job.dep_str, "exit&&done&&done")
-
+        # add another dependency
+        
+        
 # add dependency conditions, estimate dep_str
 # add dependency condition, specify dep_str
 # need way to validate dep_str
