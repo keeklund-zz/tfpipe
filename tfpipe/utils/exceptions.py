@@ -18,3 +18,16 @@ class InvalidInput(Exception):
         return repr(self.message)
 
 
+class InvalidObjectCall(Exception):
+    """Raise exception when object accessed illegally.
+
+    """
+    def __init__(self, message):
+        """Log message.
+
+        """
+        self.message = message
+        logger.warn(message)
+
+    def __str__(self):
+        return repr(self.message)

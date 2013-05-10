@@ -2,5 +2,5 @@
 
 """
 from logger import logger
-from exceptions import InvalidInput
+from exceptions import InvalidInput, InvalidObjectCall
 
