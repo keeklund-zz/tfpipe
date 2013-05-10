@@ -55,6 +55,7 @@ class Job(object):
         values.
 
         """
+        # initialize deps here too
         tmp = {depopt:[] for depopt in self.dep_options}
         for key, value in inputs.get('dep', ''):
             tmp[key].append(value)
@@ -71,6 +72,12 @@ class Job(object):
     def _make_jobname(self, size=8, chars=string.ascii_letters):
         """Return random string."""
         return "".join(random.choice(chars) for x in range(size))
+
+    def _build_dep_str(self):
+        """Build LSF dependency string."""
+        str_tmp = " ".join([(k + " ") * len(v) for k, v in self.dep.items() 
+                            if len(v) > 0])
+        self.dep_str = "&&".join(str_tmp.split())
 
     def add_argument(self, arg, value=None):
         """Method adds command line arguments to object.
@@ -103,12 +110,9 @@ class Job(object):
 
         """
         self.dep_str = kwargs.pop('dep_str', self.dep_str)
-        self._check_inputs(self,dep_options, 
+        self._check_inputs(self.dep_options, 
                            kwargs.keys(), 
                            "Illegal input argument in add_dependency.")
-        if len(self.dep_str) == 0:
-            str_tmp = " ".join([(k + " ") * len(v) for k, v in kwargs.items()])
-            self.dep_str = "&&".join(str_tmp.split())
         for key, value in kwargs.iteritems():
             if isinstance(value, list):
                 try:

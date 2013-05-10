@@ -83,12 +83,14 @@ class ModuleEmptyInit(unittest.TestCase):
 
     def test_add_dependency_no_dep_str(self):
         """Add dependency, create LSF dependency string."""
-        self.fq2a_job.add_dependency(done=['job1', 'job2'],
-                                     exit=['job3'])
+        self.fq2a_job.add_dependencies(done=['job1', 'job2'],
+                                       exit=['job3'])
         self.assertEqual(self.fq2a_job.dep_str, "exit&&done&&done")
         # add another dependency
-        
-        
+        # does this make sense any more? no?
+
+
+# need to test job that doesn't have any dependencies
 # add dependency conditions, estimate dep_str
 # add dependency condition, specify dep_str
 # need way to validate dep_str

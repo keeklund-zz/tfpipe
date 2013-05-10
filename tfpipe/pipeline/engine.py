@@ -76,6 +76,8 @@ class WorkFlow(object):
 
         """
         bsub = "bsub -J %s -o %s.out " % (job.name, job.name)
+        if len(job.dep_str) == 0:
+            job._build_dep_str()
         bsub += self._update_dep_str(job) if job.dep_str else ''
         return bsub
 
