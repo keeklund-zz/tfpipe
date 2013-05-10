@@ -78,17 +78,30 @@ class ModuleEmptyInit(unittest.TestCase):
         """Test dependency condition passed is a valid LSF option."""
         # problem here with assertRaises
         self.assertRaises(InvalidInput, 
-                          self.fq2a_job.add_dependency,
+                          self.fq2a_job.add_dependencies,
                           typo=['somejob',])
 
     def test_add_dependency_no_dep_str(self):
         """Add dependency, create LSF dependency string."""
         self.fq2a_job.add_dependencies(done=['job1', 'job2'],
                                        exit=['job3'])
-        self.assertEqual(self.fq2a_job.dep_str, "exit&&done&&done")
-        # add another dependency
-        # does this make sense any more? no?
-
+        self.assertDictEqual(self.fq2a_job.dep, 
+                             {'done':['job1','job2'],
+                              'exit':['job3',],
+                              'ended': [], 
+                              'external': [],
+                              'post_done': [], 
+                              'post_err': [], 
+                              'started': []})
+        self.fq2a_job.add_dependencies(ended=['job4',])
+        self.assertDictEqual(self.fq2a_job.dep,
+                             {'done':['job1','job2'],
+                              'exit':['job3',],
+                              'ended': ['job4',], 
+                              'external': [],
+                              'post_done': [], 
+                              'post_err': [], 
+                              'started': []})
 
 # need to test job that doesn't have any dependencies
 # add dependency conditions, estimate dep_str

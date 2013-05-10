@@ -25,14 +25,16 @@ class Job(object):
         cmd, args, name, dep, dep_str
 
         """
-        self._check_inputs(self.init_options, 
-                           inputs.keys(),
-                           "Illegal input argument pass during init.")
+        # initialize with deps too
+        message = "Illegal input argument pass during init."
+        self._check_valid_input_options(self.init_options, 
+                                        inputs.keys(),
+                                        message)
         if not hasattr(self, '_cmd'):
             raise InvalidObjectCall, "This object cannot be called directly."
         super(Job, self).__init__()
         self.cmd = inputs.get('cmd', self._cmd)
-        self.args = inputs.get('args', {}) # needs to be dictionary of lists
+        self.args = inputs.get('args', {}) 
         self.name = inputs.get('name', self._make_jobname())
         self.dep_str = inputs.get('dep_str', '')
         self.dep_str_at_init = bool(self.dep_str)
@@ -61,7 +63,7 @@ class Job(object):
             tmp[key].append(value)
         return tmp
 
-    def _check_inputs(self, options, input_keys, message):
+    def _check_valid_input_options(self, options, input_keys, message):
         """Hidden method checks input values."""
         if sum([args not in options for args in input_keys]):
             raise InvalidInput, message
@@ -110,9 +112,10 @@ class Job(object):
 
         """
         self.dep_str = kwargs.pop('dep_str', self.dep_str)
-        self._check_inputs(self.dep_options, 
-                           kwargs.keys(), 
-                           "Illegal input argument in add_dependency.")
+        message = "Illegal input argument in add_dependency."
+        self._check_valid_input_options(self.dep_options, 
+                                        kwargs.keys(), 
+                                        message)
         for key, value in kwargs.iteritems():
             if isinstance(value, list):
                 try:
