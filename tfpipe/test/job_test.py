@@ -147,6 +147,8 @@ class ModuleEmptyInit(unittest.TestCase):
                          "fastq_to_fasta -o output_file.fa -i input_file.fq")
 
 
+class ModuleInitWithParamaters(unittest.TestCase):
+    pass
 
 # need way to validate dep_str
 # test job as string again after? way to automate/randomize?
