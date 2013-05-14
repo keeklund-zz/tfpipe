@@ -5,6 +5,7 @@ README.txt
 setup.py
 bin/example.py
 bin/localhost.py
+bin/test.py
 docs/FAQ.txt
 docs/jobs.txt
 docs/modules.txt
@@ -14,6 +15,8 @@ tfpipe/base.py
 tfpipe/modules/__init__.py
 tfpipe/modules/galaxy/__init__.py
 tfpipe/modules/galaxy/manipulation.py
+tfpipe/modules/gmap/__init__.py
+tfpipe/modules/gmap/alignment.py
 tfpipe/pipeline/__init__.py
 tfpipe/pipeline/engine.py
 tfpipe/utils/__init__.py

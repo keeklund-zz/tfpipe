@@ -14,7 +14,6 @@ job1 = FastqQualityFilter(name='kure_fastxqualityfilter',
                                 '-Q': 33,
                                 '-q': 20,
                                 '-p': 100,
-                                '-a': 'AAAAAAAAAA',
                                 },)
 job1.show()
 
