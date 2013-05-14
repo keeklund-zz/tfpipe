@@ -77,7 +77,9 @@ class Job(object):
             raise InvalidInput, message
 
     def _parse_args(self):
-        return " ".join([" ".join((k, v)) for k, v in self.args.iteritems()])
+        return " ".join([" ".join((k, str(v))) for k, v in 
+                         self.args.iteritems()])
+                         
 
     def _make_jobname(self, size=8, chars=string.ascii_letters):
         """Return random string."""
