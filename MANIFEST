@@ -4,6 +4,7 @@ LICENSE.txt
 README.txt
 setup.py
 bin/example.py
+bin/localhost.py
 docs/FAQ.txt
 docs/jobs.txt
 docs/modules.txt

@@ -10,6 +10,7 @@ setup(
     packages=['tfpipe', 
               'tfpipe.modules', 
               'tfpipe.modules.galaxy',
+              'tfpipe.modules.gmap',
               'tfpipe.pipeline', 
               'tfpipe.utils',],
     scripts=['bin/example.py', 'bin/localhost.py'],

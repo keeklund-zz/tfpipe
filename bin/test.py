@@ -16,8 +16,10 @@ job1 = FastqQualityFilter(name='kure_fastxqualityfilter',
                                 '-p': 100,
                                 '-a': 'AAAAAAAAAA',
                                 },)
-job1.add_dependencies(done=[job1,])
 job1.show()
 
-job2 = Gsnap(name='kure_gsnap')
-job2.show()
+#job2 = Gsnap(name='kure_gsnap')
+#job2.show()
+
+wf = WorkFlow([job1,])
+wf.show()
