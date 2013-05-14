@@ -53,8 +53,9 @@ class WorkFlow(object):
 
         """
         bsub = self._build_bsub(job).split() if self.lsf else []
-        self.current_submit_str = " ".join(bsub + job.show_as_list())
-        return bsub + job.show_as_list()
+        submission_list = bsub + ['"',] + job.show_as_list() + ['"',]
+        self.current_submit_str = " ".join(submission_list)
+        return submission_list
         
     # need to check # of individual dep conds in dep_options equals number 
     # of jobs passed to each dep condition

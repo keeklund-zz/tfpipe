@@ -10,7 +10,6 @@ out_dir = '/proj/fureylab/karl/test/'
 
 job1 = FastqQualityFilter(name='kure_fastqqualityfilter',
                           args={'-i': data_dir + 'wgEncodeOpenChromDnaseGm12878RawDataRep2.fastq',
-                                '-o': out_dir + 'test.fastq',
                                 '-Q': '33',
                                 '-q': '20',
                                 '-p': '100',
@@ -20,8 +19,11 @@ job2 = FastqToFasta(name='kure_fastq_to_fasta')
 job2.add_argument('-i', out_dir + 'test.fastq')
 job2.add_argument('-o', out_dir + 'test.fasta')
 job2.add_dependencies(done=[job1,])
+job2.redirect_output(out_dir + 'test.fastq')
 
-
+wf = WorkFlow([job1, job2])
+wf.run()
+"""
 job_list = [job1, job2]
 
 for i in range(1, 60):
@@ -49,3 +51,4 @@ for i in range(1, 60):
 
 wf = WorkFlow(job_list)
 wf.show()
+"""
