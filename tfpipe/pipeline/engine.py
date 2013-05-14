@@ -3,7 +3,7 @@
 """
 from re import findall
 from sys import exit
-from subprocess import Popen, PIPE, STDOUT
+from subprocess import Popen
 from tfpipe.utils import logger
 
 class WorkFlow(object):

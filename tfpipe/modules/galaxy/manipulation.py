@@ -1,7 +1,11 @@
 """ """
 from tfpipe.base import Job
 
-class FastqToFasta(Job):
+class Galaxy(Job):
+    _module = 'galaxy'
+
+
+class FastqToFasta(Galaxy):
     """Use FastqToFasta to convert fastq to fasta file.
 
     Examples:
@@ -14,14 +18,21 @@ class FastqToFasta(Job):
     """
 
     _cmd = 'fastq_to_fasta'
-
     # will need to add methods as necessary
 
 
-class FastxClipper(Job):
+class FastxClipper(Galaxy):
     """Use FastxClipper to remove or clip reads. 
 
     """
 
     _cmd = 'fastx_clipper'
+
+
+class FastqQualityFilter(Galaxy):
+    """
+
+    """
+    _cmd = 'fastq_quality_filter'
+
 

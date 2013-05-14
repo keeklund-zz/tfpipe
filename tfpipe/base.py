@@ -3,6 +3,7 @@
 """
 import string
 import random
+from subprocess import Popen
 
 from tfpipe.utils import logger
 from tfpipe.utils import InvalidInput, InvalidObjectCall
@@ -32,6 +33,12 @@ class Job(object):
                                         message)
         if not hasattr(self, '_cmd'):
             raise InvalidObjectCall, "This object cannot be called directly."
+        if hasattr(self, '_module'):
+            try:
+                p = Popen("module add %s" % self._module)
+                p.wait()
+            except OSError:
+                pass
 #        super(Job, self).__init__()
         self.cmd = inputs.get('cmd', self._cmd)
         self.args = inputs.get('args', {}) 
