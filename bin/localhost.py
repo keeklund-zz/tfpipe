@@ -5,6 +5,7 @@ Assumes jobs will run serially.
 """
 # import modules needed to construct jobs
 import tfpipe.modules.galaxy as galaxy
+import tfpipe.modules.gmap as gmap
 from tfpipe.pipeline import WorkFlow
 
 
@@ -25,9 +26,13 @@ job2.add_argument('-i', data_dir + 'rep2.fasta')
 job2.add_argument('-o', data_dir + 'newoutfile.fa')
 job2.add_argument('-C')
 job2.add_jobname("myFastxClipper")
-job2.add_dependency(done=[job1,])
+job2.add_dependencies(done=[job1,])
+
+
+job3 = gmap.Gsnap()
+
 
 # add jobs to workflow
-wf = WorkFlow([job1, job2], lsf=False)
-wf.run()
+wf = WorkFlow([job1, job2, job3], lsf=False)
+wf.show()
 

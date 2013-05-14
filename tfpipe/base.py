@@ -32,7 +32,7 @@ class Job(object):
                                         message)
         if not hasattr(self, '_cmd'):
             raise InvalidObjectCall, "This object cannot be called directly."
-        super(Job, self).__init__()
+#        super(Job, self).__init__()
         self.cmd = inputs.get('cmd', self._cmd)
         self.args = inputs.get('args', {}) 
         self.name = inputs.get('name', self._make_jobname())
