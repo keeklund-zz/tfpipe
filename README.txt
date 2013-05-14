@@ -24,7 +24,24 @@ Installation:
 Initial install:
 ----------------
 
-sudo pip install /path/to/dist/tfpipe-X.X.X.tar.gz
+With root:
+    pip:
+        sudo pip install /path/to/dist/tfpipe-X.X.X.tar.gz
+
+    No pip:
+        tar zxf tfpipe-X.X.X.tar.gz
+	cd tfpipe-X.X.X
+	sudo python setup.py install
+
+Without root:
+    pip:
+        pip install --user /path/to/dist/tfpipe-X.X.X.tar.gz
+
+    no pip:
+        tar zxf tfpipe-X.X.X.tar.gz
+	cd tfpipe-X.X.X
+	python setup.py install --user
+
 
 Upgrade:
 --------
