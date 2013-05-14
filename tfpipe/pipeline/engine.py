@@ -41,8 +41,9 @@ class WorkFlow(object):
         Use lsf scheduler, bsub, if self.lsf is True.
 
         """
-        self.current_submit_str = (self._build_bsub(job) 
-                                   if self.lsf else '') + str(job)
+        bsub_str = (self._build_bsub(job) if self.lsf else '')
+        job_str = job.redirect and '"' + str(job) + '"'
+        self.current_submit_str = bsub_str + job_str
         return self.current_submit_str
 
     def _create_submit_list(self, job):
@@ -104,8 +105,6 @@ class WorkFlow(object):
         for job in self.jobs:
             p = Popen(self._create_submit_list(job))
             retval = p.wait()
-            logger.info("WorkFlow SUBMIT: %s" % 
-                        self.current_submit_str)
-
+            logger.info("WorkFlow SUBMIT: %s" % self.current_submit_str)
 
 

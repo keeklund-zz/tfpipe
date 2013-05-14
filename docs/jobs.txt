@@ -73,3 +73,32 @@ The user MUST use job1's name, NOT the job1's variable name (job1.name =>
 'myFirstJob' NOT job1).  This has to be done explicitly and must be exactly what 
 LSF expects to see.  You can consider this an override option.
 
+
+Arguments
+=========
+
+
+
+Adding Arguments
+----------------
+
+There are two ways to add arguments to your job.  You can either add the
+arguments in Dictionary format when initializing your job, or you can use the 
+add_arguments method.
+
+    >>> job1 = FastqQualityFilter(args={'-i': 'somefile.fastq', 
+                                        '-o': 'outfile.fastq'})
+
+    >>> job1 = FastqQualityFilter()
+    >>> job1.add_argument('-i', 'somefile.fastq')
+    >>> job1.add_argument('-o', 'outfile.fastq')
+
+If you have an argument that is only one string (-u or --stuff=10), you can 
+set the string equal to the key with an empty value.  Kind of a hack at the 
+moment.  I will have a better solution soon.
+
+    >>> job1 = Gsnap(args={'--terminal-threshold=10': ''})
+
+    >>> job1 = Gsnap()
+    >>> job1.add_argument('--terminal-threshold=10', '')
+

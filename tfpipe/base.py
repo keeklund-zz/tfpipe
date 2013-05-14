@@ -47,6 +47,7 @@ class Job(object):
         self.dep_str = inputs.get('dep_str', '')
         self.dep_str_at_init = bool(self.dep_str)
         self.dep = self._initialize_dependencies(inputs)
+        self.redirect = ''
         logger.info("%s: initialized with '%s' arguments and command: %s " % 
                     (self.name, self._parse_args(), self.cmd))
 
@@ -56,7 +57,8 @@ class Job(object):
 
     def __str__(self):
         """Represent object as string."""
-        return " ".join((self.cmd, self._parse_args()))
+        redirect = " %s %s " % (">", self.redirect) if self.redirect else ''
+        return " ".join((self.cmd, self._parse_args(), redirect))
 
     def _initialize_dependencies(self, inputs):
         """Method to initialize job dependencies.
@@ -147,5 +149,11 @@ class Job(object):
 
     def get_command(self):
         return str(self)
+
+    def redirect_output(self, outputfile):
+        """Method to redirect output.
+
+        """
+        self.redirect = outputfile
 
 
