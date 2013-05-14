@@ -2,21 +2,20 @@
 from tfpipe.base import Job
 
 class Galaxy(Job):
+    """Fastx-Toolkit 
+
+    Fastq/a short-read pre-processing tools.
+
+    http://hannonlab.cshl.edu/fastx_toolkit/index.html
+
+    """
     _module = 'galaxy'
 
 
 class FastqToFasta(Galaxy):
     """Use FastqToFasta to convert fastq to fasta file.
 
-    Examples:
-    ---------
-    >>> from tfpipe.modules.galaxy import FastqToFasta
-    >>> fq2a = FastqToFasta()
-    >>>
-    >>> fq2a = FastqToFasta(cmd='override_binary')
-
     """
-
     _cmd = 'fastq_to_fasta'
     # will need to add methods as necessary
 
@@ -25,12 +24,11 @@ class FastxClipper(Galaxy):
     """Use FastxClipper to remove or clip reads. 
 
     """
-
     _cmd = 'fastx_clipper'
 
 
 class FastqQualityFilter(Galaxy):
-    """
+    """Filters reads below specified quality.
 
     """
     _cmd = 'fastq_quality_filter'

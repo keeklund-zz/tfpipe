@@ -1,11 +1,11 @@
 """Test workflow on Kure.
 
 """
-from tfpipe.modules.galaxy import FastxClipper
+from tfpipe.modules.galaxy import FastqQualityFilter
 from tfpipe.modules.gmap import Gsnap
 from tfpipe.pipeline import WorkFlow
 
-job1 = FastxClipper(name='kure_fastxclipper',
+job1 = FastxClipper(name='kure_fastxqualityfilter',
                     args={'-i': '',
                           '-o': '',
                           '-Q': '33',

@@ -37,6 +37,7 @@ class Job(object):
             try:
                 p = Popen("module add %s" % self._module)
                 p.wait()
+                logger.info("module '%s' added" % self._module)
             except OSError:
                 pass
 #        super(Job, self).__init__()
