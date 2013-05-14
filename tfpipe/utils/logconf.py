@@ -22,7 +22,7 @@ propogate=0
 [handler_fileHandler]
 class=FileHandler
 formatter=simpleFormatter
-args=("/tmp/tfpipe.log",)
+args=("tfpipe.log",)
 
 [formatter_simpleFormatter]
 format=%(asctime)s - %(name)s - %(levelname)s - %(message)s

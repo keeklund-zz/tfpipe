@@ -41,7 +41,9 @@ class WorkFlow(object):
         Use lsf scheduler, bsub, if self.lsf is True.
 
         """
-        return (self._build_bsub(job) if self.lsf else '') + str(job)
+        self.current_submit_str = (self._build_bsub(job) 
+                                   if self.lsf else '') + str(job)
+        return self.current_submit_str
 
     def _create_submit_list(self, job):
         """Build list of submission command.
@@ -50,6 +52,7 @@ class WorkFlow(object):
 
         """
         bsub = self._build_bsub(job).split() if self.lsf else []
+        self.current_submit_str = " ".join(bsub + job.show_as_list())
         return bsub + job.show_as_list()
         
     # need to check # of individual dep conds in dep_options equals number 
@@ -67,9 +70,9 @@ class WorkFlow(object):
             return "-w %s " % job.dep_str
         dep_options = findall(r"[\w']+", job.dep_str) 
         for depopt in set(dep_options):
-            job.dep_str = job.dep_str.replace(depopt, depopt + "(%s)")
+            tmp_dep_str = job.dep_str.replace(depopt, depopt + "(%s)")
         job_deps = tuple([job.dep.get(jdo).pop(0).name for jdo in dep_options])
-        return "-w %s " % (job.dep_str % job_deps)
+        return "-w %s " % (tmp_dep_str % job_deps)
 
     def _build_bsub(self, job):
         """Create bsub command submission string.
@@ -102,7 +105,7 @@ class WorkFlow(object):
             p = Popen(self._create_submit_list(job))
             retval = p.wait()
             logger.info("WorkFlow SUBMIT: %s" % 
-                        self._create_submit_str(job))
+                        self.current_submit_str)
 
 
 

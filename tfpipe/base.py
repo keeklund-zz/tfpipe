@@ -140,7 +140,7 @@ class Job(object):
 
         """
         l = [self.cmd, ]
-        return l + list(reduce(lambda x, y: str(x) + str(y), self.args.items()))
+        return l + list(reduce(lambda x, y: x + y, self.args.items()))
 
     def show(self):
         print str(self)
