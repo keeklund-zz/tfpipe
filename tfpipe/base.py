@@ -77,7 +77,7 @@ class Job(object):
             raise InvalidInput, message
 
     def _parse_args(self):
-        return " ".join([" ".join((k, str(v))) for k, v in 
+        return " ".join([" ".join((str(k), str(v))) for k, v in 
                          self.args.iteritems()])
                          
 
