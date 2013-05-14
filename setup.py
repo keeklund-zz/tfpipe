@@ -12,7 +12,7 @@ setup(
               'tfpipe.modules.galaxy',
               'tfpipe.pipeline', 
               'tfpipe.utils',],
-    scripts=['bin/example.py',],
+    scripts=['bin/example.py', 'bin/localhost.py'],
     url='http://fureylab.web.unc.edu',
     license='LICENSE.txt',
     description='Terry Furey Lab Pipeline',
