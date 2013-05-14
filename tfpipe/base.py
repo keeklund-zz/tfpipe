@@ -58,7 +58,7 @@ class Job(object):
 
         """
         # initialize deps here too
-        tmp = {depopt:[] for depopt in self.dep_options}
+        tmp = dict((depopt, []) for depopt in self.dep_options)
         for key, value in inputs.get('dep', ''):
             tmp[key].append(value)
         return tmp
