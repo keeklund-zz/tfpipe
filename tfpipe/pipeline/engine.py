@@ -2,6 +2,7 @@
 
 """
 from re import findall
+from os import system
 from sys import exit
 from subprocess import Popen
 from tfpipe.utils import logger
@@ -42,7 +43,7 @@ class WorkFlow(object):
 
         """
         bsub_str = (self._build_bsub(job) if self.lsf else '')
-        job_str = job.redirect and '"' + str(job) + '"'
+        job_str = job.redirect and '"' + str(job) + '"' or str(job)
         self.current_submit_str = bsub_str + job_str
         return self.current_submit_str
 
@@ -69,12 +70,12 @@ class WorkFlow(object):
 
         """
         if job.dep_str_at_init:
-            return "-w %s " % job.dep_str
+            return '-w "%s" ' % job.dep_str
         dep_options = findall(r"[\w']+", job.dep_str) 
         for depopt in set(dep_options):
             tmp_dep_str = job.dep_str.replace(depopt, depopt + "(%s)")
         job_deps = tuple([job.dep.get(jdo).pop(0).name for jdo in dep_options])
-        return "-w %s " % (tmp_dep_str % job_deps)
+        return '-w "%s" ' % (tmp_dep_str % job_deps)
 
     def _build_bsub(self, job):
         """Create bsub command submission string.
@@ -104,8 +105,9 @@ class WorkFlow(object):
 
         """
         for job in self.jobs:
-            p = Popen(self._create_submit_list(job))
-            retval = p.wait()
+            system(self._create_submit_str(job))
+#            p = Popen(self._create_submit_str(job))
+#            retval = p.wait()
             logger.info("WorkFlow SUBMIT: %s" % self.current_submit_str)
 
 

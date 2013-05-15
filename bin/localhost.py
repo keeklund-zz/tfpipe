@@ -33,6 +33,6 @@ job3 = gmap.Gsnap()
 
 
 # add jobs to workflow
-wf = WorkFlow([job1, job2, job3], lsf=False)
-wf.show()
+wf = WorkFlow([job1, job2], lsf=False)
+wf.run()
 

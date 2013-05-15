@@ -22,7 +22,7 @@ job2.add_dependencies(done=[job1,])
 job2.redirect_output(out_dir + 'test.fastq')
 
 wf = WorkFlow([job1, job2])
-wf.run()
+wf.show()
 """
 job_list = [job1, job2]
 
