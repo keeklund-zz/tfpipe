@@ -4,7 +4,6 @@
 from re import findall
 from os import system
 from sys import exit
-from subprocess import Popen
 from tfpipe.utils import logger
 
 class WorkFlow(object):
@@ -42,7 +41,7 @@ class WorkFlow(object):
         Use lsf scheduler, bsub, if self.lsf is True.
 
         """
-        bsub_str = (self._build_bsub(job) if self.lsf else '')
+        bsub_str = self._build_bsub(job) if self.lsf else ''
         job_str = job.redirect and '"' + str(job) + '"' or str(job)
         self.current_submit_str = bsub_str + job_str
         return self.current_submit_str
@@ -106,8 +105,6 @@ class WorkFlow(object):
         """
         for job in self.jobs:
             system(self._create_submit_str(job))
-#            p = Popen(self._create_submit_str(job))
-#            retval = p.wait()
             logger.info("WorkFlow SUBMIT: %s" % self.current_submit_str)
 
 
