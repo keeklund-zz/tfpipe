@@ -33,9 +33,13 @@ class WorkFlow(object):
         module_dir = '/nas02/apps/Modules/3.2.7/modulefiles'
         if self.lsf:
             for job in self.jobs:
-                environ['LOADEDMODULES'] += ':' + job._module
-                environ['_LMFILES_'] += ':' + path.join(module_dir, job._module)
-                # raise exception if fails?
+                try:
+                    environ['LOADEDMODULES'] += ':' + job._module
+                    environ['_LMFILES_'] += ':' + path.join(module_dir, 
+                                                            job._module)
+                except AttributeError:
+                    pass
+                # raise exception if fails? KeyError?
 
     def _check_jobnames(self):
         """Method to check job names for duplicates.

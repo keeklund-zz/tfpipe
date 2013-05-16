@@ -10,4 +10,3 @@ class Gsnap(Job):
 
     """
     _cmd = "gsnap"
-
