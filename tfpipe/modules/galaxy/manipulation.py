@@ -9,7 +9,7 @@ class Galaxy(Job):
     http://hannonlab.cshl.edu/fastx_toolkit/index.html
 
     """
-    _module = 'galaxy'
+    _module = 'galaxy/1.0'
 
 
 class FastqToFasta(Galaxy):

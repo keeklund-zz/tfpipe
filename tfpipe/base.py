@@ -33,13 +33,6 @@ class Job(object):
                                         message)
         if not hasattr(self, '_cmd'):
             raise InvalidObjectCall, "This object cannot be called directly."
-        if hasattr(self, '_module'):
-            try:
-                p = Popen("module add %s" % self._module)
-                p.wait()
-                logger.info("module '%s' added" % self._module)
-            except OSError:
-                pass
 #        super(Job, self).__init__()
         self.cmd = inputs.get('cmd', self._cmd)
         self.args = inputs.get('args', {}) 

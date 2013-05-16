@@ -2,7 +2,7 @@
 
 """
 from re import findall
-from os import system
+from os import system, environ, path
 from sys import exit
 from tfpipe.utils import logger
 
@@ -21,6 +21,21 @@ class WorkFlow(object):
         self.lsf = lsf
         self._check_jobnames()
         logger.info("WorkFlow created")
+
+    def _add_kure_modules(self):
+        """Method automatically adds modules for user.
+
+        This method relieves the user from having to interactively execute 
+        'module load/add xyz'.
+
+        """
+        # should create config file for this
+        module_dir = '/nas02/apps/Modules/3.2.7/modulefiles'
+        if self.lsf:
+            for job in self.jobs:
+                environ['LOADEDMODULES'] += ':' + job._module
+                environ['_LMFILES_'] += ':' + path.join(module_dir, job._module)
+                # raise exception if fails?
 
     def _check_jobnames(self):
         """Method to check job names for duplicates.
@@ -103,6 +118,7 @@ class WorkFlow(object):
         """Method submits command list to shell.
 
         """
+        self._add_kure_modules()
         for job in self.jobs:
             system(self._create_submit_str(job))
             logger.info("WorkFlow SUBMIT: %s" % self.current_submit_str)

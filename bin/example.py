@@ -25,7 +25,7 @@ job3.add_argument('-c')
 job3.add_dependencies(done=[job1, job2], dep_str="done||done")
 
 # build fourth job
-job4 = galaxy.FastxClipper(dep_str='done(mySecondJob)')
+job4 = galaxy.FastxClipper(dep_str='done("mySecondJob")')
 
 # build fifth job
 job5 = galaxy.FastxClipper()
