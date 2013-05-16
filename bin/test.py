@@ -21,9 +21,6 @@ job2.add_argument('-o', out_dir + 'test.fasta')
 job2.add_dependencies(done=[job1,])
 job2.redirect_output(out_dir + 'test.fastq')
 
-wf = WorkFlow([job1, job2])
-wf.show()
-"""
 job_list = [job1, job2]
 
 for i in range(1, 60):
@@ -47,8 +44,6 @@ for i in range(1, 60):
     exec("job%s.redirect_output('somewhere')" % i)
     job_list.append(eval("job%s" % i))
          
-#job2.show()
-
 wf = WorkFlow(job_list)
 wf.show()
-"""
+

@@ -69,12 +69,12 @@ class WorkFlow(object):
 
         """
         if job.dep_str_at_init:
-            return '-w "%s" ' % job.dep_str
+            return '-w \'%s\' ' % job.dep_str
         dep_options = findall(r"[\w']+", job.dep_str) 
         for depopt in set(dep_options):
-            tmp_dep_str = job.dep_str.replace(depopt, depopt + "(%s)")
+            tmp_dep_str = job.dep_str.replace(depopt, depopt + "(\"%s\")")
         job_deps = tuple([job.dep.get(jdo).pop(0).name for jdo in dep_options])
-        return '-w "%s" ' % (tmp_dep_str % job_deps)
+        return '-w \'%s\' ' % (tmp_dep_str % job_deps)
 
     def _build_bsub(self, job):
         """Create bsub command submission string.
