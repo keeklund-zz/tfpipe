@@ -3,6 +3,7 @@
 """
 from tfpipe.modules.galaxy import FastqQualityFilter, FastqToFasta
 from tfpipe.modules.gmap import Gsnap
+from tfpipe.modules.cli import CLI
 from tfpipe.pipeline import WorkFlow
 
 data_dir = '/proj/fureylab/data/Duke_DNasel_HS/GM12878/'
@@ -28,7 +29,7 @@ for i in range(1, 60):
                   '-n': '1',
                   '--genome-unk-mismatch=1': '',
                   '--query-unk-mismatch=1': '',
-                  '-D': '/proj/fureylab/karl/pipeline_files/gmapdb/hg19_femalle_all/',
+                  '-D': '/proj/fureylab/karl/pipeline_files/gmapdb/hg19_female_all/',
                   '-d': 'hg19_female',
                   '-v': 'CD_FAIRE.snps.gsnap',
                   '--trim-mismatch-score=0': '',
@@ -42,9 +43,16 @@ for i in range(1, 60):
                   '%s/test.fastq' % out_dir : ''}
     exec("gsnap_job%s = Gsnap(name='kure_gsnap%s', args=gsnap_args)" % (i, i))
     exec("gsnap_job%s.add_dependencies(done=[job1,])" % i)
-    exec("gsnap_job%s.redirect_output('somewhere')" % i)
+    exec("gsnap_job%s.redirect_output('gsnap_out%s.sam')" % (i, i))
     job_list.append(eval("gsnap_job%s" % i))
          
+
+merge_job = CLI(cmd="python /proj/fureylab/bin/merge_sam_files.py all.sam *.sam",
+                dep_str='done("kure_gsnap*")')
+
+
+
+job_list.append(merge_job)
 wf = WorkFlow(job_list)
 wf.show()
 

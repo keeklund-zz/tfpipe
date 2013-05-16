@@ -13,6 +13,8 @@ docs/workflow.txt
 tfpipe/__init__.py
 tfpipe/base.py
 tfpipe/modules/__init__.py
+tfpipe/modules/cli/__init__.py
+tfpipe/modules/cli/interface.py
 tfpipe/modules/galaxy/__init__.py
 tfpipe/modules/galaxy/manipulation.py
 tfpipe/modules/gmap/__init__.py

@@ -6,6 +6,7 @@ Assumes jobs will run serially.
 # import modules needed to construct jobs
 import tfpipe.modules.galaxy as galaxy
 import tfpipe.modules.gmap as gmap
+from tfpipe.modules.cli import CLI
 from tfpipe.pipeline import WorkFlow
 
 
@@ -29,10 +30,10 @@ job2.add_jobname("myFastxClipper")
 job2.add_dependencies(done=[job1,])
 
 
-job3 = gmap.Gsnap()
+job3 = CLI(cmd="ls -l")
 
 
 # add jobs to workflow
-wf = WorkFlow([job1, job2], lsf=False)
-wf.run()
+wf = WorkFlow([job1, job2, job3], lsf=False)
+wf.show()
 
