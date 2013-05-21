@@ -127,6 +127,6 @@ class WorkFlow(object):
         """
         self._build_shell_script()
         system("sh %s" % self._shell_script)
-        logger.info("WorkFlow SUBMIT: %s" % self.current_submit_str)
+        logger.info("WorkFlow SUBMIT: %s" % self._shell_script)
 
 
