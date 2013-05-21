@@ -10,7 +10,7 @@ class WorkFlow(object):
     """WorkFlow creates and executes job submission statements.
 
     """
-    def __init__(self, job_list=[], lsf=True):
+    def __init__(self, job_list=[], lsf=True, name=None):
         """Initialize WorkFlow.
 
         Method sets job lists and environment.  Depending on the environment, 
@@ -20,6 +20,10 @@ class WorkFlow(object):
         self.jobs = job_list
         self.lsf = lsf
         self._check_jobnames()
+        if not name:
+            self._shell_script = 'test.sh'
+        else:
+            self._shell_script = name
         logger.info("WorkFlow created")
 
     def _check_jobnames(self):
@@ -43,7 +47,7 @@ class WorkFlow(object):
         """
         bsub_str = self._build_bsub(job) if self.lsf else ''
         job_str = job.redirect and '"' + str(job) + '"' or str(job)
-        self.current_submit_str = bsub_str + job_str
+        self.current_submit_str = bsub_str + job_str + "\n"
         return self.current_submit_str
 
     def _create_submit_list(self, job):
@@ -86,6 +90,24 @@ class WorkFlow(object):
         bsub += self._update_dep_str(job) if job.dep_str else ''
         return bsub
 
+    def _build_shell_script(self):
+        """ """
+        mods = []
+        with open(self._shell_script, 'w') as f:
+            f.write("#!/bin/bash\n")
+            if self.lsf:
+                f.write(". /nas02/apps/Modules/default/init/bash\n")
+                for job in self.jobs:
+                    try:
+                        if job._module not in mods:
+                            f.write("module load %s\n" % job._module)
+                            mods.append(job._module)
+                    except AttributeError:
+                        pass
+            for job in self.jobs:
+                f.write(self._create_submit_str(job))
+        logger.info("WorkFlow Submission Script Created")
+
     def add_job(self, newjob):
         """ """
         pass
@@ -103,8 +125,8 @@ class WorkFlow(object):
         """Method submits command list to shell.
 
         """
-        for job in self.jobs:
-            system(self._create_submit_str(job))
-            logger.info("WorkFlow SUBMIT: %s" % self.current_submit_str)
+        self._build_shell_script()
+        system("sh %s" % self._shell_script)
+        logger.info("WorkFlow SUBMIT: %s" % self.current_submit_str)
 
 

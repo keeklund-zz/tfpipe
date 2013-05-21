@@ -54,5 +54,5 @@ merge_job = CLI(cmd="python /proj/fureylab/bin/merge_sam_files.py all.sam *.sam"
 
 job_list.append(merge_job)
 wf = WorkFlow(job_list)
-wf.show()
+wf.run()
 
