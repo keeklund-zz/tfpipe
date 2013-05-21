@@ -4,6 +4,7 @@
 from re import findall
 from os import system, environ, path
 from sys import exit
+from datetime import datetime
 from tfpipe.utils import logger
 
 class WorkFlow(object):
@@ -20,8 +21,10 @@ class WorkFlow(object):
         self.jobs = job_list
         self.lsf = lsf
         self._check_jobnames()
+        now = datetime.now()
         if not name:
-            self._shell_script = 'test.sh'
+            self._shell_script = '%s_tfpipe_workflow.sh' % \
+                now.strftime("%Y%m%d%H%M%S")
         else:
             self._shell_script = name
         logger.info("WorkFlow created")
@@ -47,7 +50,7 @@ class WorkFlow(object):
         """
         bsub_str = self._build_bsub(job) if self.lsf else ''
         job_str = job.redirect and '"' + str(job) + '"' or str(job)
-        self.current_submit_str = bsub_str + job_str + "\n"
+        self.current_submit_str = bsub_str + job_str
         return self.current_submit_str
 
     def _create_submit_list(self, job):
@@ -105,7 +108,7 @@ class WorkFlow(object):
                     except AttributeError:
                         pass
             for job in self.jobs:
-                f.write(self._create_submit_str(job))
+                f.write("%s\n" % self._create_submit_str(job))
         logger.info("WorkFlow Submission Script Created")
 
     def add_job(self, newjob):
@@ -126,7 +129,7 @@ class WorkFlow(object):
 
         """
         self._build_shell_script()
-        system(". %s" % self._shell_script)
+        system("bash %s" % self._shell_script)
         logger.info("WorkFlow SUBMIT: %s" % self._shell_script)
 
 
