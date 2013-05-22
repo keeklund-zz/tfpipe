@@ -75,7 +75,6 @@ class Job(object):
         return " ".join([" ".join((str(k), str(v))) for k, v in 
                          self.args.iteritems()])
                          
-
     def _make_jobname(self, size=8, chars=string.ascii_letters):
         """Return random string."""
         return "".join(random.choice(chars) for x in range(size))

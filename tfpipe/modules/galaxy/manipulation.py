@@ -32,13 +32,30 @@ class FastxClipper(Galaxy):
         Override base class to pipe multiple adapter sequences.
 
         """
-        job_str = ''
-        for adpt in self.adapters:
-            tmp = " ".join((self.cmd, self._parse_args(), '-a', adpt))
-            job_str = " | ".join((job_str, tmp))
+        # look for input and output, for cat/redirect
+        jobs = [" ".join((self.cmd, 
+                          self._parse_args(index, len(self.adapters)-1), 
+                          '-a', 
+                          adpt)) 
+                for index, adpt in enumerate(self.adapters)]
+        job_str = " | ".join(jobs)
         redirect = " %s %s " % (">", self.redirect) if self.redirect else ''
         return " ".join((job_str, redirect))
 
+    def _parse_args(self, index=None, adpt_len=None):
+        """Override base _parse_args to pipe jobs.
+
+        """
+        args = dict((str(k), str(v)) for k, v in self.args.iteritems())
+        if index == 0:
+            args.pop('-o', '--output')
+        elif index == adpt_len:
+            args.pop('-i', '--input')
+        else:
+            args.pop('-i', '--input')
+            args.pop('-o', '--output')
+        return " ".join([" ".join((str(k), str(v))) for k, v in args.iteritems()])
+                         
     def add_adapter_file(self, apt_file):
         """Method allows user to submit multiple adapter sequences at once. 
 

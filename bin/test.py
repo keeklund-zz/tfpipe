@@ -1,7 +1,7 @@
 """Test workflow on Kure.
 
 """
-from tfpipe.modules.galaxy import FastqQualityFilter, FastqToFasta
+from tfpipe.modules.galaxy import FastqQualityFilter, FastqToFasta, FastxClipper
 from tfpipe.modules.gmap import Gsnap
 from tfpipe.modules.cli import CLI
 from tfpipe.pipeline import WorkFlow
@@ -22,9 +22,17 @@ job2.add_argument('-i', out_dir + 'test.fastq')
 job2.add_argument('-o', out_dir + 'test.fasta')
 job2.add_dependencies(done=[job1,])
 
-job_list = [job1, job2]
+job3 = FastxClipper(name='kure_fastx_clipper')
+job3.add_argument('-Q', '33')
+job3.add_argument('-C')
+job3.add_argument('-i', 'test.fastq')
+job3.add_adapter_file('/home/karl/data/tfpipe/adapters')
+job3.add_dependencies(done=[job2,])
+job3.redirect_output(out_dir + 'test.fastq')
 
-for i in range(1, 60):
+job_list = [job1, job2, job3]
+
+for i in range(0, 3):
     gsnap_args = {'--terminal-threshold=10': '',
                   '-n': '1',
                   '--genome-unk-mismatch=1': '',
@@ -54,5 +62,5 @@ merge_job = CLI(cmd="python /proj/fureylab/bin/merge_sam_files.py all.sam *.sam"
 
 job_list.append(merge_job)
 wf = WorkFlow(job_list)
-wf.run()
+wf.show()
 
