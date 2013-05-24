@@ -91,6 +91,11 @@ class WorkFlow(object):
         if len(job.dep_str) == 0:
             job._build_dep_str()
         bsub += self._update_dep_str(job) if job.dep_str else ''
+        job_str = str(job)
+        if job_str.count('|'):
+            if (job_str.count('|')+1) > 8:
+                exit("Too many threads.  Adapter file must be eight or less.")
+            bsub += '-n %d -R "span[hosts=1]" ' % (job_str.count('|') + 1)
         return bsub
 
     def _build_shell_script(self):

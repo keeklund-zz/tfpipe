@@ -12,6 +12,7 @@ setup(
               'tfpipe.modules.galaxy',
               'tfpipe.modules.gmap',
               'tfpipe.modules.cli',
+              'tfpipe.modules.picard',
               'tfpipe.pipeline', 
               'tfpipe.utils',],
     scripts=['bin/example.py', 
