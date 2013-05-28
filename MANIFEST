@@ -21,6 +21,8 @@ tfpipe/modules/gmap/__init__.py
 tfpipe/modules/gmap/alignment.py
 tfpipe/modules/picard/__init__.py
 tfpipe/modules/picard/tools.py
+tfpipe/modules/samtools/__init__.py
+tfpipe/modules/samtools/tools.py
 tfpipe/pipeline/__init__.py
 tfpipe/pipeline/engine.py
 tfpipe/utils/__init__.py
