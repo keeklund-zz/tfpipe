@@ -1,2 +1,2 @@
 """ """
-from format_conversion import bamtobed, bedtobam
+from format_conversion import BamToBed, BedToBam

@@ -1,2 +1,2 @@
 """ """
-from tools import MarkDuplicates
+from tools import MarkDuplicates, MergeSamFiles
