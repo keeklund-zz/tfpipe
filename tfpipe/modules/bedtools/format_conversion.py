@@ -22,3 +22,11 @@ class BedToBam(BedTools):
     _cmd = 'bedtools bedtobam '
 
 
+class Intersect(BedTools):
+    """
+
+    """
+    _cmd = 'bedtools intersect '
+
+
+
