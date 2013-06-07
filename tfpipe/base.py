@@ -40,6 +40,7 @@ class Job(object):
         self.dep_str = inputs.get('dep_str', '')
         self.dep_str_at_init = bool(self.dep_str)
         self.dep = self._initialize_dependencies(inputs)
+        self.bsub_args = inputs.get('bsub_args', {})
         self.redirect = ''
         logger.info("%s: initialized with '%s' arguments and command: %s " % 
                     (self.name, self._parse_args(), self.cmd))
@@ -92,6 +93,14 @@ class Job(object):
         self.args[arg] = True and value or ''
         logger.info("%s: argument '%s %s' added to %s" % 
                     (self.name, arg, self.args[arg], self.cmd))
+
+    def add_bsub_argument(self, arg, value=None):
+        """Method adds command line arguments to future bsub command.
+
+        """
+        self.bsub_args[arg] = True and value or ''
+        logger.info("%s: argument '%s %s' added to %s" %
+                    (self.name, arg, self.bsub_args[arg], self.cmd))
 
     def add_jobname(self, jobname):
         """Add name to current job.
