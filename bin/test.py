@@ -15,6 +15,8 @@ job1 = FastqQualityFilter(name='kure_fastqqualityfilter',
                                 '-q': '20',
                                 '-p': '100',
                                 },)
+job1.add_bsub_argument('-M', '2000000')
+job1.add_bsub_argument('-q', 'bigmem')
 job1.redirect_output(out_dir + 'test.fastq')
 
 job2 = FastqToFasta(name='kure_fastq_to_fasta')

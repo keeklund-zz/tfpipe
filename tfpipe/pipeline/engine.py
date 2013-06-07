@@ -87,12 +87,16 @@ class WorkFlow(object):
         """Create bsub command submission string.
 
         """
-        bsub = "bsub -J %s -o %s.out " % (job.name, job.name)
         if len(job.dep_str) == 0:
             job._build_dep_str()
-        bsub += self._update_dep_str(job) if job.dep_str else ''
-        job_str = str(job)
+        bargs = ' '.join(["%s %s" % (k, v) for k, v in job.bsub_args.items()])
+        bdep = self._update_dep_str(job) if job.dep_str else ''
+        bsub = "bsub -J %s %s -o %s.out %s " % (job.name, 
+                                                bdep,
+                                                job.name, 
+                                                bargs)
         if job_str.count('|'):
+            job_str = str(job)
             if (job_str.count('|')+1) > 8:
                 exit("Too many threads.  Adapter file must be eight or less.")
             bsub += '-n %d -R "span[hosts=1]" ' % (job_str.count('|') + 1)
