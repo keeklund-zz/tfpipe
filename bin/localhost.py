@@ -27,6 +27,7 @@ job2.add_argument('-i', data_dir + 'rep2.fasta')
 job2.add_argument('-o', data_dir + 'newoutfile.fa')
 job2.add_argument('-C')
 job2.add_jobname("myFastxClipper")
+job2.add_adapter_file('/home/karl/data/tfpipe/adapters')
 job2.add_dependencies(done=[job1,])
 
 
