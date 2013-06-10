@@ -95,8 +95,8 @@ class WorkFlow(object):
                                                 bdep,
                                                 job.name, 
                                                 bargs)
+        job_str = str(job)
         if job_str.count('|'):
-            job_str = str(job)
             if (job_str.count('|')+1) > 8:
                 exit("Too many threads.  Adapter file must be eight or less.")
             bsub += '-n %d -R "span[hosts=1]" ' % (job_str.count('|') + 1)
