@@ -1,0 +1,3 @@
+create a submission group name
+    - jobs can be deleted via the group
+    - job names can incorporate group name 
