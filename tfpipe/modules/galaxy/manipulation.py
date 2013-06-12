@@ -71,3 +71,10 @@ class FastqQualityFilter(Galaxy):
     _cmd = 'fastq_quality_filter'
 
 
+class FastxTrimmer(Galaxy):
+    """Trims reads to specified length.
+
+    """
+    _cmd = 'fastx_trimmer'
+
+
