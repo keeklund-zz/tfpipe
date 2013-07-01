@@ -5,9 +5,13 @@ import unittest
 from tfpipe.modules.galaxy import FastqToFasta, FastqQualityFilter
 from tfpipe.modules.gmap import Gsnap
 from tfpipe.pipeline import WorkFlow
+from tfpipe.utils import DuplicateJobNames
+# ['_build_bsub', '_build_shell_script', '_check_jobnames', '_create_submit_list', '_create_submit_str', '_shell_script', '_update_dep_str', 'add_job', 'jobs', 'lsf', 'run', 'show']
 
 class WorkFlowTest(unittest.TestCase):
+    """Test functionality of workflow with sample jobs.
 
+    """
     def setUp(self):
         """Set up a workflow.
 
@@ -33,7 +37,17 @@ class WorkFlowTest(unittest.TestCase):
                     'bsub -J fastq_to_fasta -w "done(quality_filter)"  -o fastq_to_fasta.out  fastq_to_fasta -o qfasta.fa -i qfastq.fq ']
         for job, jl in zip(self.wf.jobs, job_list):
             self.assertEqual(self.wf._create_submit_str(job), jl)
+    
+    def test_check_jobnames(self):
+        """Method makes sure job names are unique.
 
+        Exits if jobnames are not unique.
+
+        """
+        qf = FastqQualityFilter(name="job")
+        qa = FastqToFasta(name="job")
+        self.assertRaises(DuplicateJobNames, WorkFlow([qf, qa]))
+        
 # need to test job that doesn't have any dependencies
 # add dependency condition, specify dep_str
 # need way to validate dep_str

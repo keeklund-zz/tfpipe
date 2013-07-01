@@ -5,7 +5,7 @@ from re import findall
 from os import system, environ, path
 from sys import exit
 from datetime import datetime
-from tfpipe.utils import logger
+from tfpipe.utils import logger, DuplicateJobNames
 
 class WorkFlow(object):
     """WorkFlow creates and executes job submission statements.
@@ -39,8 +39,7 @@ class WorkFlow(object):
         if (len(set(job_names)) == len(job_names)) and self.lsf:
             logger.info("WorkFlow job names are unique.")
         elif self.lsf:
-            logger.warn("WorkFlow job names are NOT unique.")
-            exit("WARNING: WorkFlow job names are NOT unique.")
+            DuplicateJobNames("WARNING: WorkFlow job names are NOT unique.")
 
     def _create_submit_str(self, job):
         """Build submission string.

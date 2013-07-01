@@ -31,3 +31,20 @@ class InvalidObjectCall(Exception):
 
     def __str__(self):
         return repr(self.message)
+
+
+class DuplicateJobNames(Exception):
+    """Raise exception when job names are not unique.
+
+    """
+    def __init__(self, message):
+        """Log message.
+
+        """
+        self.message = message
+        logger.warn(message)
+
+    def __str__(self):
+        return repr(self.message)
+
+
