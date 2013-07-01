@@ -148,7 +148,42 @@ class ModuleEmptyInit(unittest.TestCase):
 
 
 class ModuleInitWithParamaters(unittest.TestCase):
-    pass
+    """Test initialization of module when key-word input arguments are not empty.
+
+    """
+    def setUp(self):
+        """Set up a job initialized with input parameters.
+
+        Job used in class test cases.
+
+        """
+        self.fq2a_job = FastqToFasta(name='myFastq2Fasta',
+                                     args={'-i': 'input_file.fq',
+                                           '-o': 'output_file.fa'},
+                                     dep_str='previous_job',
+                                     )
+
+    def test_job_init_cmd(self):
+        """Module should inherit job and initialize cmd."""
+        self.assertEqual(self.fq2a_job.cmd, 'fastq_to_fasta')
+
+    def test_job_init_args(self):
+        """Module initialized with args, args dictionary must match."""
+        self.assertDictEqual(self.fq2a_job.args, {'-i': 'input_file.fq', 
+                                                  '-o': 'output_file.fa'})
+
+    def test_job_init_name(self):
+        """Module init with name, name is initialized value."""
+        self.assertEqual(self.fq2a_job.name, 'myFastq2Fasta')
+        self.assertIsInstance(self.fq2a_job.name, str)
+
+    def test_job_init_dep_str(self):
+        """Module dependency string must match initialized dep_str."""
+        self.assertEqual(self.fq2a_job.dep_str, 'previous_job')
+
+    def test_job_init_dep_at_init(self):
+        """Module if dep_string is not empty, attribute True."""
+        self.assertTrue(self.fq2a_job.dep_str_at_init)
 
 # need way to validate dep_str
 # test job as string again after? way to automate/randomize?
