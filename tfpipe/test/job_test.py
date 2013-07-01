@@ -185,7 +185,15 @@ class ModuleInitWithParamaters(unittest.TestCase):
         """Module if dep_string is not empty, attribute True."""
         self.assertTrue(self.fq2a_job.dep_str_at_init)
 
-# need way to validate dep_str
-# test job as string again after? way to automate/randomize?
+    def test_job_as_string(self):
+        """__str__ method returns a command line execution representation."""
+        self.assertEqual(str(self.fq2a_job), "fastq_to_fasta -o output_file.fa -i input_file.fq")
 
-# add check for num dep matches dep_str
+    def test_add_argument(self):
+        """Method to add arguments to job."""
+        self.fq2a_job.add_argument('-C', '')
+        self.assertDictEqual(self.fq2a_job.args, {'-i': 'input_file.fq',
+                                                  '-o': 'output_file.fa',
+                                                  '-C': ''})
+        self.assertEqual(str(self.fq2a_job), 'fastq_to_fasta -o output_file.fa -i input_file.fq -C ')
+
