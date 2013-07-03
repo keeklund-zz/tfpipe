@@ -74,7 +74,7 @@ class ModuleEmptyInit(unittest.TestCase):
         """__str__ method returns a command line execution representation.
 
         """
-        self.assertEqual(str(self.fq2a_job), "fastq_to_fasta ")
+        self.assertEqual(str(self.fq2a_job), "fastq_to_fasta  ")
 
     def test_add_argument(self):
         """Method to add arguments to job.
@@ -82,7 +82,7 @@ class ModuleEmptyInit(unittest.TestCase):
         """
         self.fq2a_job.add_argument('-i', 'inputfile.fq')
         self.assertDictEqual(self.fq2a_job.args, {'-i': 'inputfile.fq'})
-        self.assertEqual(str(self.fq2a_job), 'fastq_to_fasta -i inputfile.fq')
+        self.assertEqual(str(self.fq2a_job), 'fastq_to_fasta -i inputfile.fq ')
 
     def test_add_jobname(self):
         """Replace 8 char random string with human readable option.
@@ -169,7 +169,7 @@ class ModuleEmptyInit(unittest.TestCase):
         self.fq2a_job.add_argument('-i', 'input_file.fq')
         self.fq2a_job.add_argument('-o', 'output_file.fa')
         self.assertEqual(self.fq2a_job.get_command(),
-                         "fastq_to_fasta -o output_file.fa -i input_file.fq")
+                         "fastq_to_fasta -o output_file.fa -i input_file.fq ")
 
 
 class ModuleInitWithParamaters(unittest.TestCase):
@@ -224,7 +224,7 @@ class ModuleInitWithParamaters(unittest.TestCase):
         """__str__ method returns a command line execution representation.
 
         """
-        job_str = "fastq_to_fasta -o output_file.fa -i input_file.fq"
+        job_str = "fastq_to_fasta -o output_file.fa -i input_file.fq "
         self.assertEqual(str(self.fq2a_job), job_str)
 
     def test_add_argument(self):
@@ -235,6 +235,6 @@ class ModuleInitWithParamaters(unittest.TestCase):
         self.assertDictEqual(self.fq2a_job.args, {'-i': 'input_file.fq',
                                                   '-o': 'output_file.fa',
                                                   '-C': ''})
-        job_str = 'fastq_to_fasta -o output_file.fa -i input_file.fq -C '
+        job_str = 'fastq_to_fasta -o output_file.fa -i input_file.fq -C  '
         self.assertEqual(str(self.fq2a_job), job_str)
 
