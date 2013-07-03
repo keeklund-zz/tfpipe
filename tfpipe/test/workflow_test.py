@@ -8,7 +8,7 @@ from tfpipe.pipeline import WorkFlow
 from tfpipe.utils import DuplicateJobNames
 
 # to unittest:
-# ['_build_bsub', '_build_shell_script', '_create_submit_list', '_create_submit_str', '_shell_script', '_update_dep_str', 'add_job', 'jobs', 'lsf', 'run', 'show']
+# ['_build_shell_script', '_create_submit_list', '_create_submit_str', '_shell_script', '_update_dep_str', 'run', 'show']
 
 class WorkFlowTest(unittest.TestCase):
     """Test functionality of workflow with sample jobs.
@@ -30,6 +30,8 @@ class WorkFlowTest(unittest.TestCase):
         fq2a.add_dependencies(done=[fqqf,])
 
         self.wf = WorkFlow([fqqf, fq2a])
+        self.fqqf = fqqf
+        self.fq2a = fq2a
 
     def test_workflow_create_submit_str(self):
         """Display workflow submission commands.
@@ -50,7 +52,23 @@ class WorkFlowTest(unittest.TestCase):
         qa = FastqToFasta(name="job")
         self.assertRaises(DuplicateJobNames, wf = WorkFlow([qf, qa]))
         
-# need to test job that doesn't have any dependencies
-# add dependency condition, specify dep_str
-# need way to validate dep_str
-# check dep_str is built correctly
+    def test_build_bsub(self):
+        """_build_bsub is a hidden method building lsf requirement.
+
+        """
+        bsub_list = ['bsub -J quality_filter  -o quality_filter.out  ',
+                     'bsub -J fastq_to_fasta -w "done(quality_filter)"  -o fastq_to_fasta.out  ']
+        for job, bl in zip(self.wf.jobs, bsub_list):
+            self.assertEqual(self.wf._build_bsub(job), bl)
+
+    def test_lsf(self):
+        """lsf attribute should be true based on setUP.
+
+        """
+        self.assertTrue(self.wf.lsf)
+
+    def test_jobs_attribute(self):
+        """setUp initialized two jobs: fqqf + fq2a
+
+        """
+        self.assertEqual([self.fqqf, self.fq2a], self.wf.jobs)
