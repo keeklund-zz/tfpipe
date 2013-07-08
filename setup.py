@@ -15,6 +15,7 @@ setup(
               'tfpipe.modules.picard',
               'tfpipe.modules.samtools',
               'tfpipe.modules.bedtools',
+              'tfpipe.modules.mach',
               'tfpipe.pipeline', 
               'tfpipe.utils',],
     scripts=['bin/localhost.py',
