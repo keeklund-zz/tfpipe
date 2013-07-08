@@ -22,4 +22,11 @@ class Sort(SamTools):
     _cmd = 'samtools sort '
 
 
+class Index(SamTools):
+    """
+    
+    """
+    _cmd = 'samtools index '
+
+
 
