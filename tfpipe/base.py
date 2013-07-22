@@ -46,11 +46,15 @@ class Job(object):
                     (self.name, self._parse_args(), self.cmd))
 
     def __repr__(self):
-        """Command Line representation."""
+        """Command Line representation.
+
+        """
         return "%s(%r)" % (self.__class__, self.args)
 
     def __str__(self):
-        """Represent object as string."""
+        """Represent object as string.
+
+        """
         redirect = " %s %s " % (">", self.redirect) if self.redirect else ''
         return " ".join((self.cmd, self._parse_args(), redirect))
 
@@ -68,7 +72,9 @@ class Job(object):
         return tmp
 
     def _check_valid_input_options(self, options, input_keys, message):
-        """Hidden method checks input values."""
+        """Hidden method checks input values.
+
+        """
         if sum([args not in options for args in input_keys]):
             raise InvalidInput, message
 
@@ -77,11 +83,15 @@ class Job(object):
                          self.args.iteritems()])
                          
     def _make_jobname(self, size=8, chars=string.ascii_letters):
-        """Return random string."""
+        """Return random string.
+
+        """
         return "".join(random.choice(chars) for x in range(size))
 
     def _build_dep_str(self):
-        """Build LSF dependency string."""
+        """Build LSF dependency string.
+
+        """
         str_tmp = " ".join([(k + " ") * len(v) for k, v in self.dep.items() 
                             if len(v) > 0])
         self.dep_str = "&&".join(str_tmp.split())
