@@ -5,6 +5,9 @@ JOBS
 Overview
 ========
 
+tfpipe/base.py defines class Job. It is the base class for all jobs created 
+with tfpipe.
+
 Dependencies
 ============
 

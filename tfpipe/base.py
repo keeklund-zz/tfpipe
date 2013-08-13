@@ -9,10 +9,9 @@ from tfpipe.utils import logger
 from tfpipe.utils import InvalidInput, InvalidObjectCall
 
 class Job(object):
-    """Generic Job Interace functionality. 
+    """Generic Job Interface functionality. 
 
     """
-    # best place to put these?
     dep_options = ('done', 'ended', 'exit', 'external',
                    'post_done', 'post_err', 'started')
     init_options = ('cmd', 'args', 'name', 'dep_str')
