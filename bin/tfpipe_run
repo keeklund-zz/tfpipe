@@ -1,0 +1,13 @@
+#!/usr/bin/python
+"""
+
+"""
+import argparse 
+
+parser = argparse.ArgumentParser(description='TFPipe Run.')
+parser.add_argument('argvs', type=str, 
+                    help='command and command line arguments')
+parser.add_argument("-v", "--verbosity", action="store_true", 
+                    help='increase output verbosity')
+args = parser.parse_args()
+

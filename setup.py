@@ -18,7 +18,7 @@ setup(
               'tfpipe.modules.mach',
               'tfpipe.pipeline', 
               'tfpipe.utils',],
-    scripts=[],
+    scripts=['bin/tfpipe_run',],
     url='http://fureylab.web.unc.edu',
     license='LICENSE.txt',
     description='Terry Furey Lab Pipeline',
