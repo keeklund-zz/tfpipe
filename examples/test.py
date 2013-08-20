@@ -1,3 +1,4 @@
+#!/usr/bin/python
 """Test workflow on Kure.
 
 """

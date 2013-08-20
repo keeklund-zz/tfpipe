@@ -3,7 +3,6 @@
 """
 import string
 import random
-from subprocess import Popen
 
 from tfpipe.utils import logger
 from tfpipe.utils import InvalidInput, InvalidObjectCall
