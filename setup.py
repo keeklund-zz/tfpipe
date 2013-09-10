@@ -16,6 +16,7 @@ setup(
               'tfpipe.modules.samtools',
               'tfpipe.modules.bedtools',
               'tfpipe.modules.mach',
+              'tfpipe.modules.plink',
               'tfpipe.pipeline', 
               'tfpipe.utils',],
     scripts=['bin/tfpipe_run',],
