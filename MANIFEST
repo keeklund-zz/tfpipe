@@ -4,8 +4,7 @@ LICENSE.txt
 README.txt
 TODO.txt
 setup.py
-bin/localhost.py
-bin/test.py
+bin/tfpipe_run
 docs/faq.txt
 docs/jobs.txt
 docs/modules.txt
