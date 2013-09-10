@@ -11,7 +11,7 @@ class WorkFlow(object):
     """WorkFlow creates and executes job submission statements.
 
     """
-    def __init__(self, job_list=[], lsf=True, tfpipe_run=True, name=None):
+    def __init__(self, job_list=[], lsf=True, name=None):
         """Initialize WorkFlow.
 
         Method sets job lists and environment.  Depending on the environment, 
@@ -49,7 +49,7 @@ class WorkFlow(object):
         """
         bsub_str = self.lsf and self._build_bsub(job) or ''
         job_str = job.redirect and '"' + str(job) + '"' or str(job)
-        self.current_submit_str = bsub_str + "./bin/tfpipe_run " +job_str
+        self.current_submit_str = bsub_str + job_str
         return self.current_submit_str
 
     def _create_submit_list(self, job):

@@ -24,6 +24,8 @@ tfpipe/modules/mach/__init__.py
 tfpipe/modules/mach/impute.py
 tfpipe/modules/picard/__init__.py
 tfpipe/modules/picard/tools.py
+tfpipe/modules/plink/__init__.py
+tfpipe/modules/plink/association.py
 tfpipe/modules/samtools/__init__.py
 tfpipe/modules/samtools/tools.py
 tfpipe/pipeline/__init__.py
