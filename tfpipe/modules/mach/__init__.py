@@ -1,2 +1,2 @@
 """ """
-from impute import Mach1
+from impute import Mach1, MachAdmix
