@@ -11,7 +11,7 @@ class WorkFlow(object):
     """WorkFlow creates and executes job submission statements.
 
     """
-    def __init__(self, job_list=[], lsf=True, name=None):
+    def __init__(self, job_list=[], lsf=True, tfpipe_run=True, name=None):
         """Initialize WorkFlow.
 
         Method sets job lists and environment.  Depending on the environment, 
@@ -47,9 +47,9 @@ class WorkFlow(object):
         Use lsf scheduler, bsub, if self.lsf is True.
 
         """
-        bsub_str = self._build_bsub(job) if self.lsf else ''
+        bsub_str = self.lsf and self._build_bsub(job) or ''
         job_str = job.redirect and '"' + str(job) + '"' or str(job)
-        self.current_submit_str = bsub_str + job_str
+        self.current_submit_str = bsub_str + "./bin/tfpipe_run " +job_str
         return self.current_submit_str
 
     def _create_submit_list(self, job):
@@ -75,12 +75,12 @@ class WorkFlow(object):
 
         """
         if job.dep_str_at_init:
-            return '-w \"%s\" ' % job.dep_str
+            return '-w \"%s\"' % job.dep_str
         dep_options = findall(r"[\w']+", job.dep_str) 
         for depopt in set(dep_options):
             tmp_dep_str = job.dep_str.replace(depopt, depopt + "(%s)")
         job_deps = tuple([job.dep.get(jdo).pop(0).name for jdo in dep_options])
-        return '-w \"%s\" ' % (tmp_dep_str % job_deps)
+        return '-w \"%s\"' % (tmp_dep_str % job_deps)
 
     def _build_bsub(self, job):
         """Create bsub command submission string.

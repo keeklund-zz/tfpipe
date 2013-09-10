@@ -17,3 +17,11 @@ class Mach1(Mach):
     """
     _cmd = 'mach1'
 
+
+class MachAdmix(Job):
+    """New version of Markov Chain based haplotyper
+
+    Not a module on Kure.  Needs to be built before use.
+
+    """
+    _cmd = 'mach-admix'

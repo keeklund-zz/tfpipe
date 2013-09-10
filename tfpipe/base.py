@@ -24,14 +24,12 @@ class Job(object):
         cmd, args, name, dep, dep_str
 
         """
-        # initialize with deps too
         message = "Illegal input argument pass during init."
         self._check_valid_input_options(self.init_options, 
                                         inputs.keys(),
                                         message)
         if not hasattr(self, '_cmd'):
             raise InvalidObjectCall, "This object cannot be called directly."
-#        super(Job, self).__init__()
         self.cmd = inputs.get('cmd', self._cmd)
         self.args = inputs.get('args', {}) 
         self.name = inputs.get('name', self._make_jobname())
@@ -63,7 +61,6 @@ class Job(object):
         values.
 
         """
-        # initialize deps here too
         tmp = dict((depopt, []) for depopt in self.dep_options)
         for key, value in inputs.get('dep', ''):
             tmp[key].append(value)
