@@ -52,7 +52,7 @@ class Job(object):
 
         """
         redirect = "%s %s " % (">", self.redirect) if self.redirect else ''
-        return "".join((self.cmd, self._parse_args(), redirect))
+        return " ".join((self.cmd, self._parse_args(), redirect))
 
     def _initialize_dependencies(self, inputs):
         """Method to initialize job dependencies.
