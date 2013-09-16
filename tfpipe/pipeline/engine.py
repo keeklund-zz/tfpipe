@@ -120,8 +120,11 @@ class WorkFlow(object):
         logger.info("WorkFlow Submission Script Created")
 
     def add_job(self, newjob):
-        """ """
-        pass
+        """Add job to list.
+
+        """
+        self.jobs.append(newjob)
+        logger.info("WorkFlow ADD: %s" % newjob)
 
     def show(self):
         """Method shows all job submission strings and lists in WorkFlow.
