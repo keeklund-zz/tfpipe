@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 """Example for pipeline on localhost.
 
 Assumes jobs will run serially.
