@@ -86,7 +86,7 @@ class WorkFlow(object):
         """Create bsub command submission string.
 
         """
-        if len(job.dep_str) == 0:
+        if not job.dep_str:
             job._build_dep_str()
         bargs = ' '.join(["%s %s" % (k, v) for k, v in job.bsub_args.items()])
         bdep = self._update_dep_str(job) if job.dep_str else ''
