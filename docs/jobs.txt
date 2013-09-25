@@ -2,11 +2,76 @@
 JOBS
 ====
 
+
 Overview
 ========
 
 tfpipe/base.py defines class Job. It is the base class for all jobs created 
 with tfpipe.
+
+
+Methods
+=======
+
+
+add_argument
+------------
+
+Method adds command line arguments to object.
+
+    >>> job1.add_argument('-c')
+    >>> job1.add_argument('-i', 'some.file')
+
+
+add_bsub_argument
+-----------------
+
+Method adds command line arguments to future bsub command.
+
+    >>> job1.add_bsub_argument('-q', 'bigmem')
+
+
+add_dependencies
+----------------
+
+Add job dependencies to job object.  Method allows user to add dependency 
+arguments to current job.  User specifies under what dependency condition each 
+job is located, and has ability to specify the dependency string.  Dependency 
+conditions must be of type list.
+
+If user does not specify a dependency string, tfpipe will make a best guess 
+based on keys from the dependency dictionary.
+
+Please see below.
+
+
+add_jobname
+-----------
+
+Add name to current job. 
+
+
+get_command
+-----------
+
+Display job shell representation at current state.
+
+
+redirect_output
+---------------
+
+Method to redirect output in the Unix sense.
+
+
+show
+----
+Display job shell representation at current state.
+
+show_as_list
+------------
+
+Output command as list.
+
 
 Dependencies
 ============
@@ -80,8 +145,6 @@ LSF expects to see.  You can consider this an override option.
 Arguments
 =========
 
-
-
 Adding Arguments
 ----------------
 
@@ -104,4 +167,5 @@ moment.  I will have a better solution soon.
 
     >>> job1 = Gsnap()
     >>> job1.add_argument('--terminal-threshold=10', '')
+
 

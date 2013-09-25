@@ -151,13 +151,19 @@ class Job(object):
         return l + list(reduce(lambda x, y: x + y, self.args.items()))
 
     def show(self):
+        """Display job shell representation at current state.
+
+        """
         print str(self)
 
     def get_command(self):
+        """Display job shell representation at current state.
+
+        """
         return str(self)
 
     def redirect_output(self, outputfile):
-        """Method to redirect output.
+        """Method to redirect output in the Unix sense.
 
         """
         self.redirect = outputfile

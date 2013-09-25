@@ -2,8 +2,48 @@
 WorkFlow
 ========
 
+
 Overview
 ========
 
 WorkFlow class takes a list of jobs as input and generates appropriate 
-submission commands based on environment.  
+submission commands based on the environment.  The WorkFlow class can display
+the generated submission commands to the user and execute the assembled 
+pipeline. 
+
+
+Initialization
+==============
+
+WorkFlow is initialized similarly to other python objects.  Optional arguments
+include: list of jobs, LSF boolean, and a name (type: string).  
+
+i.e.:
+    Local:
+    >>> wf = WorkFlow([job1, job2], False)
+
+    Kure:
+    >>> wf = WorkFlow([job1, job2])
+
+
+Methods
+=======
+
+add_job
+-------
+
+Method appends a new job to a list of already existing jobs in the work flow.
+
+    >>> wf.add_job(job3)
+
+
+run
+---
+
+Method generates and submits commands to shell.
+
+
+show
+----
+
+Method shows all job submission strings in WorkFlow.
