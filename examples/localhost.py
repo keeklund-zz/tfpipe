@@ -37,5 +37,5 @@ job3 = CLI(cmd="ls -l")
 
 # add jobs to workflow
 wf = WorkFlow([job1, job2, job3], lsf=False)
-wf.run()
+wf.show()
 

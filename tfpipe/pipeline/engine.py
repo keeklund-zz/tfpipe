@@ -2,7 +2,7 @@
 
 """
 from re import findall
-from os import system, environ, path
+from os import system
 from sys import exit
 from datetime import datetime
 from tfpipe.utils import logger, DuplicateJobNames
