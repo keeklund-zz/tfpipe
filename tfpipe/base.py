@@ -17,7 +17,7 @@ class Job(object):
     def __init__(self, **inputs):
         """Initialize Job.
 
-        Objects that inherit this class receive Job methods and attributes. 
+        Objects that inherit this class receive Job methods and attributes.
         Those parent objects can also override the cmd attribute.
 
         Parameters:

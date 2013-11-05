@@ -18,6 +18,7 @@ tfpipe/modules/cli/__init__.py
 tfpipe/modules/cli/interface.py
 tfpipe/modules/galaxy/__init__.py
 tfpipe/modules/galaxy/manipulation.py
+tfpipe/modules/galaxy/quality_control.py
 tfpipe/modules/gmap/__init__.py
 tfpipe/modules/gmap/alignment.py
 tfpipe/modules/mach/__init__.py

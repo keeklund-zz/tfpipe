@@ -1,5 +1,4 @@
-create a submission group name
-    - jobs can be deleted via the group
-    - job names can incorporate group name 
+way to display job attributes/data not just command line
 
-look into how submission strings are created - may want to join a list instead
+input_file, output_file as attributes
+automatically grab output_file of job and set to input of dependent job
