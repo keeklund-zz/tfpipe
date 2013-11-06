@@ -194,6 +194,9 @@ class Job(object):
         """Method to redirect output in the Unix sense.
 
         """
+        self.output_file = outputfile
         self.redirect = outputfile
+        logger.info("%s: output_file attribute '%s' set for %s" % 
+                    (self.name, outputfile, self.cmd))
 
 
