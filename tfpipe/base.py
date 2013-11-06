@@ -5,7 +5,7 @@ import string
 import random
 
 from tfpipe.utils import logger
-from tfpipe.utils import InvalidInput, InvalidObjectCall
+from tfpipe.utils import InvalidInput, InvalidObjectCall, InvalidType
 
 class Job(object):
     """Generic Job Interface functionality. 
@@ -38,6 +38,11 @@ class Job(object):
         self.dep = self._initialize_dependencies(inputs)
         self.bsub_args = inputs.get('bsub_args', {})
         self.redirect = ''
+        self.input_file = None
+        self.output_file = None
+        self.io_flag_handler = {'input': self._io_flag_input,
+                                'output': self._io_flag_output,
+                                None: None}
         logger.info("%s: initialized with '%s' arguments and command: %s " % 
                     (self.name, self._parse_args(), self.cmd))
 
@@ -91,10 +96,33 @@ class Job(object):
                             if len(v) > 0])
         self.dep_str = "&&".join(str_tmp.split())
 
-    def add_argument(self, arg, value=None):
-        """Method adds command line arguments to object.
+    def _io_flag_input(self, value):
+        """Get job's input file from previous job output.
 
         """
+        self.input_file = value
+        logger.info("%s: input_file attribute '%s' set for %s" % 
+                    (self.name, value, self.cmd))
+        
+    def _io_flag_output(self, value):
+        """Set output_file attribute.
+
+        """
+        self.output_file = value
+        logger.info("%s: output_file attribute '%s' set for %s" % 
+                    (self.name, value, self.cmd))
+        
+    def add_argument(self, arg, value=None, io_flag=None):
+        """Method adds command line arguments to object.
+
+        Argument value should be either a string or some Job instance. io_flag
+        can only be 'input' or 'output' and will set the respective file
+        attributes.
+        
+        """
+        handler = self.io_flag_handler.get(io_flag)
+        if handler:
+            handler(value)
         self.args[arg] = True and value or ''
         logger.info("%s: argument '%s %s' added to %s" % 
                     (self.name, arg, self.args[arg], self.cmd))
