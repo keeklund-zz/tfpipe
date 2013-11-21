@@ -10,4 +10,5 @@ import tfpipe.modules.picard
 import tfpipe.modules.dfilter
 import tfpipe.modules.bedtools
 import tfpipe.modules.samtools
+import tfpipe.modules.cufflinks
 import tfpipe.pipeline

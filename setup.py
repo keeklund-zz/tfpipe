@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name='tfpipe',
-    version='0.1.3',
+    version='0.1.4',
     author='Karl Eklund',
     author_email='keklund@email.unc.edu',
     packages=['tfpipe', 
@@ -19,6 +19,7 @@ setup(
               'tfpipe.modules.dfilter',
               'tfpipe.modules.bedtools',
               'tfpipe.modules.samtools',
+              'tfpipe.modules.cufflinks',
               'tfpipe.pipeline',],
     scripts=['bin/tfpipe_run',],
     url='http://fureylab.web.unc.edu',
