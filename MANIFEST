@@ -16,6 +16,8 @@ tfpipe/modules/bedtools/__init__.py
 tfpipe/modules/bedtools/format_conversion.py
 tfpipe/modules/cli/__init__.py
 tfpipe/modules/cli/interface.py
+tfpipe/modules/cufflinks/__init__.py
+tfpipe/modules/cufflinks/expression.py
 tfpipe/modules/dfilter/__init__.py
 tfpipe/modules/dfilter/tools.py
 tfpipe/modules/galaxy/__init__.py

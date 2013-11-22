@@ -199,4 +199,16 @@ class Job(object):
         logger.info("%s: output_file attribute '%s' set for %s" % 
                     (self.name, outputfile, self.cmd))
 
+    def set_output_file(self, value):
+        """Set output_file attribute.
+
+        """
+        self._io_flag_output(value)
+
+    def get_output_file(self,):
+        """
+
+        """
+        return self.output_file
+
 
