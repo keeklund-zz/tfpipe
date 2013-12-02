@@ -9,6 +9,8 @@ docs/faq.txt
 docs/jobs.txt
 docs/modules.txt
 docs/workflow.txt
+example/kure.py
+example/localhost.py
 tfpipe/__init__.py
 tfpipe/base.py
 tfpipe/modules/__init__.py
