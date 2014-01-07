@@ -8,6 +8,7 @@ import tfpipe.modules.plink
 import tfpipe.modules.galaxy
 import tfpipe.modules.picard
 import tfpipe.modules.dfilter
+import tfpipe.modules.tagdust
 import tfpipe.modules.bedtools
 import tfpipe.modules.samtools
 import tfpipe.modules.cufflinks

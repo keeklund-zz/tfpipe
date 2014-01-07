@@ -1,4 +1,2 @@
 way to display job attributes/data not just command line
 
-input_file, output_file as attributes
-automatically grab output_file of job and set to input of dependent job

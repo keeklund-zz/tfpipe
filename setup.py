@@ -17,6 +17,7 @@ setup(
               'tfpipe.modules.galaxy',
               'tfpipe.modules.picard',
               'tfpipe.modules.dfilter',
+              'tfpipe.modules.tagdust',
               'tfpipe.modules.bedtools',
               'tfpipe.modules.samtools',
               'tfpipe.modules.cufflinks',
