@@ -7,6 +7,7 @@ import tfpipe.modules.mach
 import tfpipe.modules.plink
 import tfpipe.modules.galaxy
 import tfpipe.modules.picard
+import tfpipe.modules.tophat
 import tfpipe.modules.dfilter
 import tfpipe.modules.tagdust
 import tfpipe.modules.bedtools

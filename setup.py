@@ -16,6 +16,7 @@ setup(
               'tfpipe.modules.plink',
               'tfpipe.modules.galaxy',
               'tfpipe.modules.picard',
+              'tfpipe.modules.tophat',
               'tfpipe.modules.dfilter',
               'tfpipe.modules.tagdust',
               'tfpipe.modules.bedtools',
