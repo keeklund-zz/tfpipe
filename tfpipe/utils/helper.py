@@ -1,6 +1,9 @@
 """Simple, but common functions typically used in pipelines.
 
 """
+from mimetypes import guess_type                                                |
+from os.path import join as path_join
+
 def get_file_location_info(some_file):
     """Return path, filename, basename tuple.
 
