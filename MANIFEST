@@ -35,9 +35,12 @@ tfpipe/modules/plink/__init__.py
 tfpipe/modules/plink/association.py
 tfpipe/modules/samtools/__init__.py
 tfpipe/modules/samtools/tools.py
+tfpipe/modules/tagdust/__init__.py
+tfpipe/modules/tagdust/artifact_removal.py
 tfpipe/pipeline/__init__.py
 tfpipe/pipeline/engine.py
 tfpipe/utils/__init__.py
 tfpipe/utils/exceptions.py
+tfpipe/utils/helper.py
 tfpipe/utils/logconf.py
 tfpipe/utils/logger.py
