@@ -21,7 +21,7 @@ class Job(object):
         Those parent objects can also override the cmd attribute.
 
         Parameters:
-        cmd, args, name, dep, dep_str
+        cmd, args, pos_args, name, dep, dep_str
 
         """
         message = "Illegal input argument pass during init."
@@ -32,6 +32,7 @@ class Job(object):
             raise InvalidObjectCall, "This object cannot be called directly."
         self.cmd = inputs.get('cmd', self._cmd)
         self.args = inputs.get('args', {}) 
+        self.pos_args = inputs.get('pos_args', [])
         self.name = inputs.get('name', self._make_jobname())
         self.dep_str = inputs.get('dep_str', '')
         self.dep_str_at_init = bool(self.dep_str)
@@ -79,8 +80,12 @@ class Job(object):
             raise InvalidInput, message
 
     def _parse_args(self):
-        return " ".join([" ".join((str(k), str(v))) for k, v in 
-                         self.args.iteritems()])
+        """Parse arguments and positional arguments.
+
+        """
+        return " ".join([" ".join((str(k), str(v))) for k,v in 
+                         self.args.iteritems(), " ".join(self.pos_args)])
+                         
                          
     def _make_jobname(self, size=8, chars=string.ascii_letters):
         """Return random string.
@@ -134,6 +139,14 @@ class Job(object):
         self.bsub_args[arg] = True and value or ''
         logger.info("%s: argument '%s %s' added to %s" %
                     (self.name, arg, self.bsub_args[arg], self.cmd))
+
+    def add_positional_argument(self, arg):
+        """Method adds positional arguments to object.
+
+        """
+        self.pos_args.append(arg)
+        logger.info("%s: argument '%s' added to %s" %
+                    (self.name, arg, self.cmd))
 
     def add_jobname(self, jobname):
         """Add name to current job.
