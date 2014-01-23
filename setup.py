@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name='tfpipe',
-    version='0.1.5',
+    version='0.1.6',
     author='Karl Eklund',
     author_email='keklund@email.unc.edu',
     packages=['tfpipe', 
