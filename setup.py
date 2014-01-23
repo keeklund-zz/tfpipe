@@ -21,6 +21,7 @@ setup(
               'tfpipe.modules.tagdust',
               'tfpipe.modules.bedtools',
               'tfpipe.modules.samtools',
+              'tfpipe.modules.blacklist',
               'tfpipe.modules.cufflinks',
               'tfpipe.pipeline',],
     scripts=['bin/tfpipe_run',

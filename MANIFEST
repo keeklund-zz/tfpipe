@@ -16,6 +16,8 @@ tfpipe/base.py
 tfpipe/modules/__init__.py
 tfpipe/modules/bedtools/__init__.py
 tfpipe/modules/bedtools/format_conversion.py
+tfpipe/modules/blacklist/__init__.py
+tfpipe/modules/blacklist/blacklist.py
 tfpipe/modules/cli/__init__.py
 tfpipe/modules/cli/interface.py
 tfpipe/modules/cufflinks/__init__.py
@@ -37,6 +39,8 @@ tfpipe/modules/samtools/__init__.py
 tfpipe/modules/samtools/tools.py
 tfpipe/modules/tagdust/__init__.py
 tfpipe/modules/tagdust/artifact_removal.py
+tfpipe/modules/tophat/__init__.py
+tfpipe/modules/tophat/alignment.py
 tfpipe/pipeline/__init__.py
 tfpipe/pipeline/engine.py
 tfpipe/utils/__init__.py

@@ -12,5 +12,6 @@ import tfpipe.modules.dfilter
 import tfpipe.modules.tagdust
 import tfpipe.modules.bedtools
 import tfpipe.modules.samtools
+import tfpipe.modules.blacklist
 import tfpipe.modules.cufflinks
 import tfpipe.pipeline
