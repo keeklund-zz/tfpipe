@@ -83,9 +83,9 @@ class Job(object):
         """Parse arguments and positional arguments.
 
         """
-        return " ".join([" ".join((str(k), str(v))) for k,v in 
-                         self.args.iteritems(), " ".join(self.pos_args)])
-                         
+        kw = " ".join("%s %s" % (str(k), str(v)) for k,v in self.args.items())
+        pos = " ".join(self.pos_args) if self.pos_args else ''
+        return " ".join([kw, pos])
                          
     def _make_jobname(self, size=8, chars=string.ascii_letters):
         """Return random string.
