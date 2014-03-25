@@ -11,6 +11,7 @@ import tfpipe.modules.picard
 import tfpipe.modules.tophat
 import tfpipe.modules.dfilter
 import tfpipe.modules.tagdust
+import tfpipe.modules.abundant
 import tfpipe.modules.bedtools
 import tfpipe.modules.samtools
 import tfpipe.modules.blacklist
