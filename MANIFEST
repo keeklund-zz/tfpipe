@@ -37,6 +37,8 @@ tfpipe/modules/picard/__init__.py
 tfpipe/modules/picard/tools.py
 tfpipe/modules/plink/__init__.py
 tfpipe/modules/plink/association.py
+tfpipe/modules/qiime/__init__.py
+tfpipe/modules/qiime/tools.py
 tfpipe/modules/samtools/__init__.py
 tfpipe/modules/samtools/tools.py
 tfpipe/modules/tagdust/__init__.py

@@ -23,6 +23,7 @@ setup(
               'tfpipe.modules.tagdust',
               'tfpipe.modules.bedtools',
               'tfpipe.modules.samtools',
+              'tfpipe.modules.abundant',
               'tfpipe.modules.blacklist',
               'tfpipe.modules.cufflinks',
               'tfpipe.pipeline',],
