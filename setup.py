@@ -15,6 +15,7 @@ setup(
               'tfpipe.modules.gmap',
               'tfpipe.modules.mach',
               'tfpipe.modules.plink',
+              'tfpipe.modules.qiime',
               'tfpipe.modules.galaxy',
               'tfpipe.modules.picard',
               'tfpipe.modules.tophat',

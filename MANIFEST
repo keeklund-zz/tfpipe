@@ -24,6 +24,8 @@ tfpipe/modules/cufflinks/__init__.py
 tfpipe/modules/cufflinks/expression.py
 tfpipe/modules/dfilter/__init__.py
 tfpipe/modules/dfilter/tools.py
+tfpipe/modules/fseq/__init__.py
+tfpipe/modules/fseq/peak.py
 tfpipe/modules/galaxy/__init__.py
 tfpipe/modules/galaxy/manipulation.py
 tfpipe/modules/galaxy/quality_control.py
