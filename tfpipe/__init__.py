@@ -2,6 +2,7 @@
 
 """
 import tfpipe.modules.cli
+import tfpipe.modules.fseq
 import tfpipe.modules.gmap
 import tfpipe.modules.mach
 import tfpipe.modules.plink

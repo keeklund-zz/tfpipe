@@ -4,13 +4,14 @@ from distutils.core import setup
 
 setup(
     name='tfpipe',
-    version='0.1.6',
+    version='0.1.7',
     author='Karl Eklund',
     author_email='keklund@email.unc.edu',
     packages=['tfpipe', 
               'tfpipe.utils',
               'tfpipe.modules', 
               'tfpipe.modules.cli',
+              'tfpipe.modules.fseq',
               'tfpipe.modules.gmap',
               'tfpipe.modules.mach',
               'tfpipe.modules.plink',
