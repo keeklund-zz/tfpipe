@@ -29,4 +29,8 @@ class Intersect(BedTools):
     _cmd = 'bedtools intersect '
 
 
+class SortBed(BedTools):
+    """
 
+    """
+    _cmd = 'sortBed'
