@@ -34,3 +34,10 @@ class SortBed(BedTools):
 
     """
     _cmd = 'sortBed'
+
+
+class MergeBed(BedTools):
+    """
+
+    """
+    _cmd = 'mergeBed'
