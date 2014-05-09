@@ -33,7 +33,7 @@ class Job(object):
         self.cmd = inputs.get('cmd', self._cmd)
         self.args = inputs.get('args', {}) 
         self.pos_args = inputs.get('pos_args', [])
-        self.name = inputs.get('name', self._make_jobname())
+        self.name = self._initialize_name(inputs)
         self.dep_str = inputs.get('dep_str', '')
         self.dep_str_at_init = bool(self.dep_str)
         self.dep = self._initialize_dependencies(inputs)
@@ -87,7 +87,22 @@ class Job(object):
         pos = " ".join(self.pos_args) if self.pos_args else ''
         return " ".join([kw, pos])
                          
-    def _make_jobname(self, size=8, chars=string.ascii_letters):
+    def _initialize_name(self, inputs):
+        """Assign job name.
+
+        Check valid characters in proposed name.  Replace with random strings.
+
+        """
+        return self._drop_invalid_ascii(inputs.get('name',self._make_jobname()))
+
+    def _drop_invalid_ascii(self, name):
+        """
+
+        """
+        allowed = string.ascii_letters + '_'
+        return "".join([i for i in name if i in allowed])
+        
+    def _make_jobname(self, size=10, chars=string.ascii_letters):
         """Return random string.
 
         """
