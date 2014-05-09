@@ -99,7 +99,7 @@ class Job(object):
         """
 
         """
-        allowed = string.ascii_letters + '_'
+        allowed = string.digits + string.ascii_letters + '_'
         return "".join([i for i in name if i in allowed])
         
     def _make_jobname(self, size=10, chars=string.ascii_letters):
