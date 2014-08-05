@@ -22,6 +22,7 @@ setup(
               'tfpipe.modules.dfilter',
               'tfpipe.modules.tagdust',
               'tfpipe.modules.bedtools',
+              'tfpipe.modules.bamtools',
               'tfpipe.modules.samtools',
               'tfpipe.modules.abundant',
               'tfpipe.modules.blacklist',
