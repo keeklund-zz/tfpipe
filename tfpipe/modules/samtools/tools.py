@@ -29,4 +29,10 @@ class Index(SamTools):
     _cmd = 'samtools index '
 
 
+class Fixmate(SamTools):
+    """
+
+    """
+    _cmd = 'samtools fixmate'
+
 

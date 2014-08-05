@@ -1,3 +1,3 @@
 """ """
-from tools import View, Sort, Index
+from tools import View, Sort, Index, FixMate
 
