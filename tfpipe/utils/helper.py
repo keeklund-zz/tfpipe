@@ -2,6 +2,8 @@
 
 """
 from mimetypes import guess_type
+from os.path import dirname
+from os.path import basename as bname
 from os.path import join as path_join
 
 def get_file_location_info(some_file):
@@ -9,7 +11,8 @@ def get_file_location_info(some_file):
 
     """
     try:
-        path,filename = some_file.split('/')
+        path = dirname(some_file)
+        filename = bname(some_file)
     except ValueError:
         path, filename = ('.', some_file)
     basename = '.'.join(filename.split('.')[:-1])
