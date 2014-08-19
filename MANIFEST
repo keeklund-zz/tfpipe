@@ -16,6 +16,8 @@ tfpipe/base.py
 tfpipe/modules/__init__.py
 tfpipe/modules/abundant/__init__.py
 tfpipe/modules/abundant/otu.py
+tfpipe/modules/bamtools/__init__.py
+tfpipe/modules/bamtools/tools.py
 tfpipe/modules/bedtools/__init__.py
 tfpipe/modules/bedtools/format_conversion.py
 tfpipe/modules/blacklist/__init__.py
