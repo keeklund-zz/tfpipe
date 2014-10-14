@@ -28,7 +28,7 @@ setup(
               'tfpipe.modules.blacklist',
               'tfpipe.modules.cufflinks',
               'tfpipe.pipeline',],
-    scripts=['bin/tfpipe_run',
+    scripts=[#'bin/tfpipe_run',
              'examples/localhost.py',
              'examples/kure.py'],
     url='http://fureylab.web.unc.edu',
