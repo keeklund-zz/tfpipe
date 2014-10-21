@@ -4,7 +4,6 @@ LICENSE.txt
 README.txt
 TODO.txt
 setup.py
-bin/tfpipe_run
 docs/faq.txt
 docs/jobs.txt
 docs/modules.txt
