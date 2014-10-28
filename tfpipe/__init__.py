@@ -19,4 +19,5 @@ import tfpipe.modules.bamtools
 import tfpipe.modules.samtools
 import tfpipe.modules.blacklist
 import tfpipe.modules.cufflinks
+import tfpipe.modules.sratoolkit
 import tfpipe.pipeline

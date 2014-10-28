@@ -28,6 +28,7 @@ setup(
               'tfpipe.modules.abundant',
               'tfpipe.modules.blacklist',
               'tfpipe.modules.cufflinks',
+              'tfpipe.modules.sratoolkit',
               'tfpipe.pipeline',],
     scripts=[#'bin/tfpipe_run',
              'examples/localhost.py',
