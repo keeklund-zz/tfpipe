@@ -1,2 +1,7 @@
 way to display job attributes/data not just command line
 
+modules and versioning.  What to do if a specific module version no longer 
+    exists on Kure? Always default, but able to specify specific versions 
+    instead, or just keep versions up-to-date in the framework like 
+    MaPSeq?
+

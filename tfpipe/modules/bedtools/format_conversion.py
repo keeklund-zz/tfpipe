@@ -5,7 +5,7 @@ class BedTools(Job):
     """
 
     """
-    _module = 'bedtools/2.17.0'
+    _module = 'bedtools/2.19.0'
 
 
 class BamToBed(BedTools):
