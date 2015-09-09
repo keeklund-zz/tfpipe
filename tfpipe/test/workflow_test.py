@@ -37,8 +37,8 @@ class WorkFlowTest(unittest.TestCase):
         """Display workflow submission commands.
 
         """
-        job_list = ["bsub -J quality_filter  -o quality_filter.out  fastq_quality_filter -Q 33 -o qfastq.fq -i fastq.fq -p 90 -q 20 ",
-                    'bsub -J fastq_to_fasta -w "done(quality_filter)"  -o fastq_to_fasta.out  fastq_to_fasta -o qfasta.fa -i qfastq.fq ']
+        job_list = ["bsub -J quality_filter -o quality_filter.out fastq_quality_filter -Q 33 -o qfastq.fq -i fastq.fq -p 90 -q 20",
+                    'bsub -J fastq_to_fasta -w "done(quality_filter)" -o fastq_to_fasta.out fastq_to_fasta -o qfasta.fa -i qfastq.fq']
         for job, jl in zip(self.wf.jobs, job_list):
             self.assertEqual(self.wf._create_submit_str(job), jl)
     
@@ -56,8 +56,8 @@ class WorkFlowTest(unittest.TestCase):
         """_build_bsub is a hidden method building lsf requirement.
 
         """
-        bsub_list = ['bsub -J quality_filter  -o quality_filter.out  ',
-                     'bsub -J fastq_to_fasta -w "done(quality_filter)"  -o fastq_to_fasta.out  ']
+        bsub_list = ['bsub -J quality_filter -o quality_filter.out',
+                     'bsub -J fastq_to_fasta -w "done(quality_filter)" -o fastq_to_fasta.out']
         for job, bl in zip(self.wf.jobs, bsub_list):
             self.assertEqual(self.wf._build_bsub(job), bl)
 

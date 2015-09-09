@@ -39,8 +39,12 @@ class FastxClipper(Galaxy):
                           adpt)) 
                 for index, adpt in enumerate(self.adapters)]
         job_str = " | ".join(jobs)
-        redirect = " %s %s " % (">", self.redirect) if self.redirect else ''
-        return " ".join((job_str, redirect))
+        redirect_output, redirect_error = '', ''
+        if self.redirect_output:
+            redirect_output = "%s %s" % (">", self.redirect_output)
+        if self.redirect_output:
+            redirect_error = "%s %s" % ("2>", self.redirect_error)
+        return " ".join((job_str, redirect_output, redirect_error))
 
     def _parse_args(self, index=None, adpt_len=None):
         """Override base _parse_args to pipe jobs.

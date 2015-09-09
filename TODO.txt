@@ -1,7 +1,41 @@
-way to display job attributes/data not just command line
+#TODO 
 
+##Top Priorities
+collect set pipelines in centralized location, merge changes 
+meta data 
+    job log file, stats log file
+config file
+
+
+##Display
+way to display job attributes/data not just command line
+output meta-data information so pipeline is easy to look at 
+
+
+##Config
+configuration file 
+    prevent hardcoding
+    easily swap between species, etc.
+
+
+##Format
+should there be a driver script and config files get passed to pipeline?
+could have something like python tfpipe.py --method ATAC --config config.file
+would make modularization easier
+There was an argument against
+    separate pipeline scripts would be easier to grok
+
+
+##Cluster
+handle orphaned jobs, or is this outside the scope?
+Could dump status to db (could be configured in config file)
+    could give print out of what happened
+
+
+##Jobs
 modules and versioning.  What to do if a specific module version no longer 
     exists on Kure? Always default, but able to specify specific versions 
     instead, or just keep versions up-to-date in the framework like 
     MaPSeq?
-
+    Too much to keep track of.  Could use specific versions and fail if doesn't
+    exist

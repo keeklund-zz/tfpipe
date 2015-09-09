@@ -38,9 +38,11 @@ class Job(object):
         self.dep_str_at_init = bool(self.dep_str)
         self.dep = self._initialize_dependencies(inputs)
         self.bsub_args = inputs.get('bsub_args', {})
-        self.redirect = ''
+        self.redirect_output = ''
+        self.redirect_error = ''
         self.input_file = None
         self.output_file = None
+        self.error_file = None
         self.io_flag_handler = {'input': self._io_flag_input,
                                 'output': self._io_flag_output,
                                 None: None}
@@ -57,8 +59,15 @@ class Job(object):
         """Represent object as string.
 
         """
-        redirect = "%s %s " % (">", self.redirect) if self.redirect else ''
-        return " ".join((self.cmd, self._parse_args(), redirect))
+        redirect_output, redirect_error = '', ''
+        if self.redirect_output:
+            redirect_output = "%s %s" % (">", self.redirect_output)
+        if self.redirect_error:
+            redirect_error = "%s %s" % ("2>", self.redirect_error)
+        return " ".join((self.cmd,
+                         self._parse_args(),
+                         redirect_output,
+                         redirect_error))
 
     def _initialize_dependencies(self, inputs):
         """Method to initialize job dependencies.
@@ -218,14 +227,31 @@ class Job(object):
         """
         return str(self)
 
-    def redirect_output(self, outputfile):
+    def redirect_output(self, outputfile, io_flag=None):
         """Method to redirect output in the Unix sense.
 
+        Has ability to set output as output file to be referenced.
+
         """
-        self.output_file = outputfile
-        self.redirect = outputfile
+        handler = self.io_flag_handler.get(io_flag)
+        if handler:
+            handler(value)
+        self.redirect_output = outputfile
         logger.info("%s: output_file attribute '%s' set for %s" % 
-                    (self.name, outputfile, self.cmd))
+                    (self.name, self.output_file, self.cmd))
+
+    def redirect_error(self, errorfile, io_flag=None):
+        """Method to redirect error in the Unix sense.
+
+        Has ability to set error file as file to be referenced.
+
+        """
+        handler = self.io_flag_handler.get(io_flag)
+        if handler:
+            handler(value)
+        self.redirect_error = errorfile
+        logger.info("%s: error_file attribute '%s' set for %s" % 
+                    (self.name, self.error_file, self.cmd))
 
     def set_output_file(self, value):
         """Set output_file attribute.

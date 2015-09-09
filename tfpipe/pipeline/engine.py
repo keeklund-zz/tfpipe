@@ -48,7 +48,10 @@ class WorkFlow(object):
 
         """
         bsub_str = self.lsf and self._build_bsub(job) or ''
-        job_str = job.redirect and '"' + str(job) + '"' or str(job)
+        if job.redirect_output or job.redirect_error:
+            job_str = '"' + str(job) + '"'
+        else:
+            job_str = str(job)
         self.current_submit_str = bsub_str + job_str
         return self.current_submit_str
 
@@ -90,7 +93,7 @@ class WorkFlow(object):
             job._build_dep_str()
         bargs = ' '.join(["%s %s" % (k, v) for k, v in job.bsub_args.items()])
         bdep = self._update_dep_str(job) if job.dep_str else ''
-        bsub = "bsub -J %s %s -o %s.out %s " % (job.name, 
+        bsub = "bsub -J %s %s -o %s.out %s" % (job.name, 
                                                 bdep,
                                                 job.name, 
                                                 bargs)
