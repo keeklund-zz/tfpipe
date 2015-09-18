@@ -38,8 +38,8 @@ class Job(object):
         self.dep_str_at_init = bool(self.dep_str)
         self.dep = self._initialize_dependencies(inputs)
         self.bsub_args = inputs.get('bsub_args', {})
-        self.redirect_output = ''
-        self.redirect_error = ''
+        self.redirect_output_file = ''
+        self.redirect_error_file = ''
         self.input_file = None
         self.output_file = None
         self.error_file = None
@@ -59,15 +59,15 @@ class Job(object):
         """Represent object as string.
 
         """
-        redirect_output, redirect_error = '', ''
-        if self.redirect_output:
-            redirect_output = "%s %s" % (">", self.redirect_output)
-        if self.redirect_error:
-            redirect_error = "%s %s" % ("2>", self.redirect_error)
+        redirect_output_str, redirect_error_str = '', ''
+        if self.redirect_output_file:
+            redirect_output_str = "%s %s" % (">", self.redirect_output_file)
+        if self.redirect_error_file:
+            redirect_error_str = "%s %s" % ("2>", self.redirect_error_file)
         return " ".join((self.cmd,
                          self._parse_args(),
-                         redirect_output,
-                         redirect_error))
+                         redirect_output_str,
+                         redirect_error_str))
 
     def _initialize_dependencies(self, inputs):
         """Method to initialize job dependencies.
@@ -236,7 +236,7 @@ class Job(object):
         handler = self.io_flag_handler.get(io_flag)
         if handler:
             handler(value)
-        self.redirect_output = outputfile
+        self.redirect_output_file = outputfile
         logger.info("%s: output_file attribute '%s' set for %s" % 
                     (self.name, self.output_file, self.cmd))
 
@@ -249,7 +249,7 @@ class Job(object):
         handler = self.io_flag_handler.get(io_flag)
         if handler:
             handler(value)
-        self.redirect_error = errorfile
+        self.redirect_error_file = errorfile
         logger.info("%s: error_file attribute '%s' set for %s" % 
                     (self.name, self.error_file, self.cmd))
 
