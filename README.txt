@@ -10,9 +10,6 @@ LSF scheduler on Kure.
 Installation:
 =============
 
-Installation:
-----------------
-
 With root:
     pip:
         sudo pip install /path/to/dist/tfpipe-X.X.X.tar.gz
