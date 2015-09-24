@@ -235,7 +235,7 @@ class Job(object):
         """
         handler = self.io_flag_handler.get(io_flag)
         if handler:
-            handler(value)
+            handler(outputfile)
         self.redirect_output_file = outputfile
         logger.info("%s: output_file attribute '%s' set for %s" % 
                     (self.name, self.output_file, self.cmd))
@@ -248,7 +248,7 @@ class Job(object):
         """
         handler = self.io_flag_handler.get(io_flag)
         if handler:
-            handler(value)
+            handler(errorfile)
         self.redirect_error_file = errorfile
         logger.info("%s: error_file attribute '%s' set for %s" % 
                     (self.name, self.error_file, self.cmd))
