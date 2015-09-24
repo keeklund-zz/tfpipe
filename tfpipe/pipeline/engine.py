@@ -93,7 +93,7 @@ class WorkFlow(object):
             job._build_dep_str()
         bargs = ' '.join(["%s %s" % (k, v) for k, v in job.bsub_args.items()])
         bdep = self._update_dep_str(job) if job.dep_str else ''
-        bsub = "bsub -J %s %s -o %s.out %s" % (job.name, 
+        bsub = "bsub -J %s %s -o %s.out %s " % (job.name, 
                                                 bdep,
                                                 job.name, 
                                                 bargs)
