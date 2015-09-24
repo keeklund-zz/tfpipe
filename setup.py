@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name='tfpipe',
-    version='0.1.9',
+    version='0.1.10',
     author='Karl Eklund',
     author_email='keklund@email.unc.edu',
     packages=['tfpipe', 
@@ -14,6 +14,7 @@ setup(
               'tfpipe.modules.fseq',
               'tfpipe.modules.gmap',
               'tfpipe.modules.mach',
+              'tfpipe.modules.blast',
               'tfpipe.modules.plink',
               'tfpipe.modules.qiime',
               'tfpipe.modules.bowtie',

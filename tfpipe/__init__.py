@@ -5,6 +5,7 @@ import tfpipe.modules.cli
 import tfpipe.modules.fseq
 import tfpipe.modules.gmap
 import tfpipe.modules.mach
+import tfpipe.modules.blast
 import tfpipe.modules.plink
 import tfpipe.modules.qiime
 import tfpipe.modules.bowtie
