@@ -1,2 +1,2 @@
 """ """
-from tool import import Bcl2Fastq
+from tool import Bcl2Fastq
