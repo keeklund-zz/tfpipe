@@ -1,5 +1,5 @@
 """ """
-from tfpipe.base import job
+from tfpipe.base import Job
 
 class Bcl2Fastq2Mod(Job):
     """
