@@ -18,6 +18,7 @@ import tfpipe.modules.abundant
 import tfpipe.modules.bedtools
 import tfpipe.modules.bamtools
 import tfpipe.modules.samtools
+import tfpipe.modules.bcl2fastq
 import tfpipe.modules.blacklist
 import tfpipe.modules.cufflinks
 import tfpipe.modules.sratoolkit
