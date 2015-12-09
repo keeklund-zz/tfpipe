@@ -39,6 +39,7 @@ class Job(object):
         self.dep = self._initialize_dependencies(inputs)
         self.bsub_args = inputs.get('bsub_args', {})
         self.redirect_output_file = ''
+        self.append_output_file = ''
         self.redirect_error_file = ''
         self.input_file = None
         self.output_file = None
@@ -62,6 +63,8 @@ class Job(object):
         redirect_output_str, redirect_error_str = '', ''
         if self.redirect_output_file:
             redirect_output_str = "%s %s" % (">", self.redirect_output_file)
+        elif self.append_output_file:
+            redirect_output_str = "%s %s" % (">>", self.append_output_file)
         if self.redirect_error_file:
             redirect_error_str = "%s %s" % ("2>", self.redirect_error_file)
         return " ".join((self.cmd,
@@ -164,10 +167,13 @@ class Job(object):
         logger.info("%s: argument '%s %s' added to %s" %
                     (self.name, arg, self.bsub_args[arg], self.cmd))
 
-    def add_positional_argument(self, arg):
+    def add_positional_argument(self, arg, io_flag=None):
         """Method adds positional arguments to object.
 
         """
+        handler = self.io_flag_handler.get(io_flag)
+        if handler:
+            handler(arg)
         self.pos_args.append(arg)
         logger.info("%s: argument '%s' added to %s" %
                     (self.name, arg, self.cmd))
@@ -233,10 +239,31 @@ class Job(object):
         Has ability to set output as output file to be referenced.
 
         """
+        if self.append_output_file:
+            error = "Cannot redirect and append output"
+            logger.error(error)
+            exit(error)
         handler = self.io_flag_handler.get(io_flag)
         if handler:
             handler(outputfile)
         self.redirect_output_file = outputfile
+        logger.info("%s: output_file attribute '%s' set for %s" % 
+                    (self.name, self.output_file, self.cmd))
+
+    def append_output(self, outputfile, io_flag=None):
+        """Method to append output in the Unix sense.
+
+        Has ability to set output as output file to be referenced.
+
+        """
+        if self.redirect_output_file:
+            error = "Cannot redirect and append output"
+            logger.error(error)
+            exit(error)
+        handler = self.io_flag_handler.get(io_flag)
+        if handler:
+            handler(outputfile)
+        self.append_output_file = outputfile
         logger.info("%s: output_file attribute '%s' set for %s" % 
                     (self.name, self.output_file, self.cmd))
 

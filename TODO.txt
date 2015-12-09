@@ -5,7 +5,8 @@ collect set pipelines in centralized location, merge changes
 meta data 
     job log file, stats log file
 config file
-
+dump file name and description (need to provide descriptions to jobs to get
+     full value out of this.  Maybe add to config file?
 
 ##Display
 way to display job attributes/data not just command line

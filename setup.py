@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name='tfpipe',
-    version='0.1.10',
+    version='0.1.11',
     author='Karl Eklund',
     author_email='keklund@email.unc.edu',
     packages=['tfpipe', 
@@ -23,10 +23,11 @@ setup(
               'tfpipe.modules.tophat',
               'tfpipe.modules.dfilter',
               'tfpipe.modules.tagdust',
-              'tfpipe.modules.bedtools',
-              'tfpipe.modules.bamtools',
-              'tfpipe.modules.samtools',
               'tfpipe.modules.abundant',
+              'tfpipe.modules.bamtools',
+              'tfpipe.modules.bedtools',
+              'tfpipe.modules.samtools',
+              'tfpipe.modules.bcl2fastq',
               'tfpipe.modules.blacklist',
               'tfpipe.modules.cufflinks',
               'tfpipe.modules.sratoolkit',
