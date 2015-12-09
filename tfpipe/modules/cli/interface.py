@@ -10,3 +10,12 @@ class Gunzip(Job):
 
     """
     _cmd = '/bin/gunzip'
+
+
+class Tar(Job):
+    """
+
+    """
+    _cmd = '/bin/tar'
+
+
