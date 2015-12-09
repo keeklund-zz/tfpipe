@@ -1,2 +1,2 @@
 """ """
-from interface import CLI, Gunzip
+from interface import CLI, Gunzip, Tar
