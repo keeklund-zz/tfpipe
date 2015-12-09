@@ -8,7 +8,7 @@ class Bcl2FastqMod(Job):
     _module = 'bcl2fastq/1.8.4'
 
 
-class Bcl2Fastq(Bcl2Fastq2Mod):
+class Bcl2Fastq(Bcl2FastqMod):
     """
 
     """
