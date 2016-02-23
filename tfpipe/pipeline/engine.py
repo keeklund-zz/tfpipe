@@ -117,7 +117,7 @@ class WorkFlow(object):
                             f.write("module load %s\n" % job._module)
                             mods.append(job._module)
                     except AttributeError:
-                        pass
+                        exit("Failed to write module")
             for job in self.jobs:
                 f.write("%s\n" % self._create_submit_str(job))
         logger.info("WorkFlow Submission Script Created")

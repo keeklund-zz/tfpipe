@@ -13,7 +13,7 @@ class Job(object):
     """
     dep_options = ('done', 'ended', 'exit', 'external',
                    'post_done', 'post_err', 'started')
-    init_options = ('cmd', 'args', 'name', 'dep_str')
+    init_options = ('cmd', 'args', 'name', 'dep_str', 'module')
     def __init__(self, **inputs):
         """Initialize Job.
 
@@ -47,6 +47,8 @@ class Job(object):
         self.io_flag_handler = {'input': self._io_flag_input,
                                 'output': self._io_flag_output,
                                 None: None}
+        if inputs.get('module'):
+            self._module = inputs.get('module')
         logger.info("%s: initialized with '%s' arguments and command: %s " % 
                     (self.name, self._parse_args(), self.cmd))
 
@@ -111,7 +113,7 @@ class Job(object):
         """
 
         """
-        allowed = string.digits + string.ascii_letters + '_'
+        allowed = string.digits + string.ascii_letters + '_-'
         return "".join([i for i in name if i in allowed])
         
     def _make_jobname(self, size=10, chars=string.ascii_letters):
