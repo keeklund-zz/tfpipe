@@ -4,10 +4,6 @@ from tfpipe.base import Job
 class FastXToolkit(Job):
     """Fastx-Toolkit 
 
-    Fastq/a short-read pre-processing tools.
-
-    http://hannonlab.cshl.edu/fastx_toolkit/index.html
-
     """
     _module = 'fastx_toolkit/0.0.13.2'
 
@@ -17,7 +13,6 @@ class FastqToFasta(FastXToolkit):
 
     """
     _cmd = 'fastq_to_fasta'
-    # will need to add methods as necessary
 
 
 class FastxClipper(FastXToolkit):
