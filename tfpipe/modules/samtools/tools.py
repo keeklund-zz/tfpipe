@@ -5,7 +5,7 @@ class SamTools(Job):
     """
 
     """
-    _module = 'samtools/0.1.19'
+    _module = 'samtools/1.3'
 
 
 class View(SamTools):

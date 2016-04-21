@@ -1,7 +1,7 @@
 """ """
 from tfpipe.base import Job
 
-class Galaxy(Job):
+class FastXToolkit(Job):
     """Fastx-Toolkit 
 
     Fastq/a short-read pre-processing tools.
@@ -9,10 +9,10 @@ class Galaxy(Job):
     http://hannonlab.cshl.edu/fastx_toolkit/index.html
 
     """
-    _module = 'galaxy/1.0'
+    _module = 'fastx_toolkit/0.0.13.2'
 
 
-class FastqToFasta(Galaxy):
+class FastqToFasta(FastXToolkit):
     """Use FastqToFasta to convert fastq to fasta file.
 
     """
@@ -20,7 +20,7 @@ class FastqToFasta(Galaxy):
     # will need to add methods as necessary
 
 
-class FastxClipper(Galaxy):
+class FastxClipper(FastXToolkit):
     """Use FastxClipper to remove or clip reads. 
 
     """
@@ -68,14 +68,14 @@ class FastxClipper(Galaxy):
             self.adapters = f.read().split()
 
 
-class FastqQualityFilter(Galaxy):
+class FastqQualityFilter(FastXToolkit):
     """Filters reads below specified quality.
 
     """
     _cmd = 'fastq_quality_filter'
 
 
-class FastxTrimmer(Galaxy):
+class FastxTrimmer(FastXToolkit):
     """Trims reads to specified length.
 
     """
