@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name='tfpipe',
-    version='0.1.12',
+    version='0.1.14',
     author='Karl Eklund',
     author_email='keklund@email.unc.edu',
     packages=['tfpipe', 
@@ -30,6 +30,7 @@ setup(
               'tfpipe.modules.bcl2fastq',
               'tfpipe.modules.blacklist',
               'tfpipe.modules.cufflinks',
+              'tfpipe.modules.bcl2fastq2',
               'tfpipe.modules.sratoolkit',
               'tfpipe.modules.fastx_toolkit',
               'tfpipe.pipeline',],

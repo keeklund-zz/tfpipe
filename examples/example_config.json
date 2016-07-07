@@ -1,0 +1,12 @@
+{
+    'compute_environment': 
+    {
+        'kure': 
+        {
+            'host_name': 'kure.unc.edu',
+            'base_dir': '/proj/fureylab/',
+        },
+    },
+    'species': 
+    {},
+}
