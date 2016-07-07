@@ -21,5 +21,6 @@ import tfpipe.modules.samtools
 import tfpipe.modules.bcl2fastq
 import tfpipe.modules.blacklist
 import tfpipe.modules.cufflinks
+import tfpipe.modules.bcl2fastq2
 import tfpipe.modules.sratoolkit
 import tfpipe.pipeline
