@@ -9,7 +9,6 @@ import tfpipe.modules.blast
 import tfpipe.modules.plink
 import tfpipe.modules.qiime
 import tfpipe.modules.bowtie
-import tfpipe.modules.galaxy
 import tfpipe.modules.picard
 import tfpipe.modules.tophat
 import tfpipe.modules.dfilter
