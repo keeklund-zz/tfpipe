@@ -1,0 +1,2 @@
+""""""
+from tool import Star
