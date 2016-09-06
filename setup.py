@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name='tfpipe',
-    version='0.1.14',
+    version='0.1.15',
     author='Karl Eklund',
     author_email='keklund@email.unc.edu',
     packages=['tfpipe', 
@@ -33,6 +33,10 @@ setup(
               'tfpipe.modules.bcl2fastq2',
               'tfpipe.modules.sratoolkit',
               'tfpipe.modules.fastx_toolkit',
+              'tfpipe.modules.cutadapt',
+              'tfpipe.modules.star',
+              'tfpipe.modules.rsem',
+              'tfpipe.modules.python',
               'tfpipe.pipeline',],
     scripts=[#'bin/tfpipe_run',
              'examples/localhost.py',
