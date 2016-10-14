@@ -7,9 +7,8 @@ class Rsemmod(Job):
     """
     _module = 'rsem/1.2.23'
 
-
-class Rsem(Rsemmod):
+class Rsem_calculate_expression(Rsemmod):
     """
 
     """
-    _cmd = 'rsem'
+    _cmd = 'rsem-calculate-expression'
