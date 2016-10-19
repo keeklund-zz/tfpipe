@@ -11,7 +11,7 @@ class WorkFlow(object):
     """WorkFlow creates and executes job submission statements.
 
     """
-    def __init__(self, job_list=[], lsf=True, name=None):
+    def __init__(self, job_list=[], lsf=True, name=None, additionalmodules={}):
         """Initialize WorkFlow.
 
         Method sets job lists and environment.  Depending on the environment, 
@@ -21,6 +21,7 @@ class WorkFlow(object):
         self.jobs = job_list
         self.lsf = lsf
         self._check_jobnames()
+        self.additionalmodules = additionalmodules
         now = datetime.now()
         if not name:
             self._shell_script = '%s_tfpipe_workflow.sh' % \
@@ -116,6 +117,13 @@ class WorkFlow(object):
                         if job._module not in mods:
                             f.write("module load %s\n" % job._module)
                             mods.append(job._module)
+                    except AttributeError:
+                        pass
+                for module in self.additionalmodules:
+                    try:
+                        if module not in mods:
+                            f.write("module load %s\n" % module)
+                            mods.append(module)
                     except AttributeError:
                         pass
             for job in self.jobs:
