@@ -44,6 +44,7 @@ class Job(object):
         self.input_file = None
         self.output_file = None
         self.error_file = None
+        self.job_output_file = "%s.out" % (self.name)
         self.io_flag_handler = {'input': self._io_flag_input,
                                 'output': self._io_flag_output,
                                 None: None}
@@ -294,4 +295,8 @@ class Job(object):
         """
         return self.output_file
 
+    def set_job_output_file(self, value):
+        self.job_output_file = value
 
+    def get_job_output_file(self):
+        return self.job_output_file
