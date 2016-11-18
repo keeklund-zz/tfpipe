@@ -5,25 +5,25 @@ class Picard(Job):
     """
 
     """
-    _module = 'picard/1.88'
+    _module = 'picard/2.2.4'
 
 
 class MarkDuplicates(Picard):
     """
 
     """
-    _cmd = 'java -Xmx4g -jar /nas02/apps/picard-1.88/picard-tools-1.88/MarkDuplicates.jar'
+    _cmd = 'java -Xmx4g -jar /nas02/apps/picard-2.2.4/picard-tools-2.2.4/picard.jar MarkDuplicates'
 
 
 class MergeSamFiles(Picard):
     """
 
     """
-    _cmd = 'java -Xmx4g -jar /nas02/apps/picard-1.88/picard-tools-1.88/MergeSamFiles.jar'
+    _cmd = 'java -Xmx4g -jar /nas02/apps/picard-2.2.4/picard-tools-2.2.4/picard.jar MergeSamFiles'
 
 
 class SortSamFiles(Picard):
     """
 
     """
-    _cmd = 'java -Xmx4g -jar /nas02/apps/picard-1.88/picard-tools-1.88/SortSam.jar'
+    _cmd = 'java -Xmx4g -jar /nas02/apps/picard-2.2.4/picard-tools-2.2.4/picard.jar SortSam'
