@@ -59,12 +59,18 @@ class WorkFlow(object):
         Use lsf scheduler, bsub, if self.lsf is True.
 
         """
-        bsub_str = (self.lsf or self.slurm) and self._build_bsub(job) or ''
+        #TODO Ok this may change things a bit now that the job object can store a memory requirement that will now have to be passed to the build_bsub
+        if self.lsf:
+            jobsched_str = self._build_bsub(job) or ''
+        elif self.slurm:
+            jobsched_str = self._build_sbatch(job) or ''
+        else:
+            assert False
         if job.redirect_output or job.redirect_error:
             job_str = '"' + str(job) + '"'
         else:
             job_str = str(job)
-        self.current_submit_str = bsub_str + job_str
+        self.current_submit_str = jobsched_str + job_str
         return self.current_submit_str
 
     # need to check # of individual dep conds in dep_options equals number 
@@ -86,8 +92,29 @@ class WorkFlow(object):
         job_deps = tuple([job.dep.get(jdo).pop(0).name for jdo in dep_options])
         return '-w \"%s\"' % (tmp_dep_str % job_deps)
 
+    def _build_sbatch(self, job):
+        """Create the sbatch (SLURM) command submission string.
+
+        """
+        #TODO Need to fix this!
+        if not job.dep_str:
+            job._build_dep_str()
+        bargs = ' '.join(["%s %s" % (k, v) for k, v in job.bsub_args.items()])
+        bdep = self._update_dep_str(job) if job.dep_str else ''
+        sbatch = "sbatch -J %s %s -o %s %s " % (job.name,
+                                                bdep,
+                                                job.job_output_file,
+                                                bargs)
+        job_str = str(job)
+        if job_str.count('|'):
+            if (job_str.count('|')+1) > 8:
+                exit("Too many threads.  Adapter file must be eight or less.")
+            sbatch += '-n %d -R "span[hosts=1]" ' % (job_str.count('|') + 1)
+        return sbatch
+
+    #TODO Place in memory req from the job object into the bsub?
     def _build_bsub(self, job):
-        """Create bsub command submission string.
+        """Create bsub (LSF) command submission string.
 
         """
         if not job.dep_str:
@@ -96,7 +123,7 @@ class WorkFlow(object):
         bdep = self._update_dep_str(job) if job.dep_str else ''
         bsub = "bsub -J %s %s -o %s %s " % (job.name,
                                                 bdep,
-                                                job.get_job_output_file(),
+                                                job.job_output_file,
                                                 bargs)
         job_str = str(job)
         if job_str.count('|'):
@@ -108,6 +135,7 @@ class WorkFlow(object):
     def _build_shell_script(self):
         """ """
         mods = []
+        #TODO I need to work on a way to allow alternate Modules depending on the server
         with open(self._shell_script, 'w') as f:
             f.write("#!/bin/bash\n")
             if self.lsf:

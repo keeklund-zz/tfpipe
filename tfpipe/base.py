@@ -44,10 +44,14 @@ class Job(object):
         self.input_file = None
         self.output_file = None
         self.error_file = None
+        self.queue = None
+        self.hoststospan = 1
+        self.numberofprocesses = 1
         self.job_output_file = "%s.out" % (self.name)
         self.io_flag_handler = {'input': self._io_flag_input,
                                 'output': self._io_flag_output,
                                 None: None}
+        self.memory_req = ''
         if inputs.get('module'):
             self._module = inputs.get('module')
         logger.info("%s: initialized with '%s' arguments and command: %s " % 
@@ -295,8 +299,3 @@ class Job(object):
         """
         return self.output_file
 
-    def set_job_output_file(self, value):
-        self.job_output_file = value
-
-    def get_job_output_file(self):
-        return self.job_output_file
