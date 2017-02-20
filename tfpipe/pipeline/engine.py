@@ -11,7 +11,7 @@ class WorkFlow(object):
     """WorkFlow creates and executes job submission statements.
 
     """
-    def __init__(self, job_list=[], lsf=True, name=None, additionalmodules={}):
+    def __init__(self, job_list=[], lsf=True, slurm=False, name=None, additionalmodules={}):
         """Initialize WorkFlow.
 
         Method sets job lists and environment.  Depending on the environment, 
@@ -19,7 +19,18 @@ class WorkFlow(object):
 
         """
         self.jobs = job_list
-        self.lsf = lsf
+        #LSF for the moment overides SLURM
+        if lsf:
+            self.lsf = True
+            self.slurm = False
+        elif slurm:
+            self.lsf = False
+            self.slurm = True
+        else:
+            #TODO I am not sure why we are allowing this situation. At somepoint we need to probably wipe this option
+            self.lsf = False
+            self.slurm = False
+            assert False
         self._check_jobnames()
         self.additionalmodules = additionalmodules
         now = datetime.now()
@@ -37,9 +48,9 @@ class WorkFlow(object):
 
         """
         job_names = [job.name for job in self.jobs]
-        if (len(set(job_names)) == len(job_names)) and self.lsf:
+        if (len(set(job_names)) == len(job_names)) and (self.lsf or self.slurm):
             logger.info("WorkFlow job names are unique.")
-        elif self.lsf:
+        elif (self.lsf or self.slurm):
             DuplicateJobNames("WARNING: WorkFlow job names are NOT unique.")
 
     def _create_submit_str(self, job):
@@ -48,7 +59,7 @@ class WorkFlow(object):
         Use lsf scheduler, bsub, if self.lsf is True.
 
         """
-        bsub_str = self.lsf and self._build_bsub(job) or ''
+        bsub_str = (self.lsf or self.slurm) and self._build_bsub(job) or ''
         if job.redirect_output or job.redirect_error:
             job_str = '"' + str(job) + '"'
         else:
@@ -58,11 +69,11 @@ class WorkFlow(object):
 
     def _create_submit_list(self, job):
         """Build list of submission command.
-        
+
         Use lsf scheduler, bsub, if self.lsf is True.
 
         """
-        bsub = self._build_bsub(job).split() if self.lsf else []
+        bsub = self._build_bsub(job).split() if (self.lsf or self.slurm) else []
         submission_list = bsub + ['"',] + job.show_as_list() + ['"',]
         self.current_submit_str = " ".join(submission_list)
         return submission_list
@@ -153,5 +164,3 @@ class WorkFlow(object):
         self._build_shell_script()
         system("bash %s" % self._shell_script)
         logger.info("WorkFlow SUBMIT: %s" % self._shell_script)
-
-
