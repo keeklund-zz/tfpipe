@@ -67,17 +67,6 @@ class WorkFlow(object):
         self.current_submit_str = bsub_str + job_str
         return self.current_submit_str
 
-    def _create_submit_list(self, job):
-        """Build list of submission command.
-
-        Use lsf scheduler, bsub, if self.lsf is True.
-
-        """
-        bsub = self._build_bsub(job).split() if (self.lsf or self.slurm) else []
-        submission_list = bsub + ['"',] + job.show_as_list() + ['"',]
-        self.current_submit_str = " ".join(submission_list)
-        return submission_list
-        
     # need to check # of individual dep conds in dep_options equals number 
     # of jobs passed to each dep condition
     def _update_dep_str(self, job):
