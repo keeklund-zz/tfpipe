@@ -18,18 +18,18 @@ class WorkFlow(object):
         job names are checked before submission.
 
         """
+        if not((not slurm and lsf) or (slurm and not lsf)):
+            raise RuntimeError('You can only choose LSF or SLURM',
+                                 'Can not process a workflow as only LSF or SLURM may be invoked')
         self.jobs = job_list
         #LSF for the moment overides SLURM
-        if lsf:
+        if lsf and not slurm:
             self.lsf = True
             self.slurm = False
-        elif slurm:
+        elif not lsf and slurm:
             self.lsf = False
             self.slurm = True
         else:
-            #TODO I am not sure why we are allowing this situation. At somepoint we need to probably wipe this option
-            self.lsf = False
-            self.slurm = False
             assert False
         self._check_jobnames()
         self.additionalmodules = additionalmodules
@@ -59,7 +59,6 @@ class WorkFlow(object):
         Use lsf scheduler, bsub, if self.lsf is True.
 
         """
-        #TODO Ok this may change things a bit now that the job object can store a memory requirement that will now have to be passed to the build_bsub
         if self.lsf:
             jobsched_str = self._build_bsub(job) or ''
         elif self.slurm:
@@ -96,40 +95,34 @@ class WorkFlow(object):
         """Create the sbatch (SLURM) command submission string.
 
         """
-        #TODO Need to fix this!
-        if not job.dep_str:
-            job._build_dep_str()
-        bargs = ' '.join(["%s %s" % (k, v) for k, v in job.bsub_args.items()])
-        bdep = self._update_dep_str(job) if job.dep_str else ''
-        sbatch = "sbatch -J %s %s -o %s %s " % (job.name,
+        #TODO Need to add in the ability to deal with the way SLURM has dependencies
+        bdep = ""
+        sbatch = "sbatch -J %s %s -o %s " % (job.name,
                                                 bdep,
-                                                job.job_output_file,
-                                                bargs)
-        job_str = str(job)
-        if job_str.count('|'):
-            if (job_str.count('|')+1) > 8:
-                exit("Too many threads.  Adapter file must be eight or less.")
-            sbatch += '-n %d -R "span[hosts=1]" ' % (job_str.count('|') + 1)
+                                                job.job_output_file)
+        #TODO How to deal with SLURM and LSF formatting (20M vs 20) stored in the same memory flag?
+        if job.memory_req:
+            sbatch += "--mem=%s " % (job.memory_req)
+        if job.numberofprocesses > 1:
+            sbatch += "-n %s " % str(job.numberofprocesses)
         return sbatch
 
-    #TODO Place in memory req from the job object into the bsub?
     def _build_bsub(self, job):
         """Create bsub (LSF) command submission string.
 
         """
+
         if not job.dep_str:
             job._build_dep_str()
-        bargs = ' '.join(["%s %s" % (k, v) for k, v in job.bsub_args.items()])
         bdep = self._update_dep_str(job) if job.dep_str else ''
-        bsub = "bsub -J %s %s -o %s %s " % (job.name,
+        bsub = "bsub -J %s %s -o %s " % (job.name,
                                                 bdep,
-                                                job.job_output_file,
-                                                bargs)
-        job_str = str(job)
-        if job_str.count('|'):
-            if (job_str.count('|')+1) > 8:
-                exit("Too many threads.  Adapter file must be eight or less.")
-            bsub += '-n %d -R "span[hosts=1]" ' % (job_str.count('|') + 1)
+                                                job.job_output_file)
+        # TODO How to deal with SLURM and LSF formatting (20M vs 20) stored in the same memory flag?
+        if job.memory_req:
+            bsub += "-M %s " % (job.memory_req)
+        if job.numberofprocesses > 1:
+            bsub += '-n %d -R "span[hosts=1]" ' % (job.numberofprocesses)
         return bsub
 
     def _build_shell_script(self):

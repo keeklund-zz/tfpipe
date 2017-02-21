@@ -34,10 +34,11 @@ class Job(object):
         self.args = inputs.get('args', {}) 
         self.pos_args = inputs.get('pos_args', [])
         self.name = self._initialize_name(inputs)
+        #TODO REFACTOR this part of the code so that SLURM and LSF dep strings work together
         self.dep_str = inputs.get('dep_str', '')
         self.dep_str_at_init = bool(self.dep_str)
+        self.dep_str_slurm = ''
         self.dep = self._initialize_dependencies(inputs)
-        self.bsub_args = inputs.get('bsub_args', {})
         self.redirect_output_file = ''
         self.append_output_file = ''
         self.redirect_error_file = ''
@@ -51,7 +52,7 @@ class Job(object):
         self.io_flag_handler = {'input': self._io_flag_input,
                                 'output': self._io_flag_output,
                                 None: None}
-        self.memory_req = ''
+        self.memory_req = None
         if inputs.get('module'):
             self._module = inputs.get('module')
         logger.info("%s: initialized with '%s' arguments and command: %s " % 
@@ -127,13 +128,19 @@ class Job(object):
         """
         return "".join(random.choice(chars) for x in range(size))
 
+    #TODO REFACTOR the slurm and LSF dep string at somepoint
     def _build_dep_str(self):
         """Build LSF dependency string.
 
         """
-        str_tmp = " ".join([(k + " ") * len(v) for k, v in self.dep.items() 
+        str_tmp = " ".join([(k + " ") * len(v) for k, v in self.dep.items()
                             if len(v) > 0])
-        self.dep_str = "&&".join(str_tmp.split())
+        self.dep_str_lsf = "&&".join(str_tmp.split())
+
+    def _build_dep_str_slurm(self):
+        """Build the SLURM dependency string.
+        """
+
 
     def _io_flag_input(self, value):
         """Get job's input file from previous job output.
@@ -165,14 +172,6 @@ class Job(object):
         self.args[arg] = True and value or ''
         logger.info("%s: argument '%s %s' added to %s" % 
                     (self.name, arg, self.args[arg], self.cmd))
-
-    def add_bsub_argument(self, arg, value=None):
-        """Method adds command line arguments to future bsub command.
-
-        """
-        self.bsub_args[arg] = True and value or ''
-        logger.info("%s: argument '%s %s' added to %s" %
-                    (self.name, arg, self.bsub_args[arg], self.cmd))
 
     def add_positional_argument(self, arg, io_flag=None):
         """Method adds positional arguments to object.
