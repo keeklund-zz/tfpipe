@@ -72,20 +72,17 @@ class WorkFlow(object):
         self.current_submit_str = jobsched_str + job_str
         return self.current_submit_str
 
+    #TODO Check to make sure comment below is NOT valid now?
     # need to check # of individual dep conds in dep_options equals number 
     # of jobs passed to each dep condition
     def _update_dep_str(self, job):
         """Updates lsf dependency string.
 
-        If dependency string was set explicitly during initialization, return 
-        the dependency specified at initialization.  Otherwise, build dependency
-        string using dep_str heuristic and the dependency condition variables 
+        Build dependency string using dep_str heuristic and the dependency condition variables
         specified in the add_dependency method.
 
         """
-        if job.dep_str_at_init:
-            return '-w \"%s\"' % job.dep_str
-        dep_options = findall(r"[\w']+", job.dep_str) 
+        dep_options = findall(r"[\w']+", job.dep_str)
         for depopt in set(dep_options):
             tmp_dep_str = job.dep_str.replace(depopt, depopt + "(%s)")
         job_deps = tuple([job.dep.get(jdo).pop(0).name for jdo in dep_options])
@@ -96,9 +93,8 @@ class WorkFlow(object):
 
         """
         #TODO Need to add in the ability to deal with the way SLURM has dependencies
-        bdep = ""
-        sbatch = "sbatch -J %s %s -o %s " % (job.name,
-                                                bdep,
+        sbatch = "sbatch -J %s  --dependency=%s -o %s " % (job.name,
+                                             job.get_dep_str,
                                                 job.job_output_file)
         #TODO How to deal with SLURM and LSF formatting (20M vs 20) stored in the same memory flag?
         if job.memory_req:
@@ -111,12 +107,8 @@ class WorkFlow(object):
         """Create bsub (LSF) command submission string.
 
         """
-
-        if not job.dep_str:
-            job._build_dep_str()
-        bdep = self._update_dep_str(job) if job.dep_str else ''
-        bsub = "bsub -J %s %s -o %s " % (job.name,
-                                                bdep,
+        bsub = "bsub -J %s -w %s -o %s " % (job.name,
+                                         job.get_dep_str,
                                                 job.job_output_file)
         # TODO How to deal with SLURM and LSF formatting (20M vs 20) stored in the same memory flag?
         if job.memory_req:

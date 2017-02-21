@@ -6,6 +6,52 @@ import random
 
 from tfpipe.utils import logger
 from tfpipe.utils import InvalidInput, InvalidObjectCall, InvalidType
+class Singleton:
+    """
+    A non-thread-safe helper class to ease implementing singletons.
+    This should be used as a decorator -- not a metaclass -- to the
+    class that should be a singleton.
+
+    The decorated class can define one `__init__` function that
+    takes only the `self` argument. Also, the decorated class cannot be
+    inherited from. Other than that, there are no restrictions that apply
+    to the decorated class.
+
+    To get the singleton instance, use the `Instance` method. Trying
+    to use `__call__` will result in a `TypeError` being raised.
+
+    """
+
+    def __init__(self, decorated):
+        self._decorated = decorated
+
+    def Instance(self):
+        """
+        Returns the singleton instance. Upon its first call, it creates a
+        new instance of the decorated class and calls its `__init__` method.
+        On all subsequent calls, the already created instance is returned.
+
+        """
+        try:
+            return self._instance
+        except AttributeError:
+            self._instance = self._decorated()
+            return self._instance
+
+    def __call__(self):
+        raise TypeError('Singletons must be accessed through `Instance()`.')
+
+    def __instancecheck__(self, inst):
+        return isinstance(inst, self._decorated)
+
+@Singleton
+class jobid:
+    def __init__(self):
+        self.jobid = 0
+    def getjobid(self):
+        jobstring = "JOB%04d" % self.jobid
+        self.jobid += 1
+        return jobstring
 
 class Job(object):
     """Generic Job Interface functionality. 
@@ -34,11 +80,14 @@ class Job(object):
         self.args = inputs.get('args', {}) 
         self.pos_args = inputs.get('pos_args', [])
         self.name = self._initialize_name(inputs)
-        #TODO REFACTOR this part of the code so that SLURM and LSF dep strings work together
-        self.dep_str = ''
+
+        #TODO REFACTOR - This is old code when you could pass a dependency string at initialization.
         self.dep_str_at_init = False
-        self.dep_str_slurm = ''
-        self.dep = self._initialize_dependencies(inputs)
+        # TODO REFACTOR - This code needs to be a method
+        self._dep_str = None
+        self._dep_str_slurm = None
+        # TODO REFACTOR - This is old code when you could pass dependencies at initialization.
+        self.dep = {}
         self.redirect_output_file = ''
         self.append_output_file = ''
         self.redirect_error_file = ''
@@ -52,11 +101,35 @@ class Job(object):
         self.io_flag_handler = {'input': self._io_flag_input,
                                 'output': self._io_flag_output,
                                 None: None}
+        jobobj = jobid.Instance()
+        self.jobid = jobobj.getjobid()
         self.memory_req = None
         if inputs.get('module'):
             self._module = inputs.get('module')
         logger.info("%s: initialized with '%s' arguments and command: %s " % 
                     (self.name, self._parse_args(), self.cmd))
+    @property
+    def dep_str(self):
+        return self._dep_str
+
+    @dep_str.getter
+    def get_dep_str(self):
+        if not self._dep_str:
+            self._build_dep_str()
+        return self._dep_str
+
+    @property
+    def dep_str_slurm(self):
+        return self._dep_str_slurm
+
+    @dep_str_slurm.getter
+    def get_dep_str_slurm(self):
+        if not self._dep_str_slurm:
+            self._build_dep_str_slurm()
+        return self._dep_str_slurm
+
+    def get_dep_str_slurm(self):
+        self._build_dep_str_slurm()
 
     def __repr__(self):
         """Command Line representation.
@@ -79,18 +152,6 @@ class Job(object):
                          self._parse_args(),
                          redirect_output_str,
                          redirect_error_str))
-
-    def _initialize_dependencies(self, inputs):
-        """Method to initialize job dependencies.
-
-        Initializes dictionary of LSF Dependency Condition keys with empty list
-        values.
-
-        """
-        tmp = dict((depopt, []) for depopt in self.dep_options)
-        for key, value in inputs.get('dep', ''):
-            tmp[key].append(value)
-        return tmp
 
     def _check_valid_input_options(self, options, input_keys, message):
         """Hidden method checks input values.
@@ -133,9 +194,17 @@ class Job(object):
         """Build LSF dependency string.
 
         """
-        str_tmp = " ".join([(k + " ") * len(v) for k, v in self.dep.items()
-                            if len(v) > 0])
-        self.dep_str_lsf = "&&".join(str_tmp.split())
+        for k, v in self.dep.items():
+            print "DEBUG Dep item[%s,%s]" % (k,v[0].name)
+        str_tmp = '"'
+        for k, v in self.dep.items():
+            str_tmp += "%s(%s)&&"%(k,v[0].name)
+            print "DEBUG %s" % str_tmp
+        if len(str_tmp) > 0:
+            str_tmp = str_tmp[0:-2]
+        str_tmp += '"'
+        self._dep_str = str_tmp
+        print "DEBUG Dep str: %s" % (self.dep_str)
 
     def _build_dep_str_slurm(self):
         """Build the SLURM dependency string.
@@ -206,9 +275,11 @@ class Job(object):
         guess based on keys from the dependency dictionary.  
 
         """
-        self.dep_str = kwargs.pop('dep_str', self.dep_str)
+        self._dep_str = kwargs.pop('dep_str', self.dep_str)
         message = "Illegal input argument in add_dependency."
-        self._check_valid_input_options(self.dep_options, 
+        for key, value in kwargs.iteritems():
+            print "DEBUG kwargs %s,%s " % (key,value)
+        self._check_valid_input_options(self.dep_options,
                                         kwargs.keys(), 
                                         message)
         for key, value in kwargs.iteritems():
