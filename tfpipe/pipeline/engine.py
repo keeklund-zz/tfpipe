@@ -94,7 +94,7 @@ class WorkFlow(object):
         """
         #TODO Need to add in the ability to deal with the way SLURM has dependencies
         sbatch = "sbatch -J %s  --dependency=%s -o %s " % (job.name,
-                                             job.get_dep_str,
+                                             job.get_dep_str_slurm,
                                                 job.job_output_file)
         #TODO How to deal with SLURM and LSF formatting (20M vs 20) stored in the same memory flag?
         if job.memory_req:

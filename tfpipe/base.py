@@ -84,7 +84,7 @@ class Job(object):
         #TODO REFACTOR - This is old code when you could pass a dependency string at initialization.
         self.dep_str_at_init = False
         # TODO REFACTOR - This code needs to be a method
-        self._dep_str = None
+        self._dep_str_lsf = None
         self._dep_str_slurm = None
         # TODO REFACTOR - This is old code when you could pass dependencies at initialization.
         self.dep = {}
@@ -109,14 +109,14 @@ class Job(object):
         logger.info("%s: initialized with '%s' arguments and command: %s " % 
                     (self.name, self._parse_args(), self.cmd))
     @property
-    def dep_str(self):
-        return self._dep_str
+    def dep_str_lsf(self):
+        return self._dep_str_lsf
 
-    @dep_str.getter
+    @dep_str_lsf.getter
     def get_dep_str(self):
-        if not self._dep_str:
-            self._build_dep_str()
-        return self._dep_str
+        if not self._dep_str_lsf:
+            self._build_dep_str_lsf()
+        return self._dep_str_lsf
 
     @property
     def dep_str_slurm(self):
@@ -190,21 +190,17 @@ class Job(object):
         return "".join(random.choice(chars) for x in range(size))
 
     #TODO REFACTOR the slurm and LSF dep string at somepoint
-    def _build_dep_str(self):
+    def _build_dep_str_lsf(self):
         """Build LSF dependency string.
 
         """
-        for k, v in self.dep.items():
-            print "DEBUG Dep item[%s,%s]" % (k,v[0].name)
         str_tmp = '"'
         for k, v in self.dep.items():
             str_tmp += "%s(%s)&&"%(k,v[0].name)
-            print "DEBUG %s" % str_tmp
         if len(str_tmp) > 0:
             str_tmp = str_tmp[0:-2]
         str_tmp += '"'
-        self._dep_str = str_tmp
-        print "DEBUG Dep str: %s" % (self.dep_str)
+        self._dep_str_lsf = str_tmp
 
     def _build_dep_str_slurm(self):
         """Build the SLURM dependency string.
@@ -275,7 +271,6 @@ class Job(object):
         guess based on keys from the dependency dictionary.  
 
         """
-        self._dep_str = kwargs.pop('dep_str', self.dep_str)
         message = "Illegal input argument in add_dependency."
         for key, value in kwargs.iteritems():
             print "DEBUG kwargs %s,%s " % (key,value)
