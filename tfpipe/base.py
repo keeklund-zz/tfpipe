@@ -13,7 +13,7 @@ class Job(object):
     """
     dep_options = ('done', 'ended', 'exit', 'external',
                    'post_done', 'post_err', 'started')
-    init_options = ('cmd', 'args', 'name', 'dep_str', 'module')
+    init_options = ('cmd', 'args', 'name', 'module')
     def __init__(self, **inputs):
         """Initialize Job.
 
@@ -35,8 +35,8 @@ class Job(object):
         self.pos_args = inputs.get('pos_args', [])
         self.name = self._initialize_name(inputs)
         #TODO REFACTOR this part of the code so that SLURM and LSF dep strings work together
-        self.dep_str = inputs.get('dep_str', '')
-        self.dep_str_at_init = bool(self.dep_str)
+        self.dep_str = ''
+        self.dep_str_at_init = False
         self.dep_str_slurm = ''
         self.dep = self._initialize_dependencies(inputs)
         self.redirect_output_file = ''
