@@ -81,9 +81,6 @@ class Job(object):
         self.pos_args = inputs.get('pos_args', [])
         self.name = self._initialize_name(inputs)
 
-        #TODO REFACTOR - This is old code when you could pass a dependency string at initialization.
-        self.dep_str_at_init = False
-        # TODO REFACTOR - This code needs to be a method
         self._dep_str_lsf = None
         self._dep_str_slurm = None
         # TODO REFACTOR - This is old code when you could pass dependencies at initialization.
@@ -102,7 +99,7 @@ class Job(object):
                                 'output': self._io_flag_output,
                                 None: None}
         jobobj = jobid.Instance()
-        self.jobid = jobobj.getjobid()
+        self._jobid = jobobj.getjobid()
         self.memory_req = None
         if inputs.get('module'):
             self._module = inputs.get('module')
@@ -128,8 +125,13 @@ class Job(object):
             self._build_dep_str_slurm()
         return self._dep_str_slurm
 
-    def get_dep_str_slurm(self):
-        self._build_dep_str_slurm()
+    @property
+    def jobid(self):
+        return self._jobid
+
+    @jobid.getter
+    def get_jobid(self):
+        return self._jobid
 
     def __repr__(self):
         """Command Line representation.
@@ -189,12 +191,11 @@ class Job(object):
         """
         return "".join(random.choice(chars) for x in range(size))
 
-    #TODO REFACTOR the slurm and LSF dep string at somepoint
     def _build_dep_str_lsf(self):
         """Build LSF dependency string.
 
         """
-        str_tmp = '"'
+        str_tmp = '-w "'
         for k, v in self.dep.items():
             str_tmp += "%s(%s)&&"%(k,v[0].name)
         if len(str_tmp) > 0:
@@ -202,10 +203,17 @@ class Job(object):
         str_tmp += '"'
         self._dep_str_lsf = str_tmp
 
+    #TODO Create the string builder for the SLURM dependencies
     def _build_dep_str_slurm(self):
         """Build the SLURM dependency string.
         """
-
+        str_tmp = '--dependency="'
+        for k, v in self.dep.items():
+            #TODO at somepoint allow for other dependency types besides afterok
+            str_tmp +="afterok:%s," % v[0].jobid
+        if len(str_tmp) > 0:
+            str_tmp = str_tmp[0:-1]
+        self._dep_str_slurm = str_tmp
 
     def _io_flag_input(self, value):
         """Get job's input file from previous job output.
@@ -272,8 +280,6 @@ class Job(object):
 
         """
         message = "Illegal input argument in add_dependency."
-        for key, value in kwargs.iteritems():
-            print "DEBUG kwargs %s,%s " % (key,value)
         self._check_valid_input_options(self.dep_options,
                                         kwargs.keys(), 
                                         message)

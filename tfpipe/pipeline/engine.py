@@ -62,14 +62,17 @@ class WorkFlow(object):
         if self.lsf:
             jobsched_str = self._build_bsub(job) or ''
         elif self.slurm:
-            jobsched_str = self._build_sbatch(job) or ''
+            jobsched_str = self._build_sbatch_pre(job) or ''
         else:
             assert False
         if job.redirect_output or job.redirect_error:
             job_str = '"' + str(job) + '"'
         else:
             job_str = str(job)
-        self.current_submit_str = jobsched_str + job_str
+        if self.slurm:
+            self.current_submit_str = jobsched_str + job_str + self._build_sbatch_post(job)
+        else:
+            self.current_submit_str = jobsched_str + job_str
         return self.current_submit_str
 
     #TODO Check to make sure comment below is NOT valid now?
@@ -88,12 +91,11 @@ class WorkFlow(object):
         job_deps = tuple([job.dep.get(jdo).pop(0).name for jdo in dep_options])
         return '-w \"%s\"' % (tmp_dep_str % job_deps)
 
-    def _build_sbatch(self, job):
-        """Create the sbatch (SLURM) command submission string.
+    def _build_sbatch_pre(self, job):
+        """Create the sbatch (SLURM) command submission string for the first part.
 
         """
-        #TODO Need to add in the ability to deal with the way SLURM has dependencies
-        sbatch = "sbatch -J %s  --dependency=%s -o %s " % (job.name,
+        sbatch = "%s=$(sbatch -J %s %s -o %s " % (job.jobid, job.name,
                                              job.get_dep_str_slurm,
                                                 job.job_output_file)
         #TODO How to deal with SLURM and LSF formatting (20M vs 20) stored in the same memory flag?
@@ -103,11 +105,17 @@ class WorkFlow(object):
             sbatch += "-n %s " % str(job.numberofprocesses)
         return sbatch
 
+    def _build_sbatch_post(self, job):
+        """Create the sbatch (SLURM) command submission string.
+
+        """
+        return ")\n%s=$(echo $job1 | cut -d ' ' -f4)" % job.jobid
+
     def _build_bsub(self, job):
         """Create bsub (LSF) command submission string.
 
         """
-        bsub = "bsub -J %s -w %s -o %s " % (job.name,
+        bsub = "bsub -J %s %s -o %s " % (job.name,
                                          job.get_dep_str,
                                                 job.job_output_file)
         # TODO How to deal with SLURM and LSF formatting (20M vs 20) stored in the same memory flag?
