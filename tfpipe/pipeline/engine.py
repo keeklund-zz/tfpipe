@@ -138,7 +138,8 @@ class WorkFlow(object):
         """
         mods = []
         output = "#!/bin/bash\n"
-        output += ". /nas02/apps/Modules/default/init/bash\n"
+        if self.lsf:
+            output += ". /nas02/apps/Modules/default/init/bash\n"
         for job in self.jobs:
             try:
                 if self.slurm:
