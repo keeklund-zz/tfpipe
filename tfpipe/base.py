@@ -76,6 +76,15 @@ class Job(object):
                                         message)
         if not hasattr(self, '_cmd'):
             raise InvalidObjectCall, "This object cannot be called directly."
+        if hasattr(self,'_memory_req_slurm'):
+            self._memory_req_slurm = inputs.get('_memory_req_slurm', self._memory_req_slurm)
+        else:
+            self._memory_req_slurm = None
+        if hasattr(self,'_memory_req_lsf'):
+            self._memory_req_lsf = inputs.get('_memory_req_lsf', self._memory_req_lsf)
+        else:
+            self._memory_req_lsf = None
+
         self.cmd = inputs.get('cmd', self._cmd)
         self.args = inputs.get('args', {}) 
         self.pos_args = inputs.get('pos_args', [])
@@ -100,11 +109,22 @@ class Job(object):
                                 None: None}
         jobobj = jobid.Instance()
         self._jobid = jobobj.getjobid()
-        self.memory_req = None
+        #Deal with the memory requirements for seperate job controllers
+
         if inputs.get('module'):
             self._module = inputs.get('module')
+        if inputs.get('module_slurm'):
+            self._module_slurm = inputs.get('module_slurm')
         logger.info("%s: initialized with '%s' arguments and command: %s " % 
                     (self.name, self._parse_args(), self.cmd))
+    @property
+    def module(self):
+        return self._module
+
+    @property
+    def module_slurm(self):
+        return self._module_slurm
+
     @property
     def dep_str_lsf(self):
         return self._dep_str_lsf
@@ -132,6 +152,22 @@ class Job(object):
     @jobid.getter
     def get_jobid(self):
         return self._jobid
+
+    #@TODO REFACTOR - I Imagine that there is a better way to combine the slurm and LSF memory requirements
+    @property
+    def memory_req_slurm(self):
+        return self._memory_req_slurm
+    @memory_req_slurm.setter
+    def memory_req_slurm(self, value):
+        self._memory_req_slurm = value
+
+    @property
+    def memory_req_lsf(self):
+        return self._memory_req_lsf
+    @memory_req_lsf.setter
+    def memory_req_lsf(self, value):
+        self._memory_req_lsf = value
+
 
     def __repr__(self):
         """Command Line representation.
@@ -203,17 +239,18 @@ class Job(object):
         str_tmp += '"'
         self._dep_str_lsf = str_tmp
 
-    #TODO Create the string builder for the SLURM dependencies
     def _build_dep_str_slurm(self):
         """Build the SLURM dependency string.
         """
-        str_tmp = '--dependency="'
+        if len(self.dep.items()) == 0 :
+            self._dep_str_slurm  = ""
+            return
+        str_tmp = '--dependency='
         for k, v in self.dep.items():
             #TODO at somepoint allow for other dependency types besides afterok
-            str_tmp +="afterok:%s," % v[0].jobid
-        if len(str_tmp) > 0:
-            str_tmp = str_tmp[0:-1]
-        self._dep_str_slurm = str_tmp
+            str_tmp +="afterok:$%s," % v[0].jobid
+        #Delete the extra comma
+        self._dep_str_slurm = str_tmp[0:-1]
 
     def _io_flag_input(self, value):
         """Get job's input file from previous job output.
