@@ -90,8 +90,10 @@ class Job(object):
         self.pos_args = inputs.get('pos_args', [])
         self.name = self._initialize_name(inputs)
 
+        # These store values in the string form of the job control system in question
         self._dep_str_lsf = None
         self._dep_str_slurm = None
+        self._time_str_slurm = '--time="02:00:00"'
         # TODO REFACTOR - This is old code when you could pass dependencies at initialization.
         self.dep = {}
         self.redirect_output_file = ''
@@ -167,6 +169,14 @@ class Job(object):
     @memory_req_lsf.setter
     def memory_req_lsf(self, value):
         self._memory_req_lsf = value
+
+    @property
+    def time_str_slurm(self):
+        return self._time_str_slurm
+    @time_str_slurm.setter
+    def time_str_slurm(self, value):
+        self._time_str_slurm = value
+
 
 
     def __repr__(self):
