@@ -95,9 +95,9 @@ class WorkFlow(object):
         """Create the sbatch (SLURM) command submission string for the first part.
 
         """
-        sbatch = "%s=$(sbatch -J %s %s -o %s " % (job.jobid, job.name,
+        sbatch = "%s=$(sbatch -J %s %s -o %s --time %s" % (job.jobid, job.name,
                                              job.get_dep_str_slurm,
-                                                job.job_output_file)
+                                                job.job_output_file,job.time_str_slurm)
         if job.memory_req_slurm and len(job.memory_req_slurm)>0:
             sbatch += "--mem=%s " % (job.memory_req_slurm)
         if job.numberofprocesses > 1:
