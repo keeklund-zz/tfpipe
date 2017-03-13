@@ -241,13 +241,16 @@ class Job(object):
         """Build LSF dependency string.
 
         """
-        str_tmp = '-w "'
-        for k, v in self.dep.items():
-            str_tmp += "%s(%s)&&"%(k,v[0].name)
-        if len(str_tmp) > 0:
-            str_tmp = str_tmp[0:-2]
-        str_tmp += '"'
-        self._dep_str_lsf = str_tmp
+        if len(self.dep.items()) == 0:
+            self._dep_str_lsf = ""
+        else:
+            str_tmp = '-w "'
+            for k, v in self.dep.items():
+                str_tmp += "%s(%s)&&"%(k,v[0].name)
+            if len(str_tmp) > 0:
+                str_tmp = str_tmp[0:-2]
+            str_tmp += '"'
+            self._dep_str_lsf = str_tmp
 
     def _build_dep_str_slurm(self):
         """Build the SLURM dependency string.
