@@ -241,7 +241,7 @@ class Job(object):
         """Build LSF dependency string.
 
         """
-        if len(self.dep.items()) == 0:
+        if self.dep.items and len(self.dep.items()) == 0:
             self._dep_str_lsf = ""
         else:
             str_tmp = '-w "'
