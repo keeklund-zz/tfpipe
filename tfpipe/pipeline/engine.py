@@ -75,22 +75,6 @@ class WorkFlow(object):
             self.current_submit_str = jobsched_str + job_str + "\n"
         return self.current_submit_str
 
-    #TODO Check to make sure comment below is NOT valid now?
-    # need to check # of individual dep conds in dep_options equals number 
-    # of jobs passed to each dep condition
-    def _update_dep_str(self, job):
-        """Updates lsf dependency string.
-
-        Build dependency string using dep_str heuristic and the dependency condition variables
-        specified in the add_dependency method.
-
-        """
-        dep_options = findall(r"[\w']+", job.dep_str)
-        for depopt in set(dep_options):
-            tmp_dep_str = job.dep_str.replace(depopt, depopt + "(%s)")
-        job_deps = tuple([job.dep.get(jdo).pop(0).name for jdo in dep_options])
-        return '-w \"%s\"' % (tmp_dep_str % job_deps)
-
     def _build_sbatch_pre(self, job):
         """Create the sbatch (SLURM) command submission string for the first part.
 
