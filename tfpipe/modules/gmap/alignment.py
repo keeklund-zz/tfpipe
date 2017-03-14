@@ -12,4 +12,4 @@ class Gsnap(Job):
     _cmd = "gsnap"
     #We are defaulting the memory here to 48 megs.
     _memory_req_slurm = "200G"
-    _memory_req_lsf = "48M"
+    _memory_req_lsf = "48"

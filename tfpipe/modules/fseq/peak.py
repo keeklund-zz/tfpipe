@@ -10,4 +10,4 @@ class Fseq(Job):
 
     # We are defaulting the memory here to 48 megs.
     _memory_req_slurm = "100G"
-    _memory_req_lsf = "48M"
+    _memory_req_lsf = "48"

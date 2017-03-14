@@ -13,4 +13,4 @@ class Rsem_calculate_expression(Rsemmod):
     """
     _cmd = 'rsem-calculate-expression'
     _memory_req_slurm = "200G"
-    _memory_req_lsf = "48M"
+    _memory_req_lsf = "48"
