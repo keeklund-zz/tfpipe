@@ -9,5 +9,5 @@ class Fseq(Job):
     _cmd = 'fseq'
 
     # We are defaulting the memory here to 48 megs.
-    _memory_req_slurm = "100G"
+    # This command is killdevil LSF ONLY!
     _memory_req_lsf = "48"
