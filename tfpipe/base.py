@@ -93,7 +93,7 @@ class Job(object):
         # These store values in the string form of the job control system in question
         self._dep_str_lsf = None
         self._dep_str_slurm = None
-        self._time_str_slurm = '"02:00:00"'
+        self._time_str_slurm = '"06:00:00"'
         # TODO REFACTOR - This is old code when you could pass dependencies at initialization.
         self.dep = {}
         self.redirect_output_file = ''
