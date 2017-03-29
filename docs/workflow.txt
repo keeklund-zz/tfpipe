@@ -46,4 +46,4 @@ Method generates and submits commands to shell.
 show
 ----
 
-Method creates the pipeline shell script, but doesn't execute it.
+Method shows all job submission strings in WorkFlow.

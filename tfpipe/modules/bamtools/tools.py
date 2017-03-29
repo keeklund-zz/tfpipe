@@ -13,3 +13,5 @@ class BamFilter(BamTools):
 
     """
     _cmd = 'bamtools filter'
+
+
