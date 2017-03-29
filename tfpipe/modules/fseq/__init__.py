@@ -1,3 +1,3 @@
 """ """
-from peak import Fseq, FseqJava
+from peak import Fseq
 

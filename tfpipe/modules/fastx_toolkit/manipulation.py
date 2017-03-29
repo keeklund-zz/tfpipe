@@ -6,7 +6,6 @@ class FastXToolkit(Job):
 
     """
     _module = 'fastx_toolkit/0.0.13.2'
-    _module_slurm = 'fastx_toolkit'
 
 
 class FastqToFasta(FastXToolkit):

@@ -20,7 +20,6 @@ class Sort(SamTools):
     
     """
     _cmd = 'samtools sort '
-    _memory_req_slurm = "100G"
 
 
 class Index(SamTools):
