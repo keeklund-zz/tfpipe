@@ -12,3 +12,7 @@ class Gsnap(Job):
     """
     _module_slurm = 'gmap/2014-12-17'
     _cmd = "gsnap"
+    #We are defaulting the memory here to 48 megs.
+    _memory_req_slurm = "200G"
+    _memory_req_lsf = "48"
+    _time_str_slurm = '"05:00:00"'
