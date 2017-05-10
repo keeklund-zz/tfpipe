@@ -6,6 +6,7 @@ class FastQCMod(Job):
 
     """
     _module = 'fastqc/0.11.3'
+    _module_slurm = 'fastqc'
 
     
 class Fastqc(FastQCMod):

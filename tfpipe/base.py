@@ -6,6 +6,52 @@ import random
 
 from tfpipe.utils import logger
 from tfpipe.utils import InvalidInput, InvalidObjectCall, InvalidType
+class Singleton:
+    """
+    A non-thread-safe helper class to ease implementing singletons.
+    This should be used as a decorator -- not a metaclass -- to the
+    class that should be a singleton.
+
+    The decorated class can define one `__init__` function that
+    takes only the `self` argument. Also, the decorated class cannot be
+    inherited from. Other than that, there are no restrictions that apply
+    to the decorated class.
+
+    To get the singleton instance, use the `Instance` method. Trying
+    to use `__call__` will result in a `TypeError` being raised.
+
+    """
+
+    def __init__(self, decorated):
+        self._decorated = decorated
+
+    def Instance(self):
+        """
+        Returns the singleton instance. Upon its first call, it creates a
+        new instance of the decorated class and calls its `__init__` method.
+        On all subsequent calls, the already created instance is returned.
+
+        """
+        try:
+            return self._instance
+        except AttributeError:
+            self._instance = self._decorated()
+            return self._instance
+
+    def __call__(self):
+        raise TypeError('Singletons must be accessed through `Instance()`.')
+
+    def __instancecheck__(self, inst):
+        return isinstance(inst, self._decorated)
+
+@Singleton
+class jobid:
+    def __init__(self):
+        self.jobid = 0
+    def getjobid(self):
+        jobstring = "JOB%04d" % self.jobid
+        self.jobid += 1
+        return jobstring
 
 class Job(object):
     """Generic Job Interface functionality. 
@@ -13,7 +59,7 @@ class Job(object):
     """
     dep_options = ('done', 'ended', 'exit', 'external',
                    'post_done', 'post_err', 'started')
-    init_options = ('cmd', 'args', 'name', 'dep_str', 'module')
+    init_options = ('cmd', 'args', 'name', 'module')
     def __init__(self, **inputs):
         """Initialize Job.
 
@@ -30,28 +76,108 @@ class Job(object):
                                         message)
         if not hasattr(self, '_cmd'):
             raise InvalidObjectCall, "This object cannot be called directly."
+        if hasattr(self,'_memory_req_slurm'):
+            self._memory_req_slurm = inputs.get('_memory_req_slurm', self._memory_req_slurm)
+        else:
+            self._memory_req_slurm = None
+        if hasattr(self,'_memory_req_lsf'):
+            self._memory_req_lsf = inputs.get('_memory_req_lsf', self._memory_req_lsf)
+        else:
+            self._memory_req_lsf = None
+
         self.cmd = inputs.get('cmd', self._cmd)
         self.args = inputs.get('args', {}) 
         self.pos_args = inputs.get('pos_args', [])
         self.name = self._initialize_name(inputs)
-        self.dep_str = inputs.get('dep_str', '')
-        self.dep_str_at_init = bool(self.dep_str)
-        self.dep = self._initialize_dependencies(inputs)
-        self.bsub_args = inputs.get('bsub_args', {})
+
+        # These store values in the string form of the job control system in question
+        self._dep_str_lsf = None
+        self._dep_str_slurm = None
+        self._time_str_slurm = '"06:00:00"'
+        # TODO REFACTOR - This is old code when you could pass dependencies at initialization.
+        self.dep = {}
         self.redirect_output_file = ''
         self.append_output_file = ''
         self.redirect_error_file = ''
         self.input_file = None
         self.output_file = None
         self.error_file = None
+        self.queue = None
+        self.hoststospan = 1
+        self.numberofprocesses = 1
         self.job_output_file = "%s.out" % (self.name)
         self.io_flag_handler = {'input': self._io_flag_input,
                                 'output': self._io_flag_output,
                                 None: None}
+        jobobj = jobid.Instance()
+        self._jobid = jobobj.getjobid()
+        #Deal with the memory requirements for seperate job controllers
+
         if inputs.get('module'):
             self._module = inputs.get('module')
+        if inputs.get('module_slurm'):
+            self._module_slurm = inputs.get('module_slurm')
         logger.info("%s: initialized with '%s' arguments and command: %s " % 
                     (self.name, self._parse_args(), self.cmd))
+    @property
+    def module(self):
+        return self._module
+
+    @property
+    def module_slurm(self):
+        return self._module_slurm
+
+    @property
+    def dep_str_lsf(self):
+        return self._dep_str_lsf
+
+    @dep_str_lsf.getter
+    def get_dep_str(self):
+        if not self._dep_str_lsf:
+            self._build_dep_str_lsf()
+        return self._dep_str_lsf
+
+    @property
+    def dep_str_slurm(self):
+        return self._dep_str_slurm
+
+    @dep_str_slurm.getter
+    def get_dep_str_slurm(self):
+        if not self._dep_str_slurm:
+            self._build_dep_str_slurm()
+        return self._dep_str_slurm
+
+    @property
+    def jobid(self):
+        return self._jobid
+
+    @jobid.getter
+    def get_jobid(self):
+        return self._jobid
+
+    #@TODO REFACTOR - I Imagine that there is a better way to combine the slurm and LSF memory requirements
+    @property
+    def memory_req_slurm(self):
+        return self._memory_req_slurm
+    @memory_req_slurm.setter
+    def memory_req_slurm(self, value):
+        self._memory_req_slurm = value
+
+    @property
+    def memory_req_lsf(self):
+        return self._memory_req_lsf
+    @memory_req_lsf.setter
+    def memory_req_lsf(self, value):
+        self._memory_req_lsf = value
+
+    @property
+    def time_str_slurm(self):
+        return self._time_str_slurm
+    @time_str_slurm.setter
+    def time_str_slurm(self, value):
+        self._time_str_slurm = value
+
+
 
     def __repr__(self):
         """Command Line representation.
@@ -74,18 +200,6 @@ class Job(object):
                          self._parse_args(),
                          redirect_output_str,
                          redirect_error_str))
-
-    def _initialize_dependencies(self, inputs):
-        """Method to initialize job dependencies.
-
-        Initializes dictionary of LSF Dependency Condition keys with empty list
-        values.
-
-        """
-        tmp = dict((depopt, []) for depopt in self.dep_options)
-        for key, value in inputs.get('dep', ''):
-            tmp[key].append(value)
-        return tmp
 
     def _check_valid_input_options(self, options, input_keys, message):
         """Hidden method checks input values.
@@ -123,13 +237,33 @@ class Job(object):
         """
         return "".join(random.choice(chars) for x in range(size))
 
-    def _build_dep_str(self):
+    def _build_dep_str_lsf(self):
         """Build LSF dependency string.
 
         """
-        str_tmp = " ".join([(k + " ") * len(v) for k, v in self.dep.items() 
-                            if len(v) > 0])
-        self.dep_str = "&&".join(str_tmp.split())
+        if self.dep.items and len(self.dep.items()) == 0:
+            self._dep_str_lsf = ""
+        else:
+            str_tmp = '-w "'
+            for k, v in self.dep.items():
+                str_tmp += "%s(%s)&&"%(k,v[0].name)
+            if len(str_tmp) > 0:
+                str_tmp = str_tmp[0:-2]
+            str_tmp += '"'
+            self._dep_str_lsf = str_tmp
+
+    def _build_dep_str_slurm(self):
+        """Build the SLURM dependency string.
+        """
+        if len(self.dep.items()) == 0 :
+            self._dep_str_slurm  = ""
+            return
+        str_tmp = '--dependency='
+        for k, v in self.dep.items():
+            #TODO at somepoint allow for other dependency types besides afterok
+            str_tmp +="afterok:$%s," % v[0].jobid
+        #Delete the extra comma
+        self._dep_str_slurm = str_tmp[0:-1]
 
     def _io_flag_input(self, value):
         """Get job's input file from previous job output.
@@ -161,14 +295,6 @@ class Job(object):
         self.args[arg] = True and value or ''
         logger.info("%s: argument '%s %s' added to %s" % 
                     (self.name, arg, self.args[arg], self.cmd))
-
-    def add_bsub_argument(self, arg, value=None):
-        """Method adds command line arguments to future bsub command.
-
-        """
-        self.bsub_args[arg] = True and value or ''
-        logger.info("%s: argument '%s %s' added to %s" %
-                    (self.name, arg, self.bsub_args[arg], self.cmd))
 
     def add_positional_argument(self, arg, io_flag=None):
         """Method adds positional arguments to object.
@@ -203,9 +329,8 @@ class Job(object):
         guess based on keys from the dependency dictionary.  
 
         """
-        self.dep_str = kwargs.pop('dep_str', self.dep_str)
         message = "Illegal input argument in add_dependency."
-        self._check_valid_input_options(self.dep_options, 
+        self._check_valid_input_options(self.dep_options,
                                         kwargs.keys(), 
                                         message)
         for key, value in kwargs.iteritems():
@@ -295,8 +420,3 @@ class Job(object):
         """
         return self.output_file
 
-    def set_job_output_file(self, value):
-        self.job_output_file = value
-
-    def get_job_output_file(self):
-        return self.job_output_file
