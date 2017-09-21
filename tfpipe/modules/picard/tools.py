@@ -27,3 +27,23 @@ class SortSamFiles(Picard):
 
     """
     _cmd = 'java -Xmx4g -jar /nas02/apps/picard-2.2.4/picard-tools-2.2.4/picard.jar SortSam'
+
+class MarkDuplicatesSLURM(Picard):
+    """
+
+    """
+    _cmd = 'java -Xmx4g -jar /nas/longleaf/apps/picard/2.2.4/picard-tools-2.2.4/picard.jar MarkDuplicates'
+
+
+class MergeSamFilesSLURM(Picard):
+    """
+
+    """
+    _cmd = 'java -Xmx4g -jar /nas/longleaf/apps/picard/2.2.4/picard-tools-2.2.4/picard.jar MergeSamFiles'
+
+
+class SortSamFilesSLURM(Picard):
+    """
+
+    """
+    _cmd = 'java -Xmx4g -jar /nas/longleaf/apps/picard/2.2.4/picard-tools-2.2.4/picard.jar SortSam'
