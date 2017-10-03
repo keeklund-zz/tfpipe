@@ -5,7 +5,7 @@ class Cutadaptmod(Job):
     """
 
     """
-    _module = 'cutadapt/1.10'
+    _module = 'cutadapt'
 
 
 class Cutadapt(Cutadaptmod):
