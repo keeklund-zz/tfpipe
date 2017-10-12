@@ -262,7 +262,7 @@ class Job(object):
             return
         str_tmp = '--dependency='
         for condition, job_list in self.dep.items():
-            str_tmp = "afterok:"
+            str_tmp += "afterok:"
             for job in job_list:
                 #TODO at somepoint allow for other dependency types besides afterok. This is a kludge
                 str_tmp +="$%s:" % job.jobid
