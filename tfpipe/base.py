@@ -245,8 +245,10 @@ class Job(object):
             self._dep_str_lsf = ""
         else:
             str_tmp = '-w "'
-            for k, v in self.dep.items():
-                str_tmp += "%s(%s)&&"%(k,v[0].name)
+            # Key in this case is condition where v is list of jobs
+            for condition, job_list in self.dep.items():
+                for job in job_list:
+                    str_tmp += "%s(%s)&&"%(condition,job.name)
             if len(str_tmp) > 0:
                 str_tmp = str_tmp[0:-2]
             str_tmp += '"'
@@ -259,10 +261,12 @@ class Job(object):
             self._dep_str_slurm  = ""
             return
         str_tmp = '--dependency='
-        for k, v in self.dep.items():
-            #TODO at somepoint allow for other dependency types besides afterok
-            str_tmp +="afterok:$%s," % v[0].jobid
-        #Delete the extra comma
+        for condition, job_list in self.dep.items():
+            str_tmp = "afterok:"
+            for job in job_list:
+                #TODO at somepoint allow for other dependency types besides afterok. This is a kludge
+                str_tmp +="$%s:" % job.jobid
+        #Delete the extra colon
         self._dep_str_slurm = str_tmp[0:-1]
 
     def _io_flag_input(self, value):
