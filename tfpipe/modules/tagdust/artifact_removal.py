@@ -7,4 +7,4 @@ class TagDust(Job):
     http://www.ncbi.nlm.nih.gov/pubmed/19737799
 
     """
-    _cmd = "/proj/.test/roach/FAIRE/bin/tagdust"
+    _cmd = "/proj/.test/roach/GOING_AWAY/FAIRE/bin/tagdust"
