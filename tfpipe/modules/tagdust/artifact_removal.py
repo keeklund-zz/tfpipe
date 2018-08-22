@@ -7,4 +7,5 @@ class TagDust(Job):
     http://www.ncbi.nlm.nih.gov/pubmed/19737799
 
     """
-    _cmd = "/proj/.test/roach/FAIRE/bin/tagdust"
+    _module = 'tagdust/1.13'
+    _cmd = "tagdust"
